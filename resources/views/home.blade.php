@@ -16,6 +16,7 @@
 
                     You are logged in!
                 </div>
+                <button id="click">Click</button>
             </div>
         </div>
     </div>
