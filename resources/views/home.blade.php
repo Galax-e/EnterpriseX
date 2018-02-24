@@ -21,4 +21,28 @@
         </div>
     </div>
 </div>
+
+<script>
+$.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});
+ $(function() {
+     $('#click').click( function() {
+     console.log('here')
+    $.ajax( {
+        url: "agile_board",
+        method: "POST",
+        data: {description: "Dummy"},
+        dataType: "text"
+    }).done(function(result){
+        console.log(result);
+    }).fail(function(error){
+        console.log(error);
+    })
+ })
+ })
+
+</script>
 @endsection

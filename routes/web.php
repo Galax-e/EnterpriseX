@@ -21,7 +21,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::group(['middleware' => ['auth.basic']], function () {
     // auth route
-    Route::view('agile_board', 'agile_board.index');
-    Route::post('agile_board',  ['as'=>'agile_board', 'uses'=>'AgileBoardController@createTodo']);
+    Route::get('agile_board', 'AgileBoardController@index');
+    Route::get('create_todo',  'AgileBoardController@createTodo');
     
 });

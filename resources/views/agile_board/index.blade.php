@@ -18,6 +18,23 @@
     <link href="css/style.css" rel="stylesheet">
     <!-- Set a meta reference to the CSRF token for use in AJAX request -->
     <meta name="csrf-token" content="{{ csrf_token() }}" />
+
+    <!-- Mainly scripts -->
+    <script src="js/jquery-3.1.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+    <!-- jquery UI -->
+    <script src="js/plugins/jquery-ui/jquery-ui.min.js"></script>
+
+    <!-- Touch Punch - Touch Event Support for jQuery UI -->
+    <script src="js/plugins/touchpunch/jquery.ui.touch-punch.min.js"></script>
+
+    <!-- Custom and plugin javascript -->
+    <script src="js/inspinia.js"></script>
+    <script src="js/plugins/pace/pace.min.js"></script>
+
 </head>
 
 <body>
@@ -417,62 +434,41 @@
                             </div>
 
                             <ul class="sortable-list connectList agile-list" id="todo">
-                                <li class="warning-element" id="task1">
-                                    Simply dummy text of the printing and typesetting industry.
-                                    <div class="agile-detail">
-                                        <a href="#" class="pull-right btn btn-xs btn-white">Tag</a>
-                                        <i class="fa fa-clock-o"></i> 12.10.2015
-                                    </div>
+                                <script>
+                                    $(function(){
+                                        $("#add_task").click( () => {
+                                            var description = $("#add_task_description").val();
+                                            $("#add_task_description").val('');
+                                            var data = {description: description};
+                                            $.ajax({
+                                                url: "create_todo",
+                                                method: "GET",
+                                                data: {description: description},
+                                                dataType: "json"
+                                            }).done(function(result){
+                                                // console.log(result.html);
+                                                $('.new_todos').html(result.html).attr('hidden', false);
+                                                $('.new_todos').removeClass('new_todos');
+                                                $( "<li class='new_todos warning-element' id='newTaskEl' hidden='true'></li>" ).insertBefore( "#newTask" );                                                
+                                            }).fail(function(error){
+                                                console.log(error);
+                                            })
+                                        })
+                                    })
+                                </script>
+                                
+                                <li class='new_todos warning-element' id='newTask' hidden="true">
+
                                 </li>
-                                <li class="success-element" id="task2">
-                                    Many desktop publishing packages and web page editors now use Lorem Ipsum as their default.
-                                    <div class="agile-detail">
-                                        <a href="#" class="pull-right btn btn-xs btn-white">Mark</a>
-                                        <i class="fa fa-clock-o"></i> 05.04.2015
-                                    </div>
-                                </li>
-                                <li class="info-element" id="task3">
-                                    Sometimes by accident, sometimes on purpose (injected humour and the like).
-                                    <div class="agile-detail">
-                                        <a href="#" class="pull-right btn btn-xs btn-white">Mark</a>
-                                        <i class="fa fa-clock-o"></i> 16.11.2015
-                                    </div>
-                                </li>
-                                <li class="danger-element" id="task4">
-                                    All the Lorem Ipsum generators
-                                    <div class="agile-detail">
-                                        <a href="#" class="pull-right btn btn-xs btn-primary">Done</a>
-                                        <i class="fa fa-clock-o"></i> 06.10.2015
-                                    </div>
-                                </li>
-                                <li class="warning-element" id="task5">
-                                    Which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.
-                                    <div class="agile-detail">
-                                        <a href="#" class="pull-right btn btn-xs btn-white">Tag</a>
-                                        <i class="fa fa-clock-o"></i> 09.12.2015
-                                    </div>
-                                </li>
-                                <li class="warning-element" id="task6">
-                                    Packages and web page editors now use Lorem Ipsum as
-                                    <div class="agile-detail">
-                                        <a href="#" class="pull-right btn btn-xs btn-primary">Done</a>
-                                        <i class="fa fa-clock-o"></i> 08.04.2015
-                                    </div>
-                                </li>
-                                <li class="success-element" id="task7">
-                                    Many desktop publishing packages and web page editors now use Lorem Ipsum as their default.
-                                    <div class="agile-detail">
-                                        <a href="#" class="pull-right btn btn-xs btn-white">Mark</a>
-                                        <i class="fa fa-clock-o"></i> 05.04.2015
-                                    </div>
-                                </li>
-                                <li class="info-element" id="task8">
-                                    Sometimes by accident, sometimes on purpose (injected humour and the like).
-                                    <div class="agile-detail">
-                                        <a href="#" class="pull-right btn btn-xs btn-white">Mark</a>
-                                        <i class="fa fa-clock-o"></i> 16.11.2015
-                                    </div>
-                                </li>
+                                @foreach($todos as $todo)                                  
+                                    <li class="warning-element" id="task{{$loop->index}}">
+                                        {{ $todo->description }}
+                                        <div class="agile-detail">
+                                            <a href="#" class="pull-right btn btn-xs btn-white">Tag</a>
+                                            <i class="fa fa-clock-o"></i> {{ date('M d, Y', strtotime($todo->created_at)) }}
+                                        </div>
+                                    </li>
+                                @endforeach
                             </ul>
                         </div>
                     </div>
@@ -637,24 +633,6 @@
         </div>
         </div>
 
-
-
-    <!-- Mainly scripts -->
-    <script src="js/jquery-3.1.1.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
-    <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
-
-    <!-- jquery UI -->
-    <script src="js/plugins/jquery-ui/jquery-ui.min.js"></script>
-
-    <!-- Touch Punch - Touch Event Support for jQuery UI -->
-    <script src="js/plugins/touchpunch/jquery.ui.touch-punch.min.js"></script>
-
-    <!-- Custom and plugin javascript -->
-    <script src="js/inspinia.js"></script>
-    <script src="js/plugins/pace/pace.min.js"></script>
-
     <script>
         $(document).ready(function(){
 
@@ -672,29 +650,7 @@
         });
     </script>
 
-    <script>
-        $(function(){
-            $("#add_task").click( () => {
-                var description = $("#add_task_description").val();
-                var data = {description: description};
-                $.ajax( {
-                    url: "agile_board",
-                    method: "POST",
-                    data: {description: "Dummy"},
-                    dataType: "text"
-                }).done(function(result){
-                    console.log(result);
-                }).fail(function(error){
-                    console.log(error);
-                })
-                // })
-            })
-        })
-    </script>
-
 </body>
 
-
-<!-- Mirrored from webapplayers.com/inspinia_admin-v2.7.1/agile_board.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 07 Jul 2017 20:39:40 GMT -->
 </html>
 
