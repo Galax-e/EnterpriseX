@@ -23,5 +23,7 @@ Route::group(['middleware' => ['auth.basic']], function () {
     // auth route
     Route::get('agile_board', 'AgileBoardController@index');
     Route::get('create_todo',  'AgileBoardController@createTodo');
+    Route::get('delete_todo',  'AgileBoardController@deleteTodo');
+    Route::get('move_todo',  'AgileBoardController@moveTodo');
     
 });

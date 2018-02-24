@@ -31,11 +31,33 @@ class AgileBoardController extends Controller
 
         $html = "$todo->description
                 <div class='agile-detail'>
-                    <a href='#' class='pull-right btn btn-xs btn-white'>Tag</a>
+                    <a href='#' class='pull-right btn btn-xs btn-white delete_todo' id='delete_todo-".$todo->id."'><i class='fa fa-trash'></i></a>
                     <i class='fa fa-clock-o'></i> ".date('M d, Y', strtotime($todo->created_at))."
                 </div>
         ";
-        $data = ["description"=>$todo->description, "created_at"=>$todo->created_at, "updated_at" =>$todo->updated_at, "html"=>$html];
+        $data = ["id"=>$todo->id, "html"=>$html];
+        return response()->json($data);
+    }
+
+    public function deleteTodo(Request $request) {
+
+        $id = $request->input('todo_id');
+        // $todo = DB::table('agile_boards')->where('id', $id)->get();
+        // apply condition
+    
+        DB::table('agile_boards')->where('id', $id)->delete();    
+        $data = ["id"=>$id];
+        return response()->json($data);
+    }
+
+    public function moveTodo(Request $request) {
+
+        $id = $request->input('todo_id');
+        // $todo = DB::table('agile_boards')->where('id', $id)->get();
+        // apply condition
+    
+        DB::table('agile_boards')->where('id', $id)->delete();    
+        $data = ["id"=>$id];
         return response()->json($data);
     }
     
