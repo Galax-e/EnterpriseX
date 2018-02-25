@@ -31,10 +31,9 @@ class AgileBoardController extends Controller
 
         $html = "$todo->description
                 <div class='agile-detail'>
-                    <a href='#' class='pull-right btn btn-xs btn-white delete_todo' id='delete_todo-".$todo->id."'><i class='fa fa-trash'></i></a>
+                    <a href='#' class='pull-right btn btn-xs btn-white delete_todo' id='delete_todo-".$todo->id."'><i class='trash_todo fa fa-trash'></i></a>
                     <i class='fa fa-clock-o'></i> ".date('M d, Y', strtotime($todo->created_at))."
-                </div>
-        ";
+                </div>";
         $data = ["id"=>$todo->id, "html"=>$html];
         return response()->json($data);
     }

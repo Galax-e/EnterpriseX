@@ -269,14 +269,12 @@
                             </div>
 
                             <ul class="sortable-list connectList agile-list" id="todo">                                
-                                <li class='new_todos warning-element' hidden="true">
-
-                                </li>
+                                <li class='new_todos warning-element' hidden="true"></li>
                                 @foreach($todos as $todo)                                  
                                     <li class="warning-element" id="task-{{$todo->id}}">
                                         {{ $todo->description }}
                                         <div class="agile-detail">
-                                            <a href="#" class="pull-right btn btn-xs btn-white delete_todo" id="delete_todo-{{$todo->id}}"><i class="fa fa-trash"></i></a>
+                                            <a href="#" class="pull-right btn btn-xs btn-white delete_todo" id="delete_todo-{{$todo->id}}"><i class="trash_todo fa fa-trash"></i></a>
                                             <i class="fa fa-clock-o"></i> {{ date('M d, Y', strtotime($todo->created_at)) }}
                                         </div>
                                     </li>
@@ -470,7 +468,7 @@
             $("#add_task").click( () => {
                 var description = $("#add_task_description").val();
                 $("#add_task_description").val('');
-                var data = {description: description};
+                // var data = {description: description};
                 $.ajax({
                     url: "create_todo",
                     method: "GET",
@@ -478,18 +476,20 @@
                     dataType: "json"
                 }).done(function(result){
                     // console.log(result.html);
-                    $('.new_todos').html(result.html).attr({'hidden': false, 'id': result.id});
+                    $('.new_todos').html(result.html).attr({'hidden': false, 'id': 'task-'+result.id});
                     $('.new_todos').removeClass('new_todos');
-                    $( "<li class='new_todos warning-element' hidden='true'></li>" ).insertBefore( "#"+result.id );                                              
+                    $( "<li class='new_todos warning-element' hidden='true'></li>" ).insertBefore( "#task-"+result.id );                                              
                 }).fail(function(error){
                     console.log(error);
                 })
             });
 
-            $(".delete_todo").click( function() {
+
+            $(document).on('click', '.delete_todo', function() {
 
                 var todo_name = $(this).attr('id');
                 var todo_id = todo_name.split('-')[1];
+                console.log(todo_id)
 
                 $.ajax({
                     url: "delete_todo",
