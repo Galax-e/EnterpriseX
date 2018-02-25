@@ -465,7 +465,8 @@
     </script>
     <script>
         $(function(){
-            $("#add_task").click( () => {
+
+            function addTask() {
                 var description = $("#add_task_description").val();
                 $("#add_task_description").val('');
                 // var data = {description: description};
@@ -482,6 +483,12 @@
                 }).fail(function(error){
                     console.log(error);
                 })
+            }
+            $("#add_task").click( addTask );
+            $('#add_task_description').keypress( (e) => {
+                if(e.which == 13) {
+                    addTask();
+                }
             });
 
 
