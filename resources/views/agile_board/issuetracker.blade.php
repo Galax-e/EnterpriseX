@@ -1,12 +1,14 @@
-
 <!DOCTYPE html>
 <html>
+
+
+<!-- Mirrored from webapplayers.com/inspinia_admin-v2.7.1/issue_tracker.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 07 Jul 2017 20:39:34 GMT -->
 <head>
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>INSPINIA | Agile board</title>
+    <title>INSPINIA | Issue list</title>
 
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
@@ -16,24 +18,8 @@
 
     <link href="css/animate.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
-    <!-- Set a meta reference to the CSRF token for use in AJAX request -->
-    <meta name="csrf-token" content="{{ csrf_token() }}" />
 
-    <!-- Mainly scripts -->
-    <script src="js/jquery-3.1.1.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
-    <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 
-    <!-- jquery UI -->
-    <script src="js/plugins/jquery-ui/jquery-ui.min.js"></script>
-
-    <!-- Touch Punch - Touch Event Support for jQuery UI -->
-    <script src="js/plugins/touchpunch/jquery.ui.touch-punch.min.js"></script>
-
-    <!-- Custom and plugin javascript -->
-    <script src="js/inspinia.js"></script>
-    <script src="js/plugins/pace/pace.min.js"></script>
 
 </head>
 
@@ -116,9 +102,9 @@
                         <li><a href="form_markdown.html">Markdown</a></li>
                     </ul>
                 </li>
-                <li>
+                <li class="active">
                     <a href="#"><i class="fa fa-desktop"></i> <span class="nav-label">App Views</span>  <span class="pull-right label label-primary">SPECIAL</span></a>
-                    <ul class="nav nav-second-level collapse">
+                    <ul class="nav nav-second-level">
                         <li><a href="contacts.html">Contacts</a></li>
                         <li><a href="profile.html">Profile</a></li>
                         <li><a href="profile_2.html">Profile v.2</a></li>
@@ -133,7 +119,7 @@
                         <li><a href="vote_list.html">Vote list</a></li>
                         <li><a href="file_manager.html">File manager</a></li>
                         <li><a href="calendar.html">Calendar</a></li>
-                        <li><a href="issue_tracker.html">Issue tracker</a></li>
+                        <li class="active"><a href="issue_tracker.html">Issue tracker</a></li>
                         <li><a href="blog.html">Blog</a></li>
                         <li><a href="article.html">Article</a></li>
                         <li><a href="faq.html">FAQ</a></li>
@@ -156,12 +142,12 @@
                         <li><a href="empty_page.html">Empty page</a></li>
                     </ul>
                 </li>
-                <li class="active">
+                <li>
                     <a href="#"><i class="fa fa-globe"></i> <span class="nav-label">Miscellaneous</span><span class="label label-info pull-right">NEW</span></a>
-                    <ul class="nav nav-second-level">
+                    <ul class="nav nav-second-level collapse">
                         <li><a href="toastr_notifications.html">Notification</a></li>
                         <li><a href="nestable_list.html">Nestable list</a></li>
-                        <li class="active"><a href="agile_board.html">Agile board</a></li>
+                        <li><a href="agile_board.html">Agile board</a></li>
                         <li><a href="timeline_2.html">Timeline v.2</a></li>
                         <li><a href="diff.html">Diff</a></li>
                         <li><a href="pdf_viewer.html">PDF viewer</a></li>
@@ -400,16 +386,16 @@
         </div>
             <div class="row wrapper border-bottom white-bg page-heading">
                 <div class="col-lg-10">
-                    <h2>Agile board</h2>
+                    <h2>Issue list</h2>
                     <ol class="breadcrumb">
                         <li>
                             <a href="index-2.html">Home</a>
                         </li>
                         <li>
-                            <a>Miscellaneous</a>
+                            <a>App views</a>
                         </li>
                         <li class="active">
-                            <strong>Agile board</strong>
+                            <strong>Issue list</strong>
                         </li>
                     </ol>
                 </div>
@@ -420,179 +406,128 @@
 
         <div class="wrapper wrapper-content  animated fadeInRight">
             <div class="row">
-                <div class="col-lg-4">
+                <div class="col-lg-12">
                     <div class="ibox">
+                        <div class="ibox-title">
+                            <h5>Issue list</h5>
+                            <div class="ibox-tools">
+                                <a data-toggle="modal" data-target="#myModal5" class="btn btn-primary btn-xs">Add new issue</a>
+                            </div>
+                            <div class="modal inmodal fade" id="myModal5" tabindex="-1" role="dialog"  aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                            <i class="fa fa-calendar modal-icon"></i>
+                                            <h4 class="modal-title">Add new issue</h4>
+                                            <small class="font-bold">Enterprise-X is the leading support Software.</small>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form method="GET" action="create_ticket" >
+                                                <div class="form-group has-feedback">
+                                                    <input type="text" name="description" class="form-control" placeholder="Full description of issue or task" value="" required autofocus/>
+                                                    <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                                                </div>
+                                       </div>
+                                         <div class="modal-footer">
+                                        <input type="submit" value="Submit" class="btn btn-primary">
+                                            </form>
+                                             <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="ibox-content">
-                            <h3>To-do</h3>
-                            <p class="small"><i class="fa fa-hand-o-up"></i> Drag task between list</p>
 
-                            <div class="input-group">
-                                <input type="text" id="add_task_description" placeholder="Add new task. " class="input input-sm form-control">
-                                <span class="input-group-btn">
-                                        <button type="button" class="btn btn-sm btn-white" id="add_task"> <i class="fa fa-plus"></i> Add task</button>
-                                </span>
+                            <div class="m-b-lg">
+
+                                <div class="input-group">
+                                    <input type="text" placeholder="Search issue by name..." class=" form-control">
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-white"> Search</button>
+                                    </span>
+                                </div>
+                                <div class="m-t-md">
+
+                                    <div class="pull-right">
+                                        <button type="button" class="btn btn-sm btn-white"> <i class="fa fa-comments"></i> </button>
+                                        <button type="button" class="btn btn-sm btn-white"> <i class="fa fa-user"></i> </button>
+                                        <button type="button" class="btn btn-sm btn-white"> <i class="fa fa-list"></i> </button>
+                                        <button type="button" class="btn btn-sm btn-white"> <i class="fa fa-pencil"></i> </button>
+                                        <button type="button" class="btn btn-sm btn-white"> <i class="fa fa-print"></i> </button>
+                                        <button type="button" class="btn btn-sm btn-white"> <i class="fa fa-cogs"></i> </button>
+                                    </div>
+                                    <strong>Found {{$count}} issues.</strong>
+                                </div>
+
                             </div>
 
-                            <ul class="sortable-list connectList agile-list" id="todo">                                
-                                <li class='new_todos warning-element' hidden="true">
+                            <div class="table-responsive">
+                            <table class="table table-hover issue-tracker">
+                                <tbody>
+                            <?php $issues = DB::table('agile_boards')->where('created_by', Auth::user()->id)->orderBy('created_at', 'DESC')->get(); ?>
+                            @foreach($issues as $issue)
+                                <tr>
+                                    <td>
+                                        @if($issue->status == "0" || $issue->status == "1")
+                                           <span class="label label-primary">Added</span>
+                                        @elseif($issue->type == "issue" && $issue->status == "2")
+                                            <span class="label label-warning">Fixed</span>
+                                        @elseif( $issue->status == "2")
+                                            <span class="label label-primary">Done</span>
+                                        @endif
+                                    </td>
+                                    <td class="issue-info">
+                                        <a href="#">
+                                        @if($issue->type == "issue")
+                                            ISSUE-800000000000{{$issue->id}}
+                                        @else
+                                            TASK-800000000000{{$issue->id}}
+                                        @endif
+                                        </a>
 
-                                </li>
-                                @foreach($todos as $todo)                                  
-                                    <li class="warning-element" id="task-{{$todo->id}}">
-                                        {{ $todo->description }}
-                                        <div class="agile-detail">
-                                            <a href="#" class="pull-right btn btn-xs btn-white delete_todo" id="delete_todo-{{$todo->id}}"><i class="fa fa-trash"></i></a>
-                                            <i class="fa fa-clock-o"></i> {{ date('M d, Y - h:i:s A', strtotime($todo->created_at)) }}
-                                        </div>
-                                    </li>
-                                @endforeach
-                            </ul>
+                                        <small>
+                                            {{$issue->description}}
+                                        </small>
+                                    </td>
+                                    <td>
+                                    <?php $users = DB::table('users')->where('id', $issue->created_by)->get(); ?>
+                                    @foreach($users as $user)
+                                        {{$user->name}}
+                                    @endforeach
+                                    </td>
+                                    <td>
+                                        {{ date('M d, Y h:i:s A', strtotime($issue->created_at)) }}
+                                    </td>
+                                    <td>
+                                    <?php $days_ago = date('Ymd', strtotime($issue->created_at)) - date('Ymd'); ?>
+                                    @if($days_ago == 0)
+                                        <span class="pie">1,10</span>
+                                    @else
+                                         <span class="pie"><?php echo $days_ago+1; ?>,10</span>
+                                    @endif 
+                                       
+                                    <?php echo $days_ago;?> day(s)
+                                    </td>
+                                    <td class="text-right">
+                                        <button class="btn btn-white btn-xs"> Tag</button>
+                                        <button class="btn btn-white btn-xs"> Mag</button>
+                                    </td>
+                                    <td class="text-left">
+                                    <form method="GET" action="delete_ticket" ><input type="hidden" name="id" value="{{$issue->id}}">
+                                        <button class="btn btn-white btn-xs" title="Delete Ticket"><i class="fa fa-trash"></i></button>
+                                    </form>
+                                    </td>
+                                </tr>
+                            @endforeach
+                           
+                                </tbody>
+                            </table>
+                            </div>
                         </div>
+
                     </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="ibox">
-                        <div class="ibox-content">
-                            <h3>In Progress</h3>
-                            <p class="small"><i class="fa fa-hand-o-up"></i> Drag task between list</p>
-                            <ul class="sortable-list connectList agile-list" id="inprogress">
-                                <li class="success-element" id="task9">
-                                    Quisque venenatis ante in porta suscipit.
-                                    <div class="agile-detail">
-                                        <a href="#" class="pull-right btn btn-xs btn-white">Tag</a>
-                                        <i class="fa fa-clock-o"></i> 12.10.2015
-                                    </div>
-                                </li>
-                                <li class="success-element" id="task10">
-                                    Phasellus sit amet tortor sed enim mollis accumsan in consequat orci.
-                                    <div class="agile-detail">
-                                        <a href="#" class="pull-right btn btn-xs btn-white">Mark</a>
-                                        <i class="fa fa-clock-o"></i> 05.04.2015
-                                    </div>
-                                </li>
-                                <li class="warning-element" id="task11">
-                                    Nunc sed arcu at ligula faucibus tempus ac id felis. Vestibulum et nulla quis turpis sagittis fringilla.
-                                    <div class="agile-detail">
-                                        <a href="#" class="pull-right btn btn-xs btn-white">Mark</a>
-                                        <i class="fa fa-clock-o"></i> 16.11.2015
-                                    </div>
-                                </li>
-                                <li class="warning-element" id="task12">
-                                    Ut porttitor augue non sapien mollis accumsan.
-                                    Nulla non elit eget lacus elementum viverra.
-                                    <div class="agile-detail">
-                                        <a href="#" class="pull-right btn btn-xs btn-white">Tag</a>
-                                        <i class="fa fa-clock-o"></i> 09.12.2015
-                                    </div>
-                                </li>
-                                <li class="info-element" id="task13">
-                                    Packages and web page editors now use Lorem Ipsum as
-                                    <div class="agile-detail">
-                                        <a href="#" class="pull-right btn btn-xs btn-primary">Done</a>
-                                        <i class="fa fa-clock-o"></i> 08.04.2015
-                                    </div>
-                                </li>
-                                <li class="success-element" id="task14">
-                                    Quisque lacinia tellus et odio ornare maximus.
-                                    <div class="agile-detail">
-                                        <a href="#" class="pull-right btn btn-xs btn-white">Mark</a>
-                                        <i class="fa fa-clock-o"></i> 05.04.2015
-                                    </div>
-                                </li>
-                                <li class="danger-element" id="task15">
-                                    Enim mollis accumsan in consequat orci.
-                                    <div class="agile-detail">
-                                        <a href="#" class="pull-right btn btn-xs btn-white">Mark</a>
-                                        <i class="fa fa-clock-o"></i> 11.04.2015
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="ibox">
-                        <div class="ibox-content">
-                            <h3>Completed</h3>
-                            <p class="small"><i class="fa fa-hand-o-up"></i> Drag task between list</p>
-                            <ul class="sortable-list connectList agile-list" id="completed">
-                                <li class="info-element" id="task16">
-                                    Sometimes by accident, sometimes on purpose (injected humour and the like).
-                                    <div class="agile-detail">
-                                        <a href="#" class="pull-right btn btn-xs btn-white">Mark</a>
-                                        <i class="fa fa-clock-o"></i> 16.11.2015
-                                    </div>
-                                </li>
-                                <li class="warning-element" id="task17">
-                                    Ut porttitor augue non sapien mollis accumsan.
-                                    Nulla non elit eget lacus elementum viverra.
-                                    <div class="agile-detail">
-                                        <a href="#" class="pull-right btn btn-xs btn-white">Tag</a>
-                                        <i class="fa fa-clock-o"></i> 09.12.2015
-                                    </div>
-                                </li>
-                                <li class="warning-element" id="task18">
-                                    Which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.
-                                    <div class="agile-detail">
-                                        <a href="#" class="pull-right btn btn-xs btn-white">Tag</a>
-                                        <i class="fa fa-clock-o"></i> 09.12.2015
-                                    </div>
-                                </li>
-                                <li class="warning-element" id="task19">
-                                    Packages and web page editors now use Lorem Ipsum as
-                                    <div class="agile-detail">
-                                        <a href="#" class="pull-right btn btn-xs btn-primary">Done</a>
-                                        <i class="fa fa-clock-o"></i> 08.04.2015
-                                    </div>
-                                </li>
-                                <li class="success-element" id="task20">
-                                    Many desktop publishing packages and web page editors now use Lorem Ipsum as their default.
-                                    <div class="agile-detail">
-                                        <a href="#" class="pull-right btn btn-xs btn-white">Mark</a>
-                                        <i class="fa fa-clock-o"></i> 05.04.2015
-                                    </div>
-                                </li>
-                                <li class="info-element" id="task21">
-                                    Sometimes by accident, sometimes on purpose (injected humour and the like).
-                                    <div class="agile-detail">
-                                        <a href="#" class="pull-right btn btn-xs btn-white">Mark</a>
-                                        <i class="fa fa-clock-o"></i> 16.11.2015
-                                    </div>
-                                </li>
-                                <li class="warning-element" id="task22">
-                                    Simply dummy text of the printing and typesetting industry.
-                                    <div class="agile-detail">
-                                        <a href="#" class="pull-right btn btn-xs btn-white">Tag</a>
-                                        <i class="fa fa-clock-o"></i> 12.10.2015
-                                    </div>
-                                </li>
-                                <li class="success-element" id="task23">
-                                    Many desktop publishing packages and web page editors now use Lorem Ipsum as their default.
-                                    <div class="agile-detail">
-                                        <a href="#" class="pull-right btn btn-xs btn-white">Mark</a>
-                                        <i class="fa fa-clock-o"></i> 05.04.2015
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="row">
-                <div class="col-lg-12">
-
-                    <h4>
-                        Serialised Output
-                    </h4>
-                    <p>
-                        Serializes the sortable's item id's into an array of string.
-                    </p>
-
-                    <div class="output p-m m white-bg"></div>
-
-
                 </div>
             </div>
 
@@ -610,67 +545,25 @@
         </div>
         </div>
 
-    <script>
-        $(document).ready(function(){
 
-            $("#todo, #inprogress, #completed").sortable({
-                connectWith: ".connectList",
-                update: function( event, ui ) {
 
-                    var todo = $( "#todo" ).sortable( "toArray" );
-                    var inprogress = $( "#inprogress" ).sortable( "toArray" );
-                    var completed = $( "#completed" ).sortable( "toArray" );
-                    $('.output').html("ToDo: " + window.JSON.stringify(todo) + "<br/>" + "In Progress: " + window.JSON.stringify(inprogress) + "<br/>" + "Completed: " + window.JSON.stringify(completed));
+    <!-- Mainly scripts -->
+    <script src="js/jquery-3.1.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 
-                    var todos = window.JSON.stringify(todo);
-                    console.log([1, 2, 3].shift());
-                
-                }
-            }).disableSelection();
+    <!-- Custom and plugin javascript -->
+    <script src="js/inspinia.js"></script>
+    <script src="js/plugins/pace/pace.min.js"></script>
 
-        });
-    </script>
-    <script>
-        $(function(){
-            $("#add_task").click( () => {
-                var description = $("#add_task_description").val();
-                $("#add_task_description").val('');
-                var data = {description: description};
-                $.ajax({
-                    url: "create_todo",
-                    method: "GET",
-                    data: {description: description},
-                    dataType: "json"
-                }).done(function(result){
-                    // console.log(result.html);
-                    $('.new_todos').html(result.html).attr({'hidden': false, 'id': result.id});
-                    $('.new_todos').removeClass('new_todos');
-                    $( "<li class='new_todos warning-element' hidden='true'></li>" ).insertBefore( "#"+result.id );                                              
-                }).fail(function(error){
-                    console.log(error);
-                })
-            });
+    <!-- Peity -->
+    <script src="js/plugins/peity/jquery.peity.min.js"></script>
 
-            $(".delete_todo").click( function() {
-
-                var todo_name = $(this).attr('id');
-                var todo_id = todo_name.split('-')[1];
-
-                $.ajax({
-                    url: "delete_todo",
-                    method: "GET",
-                    data: {todo_id: todo_id},
-                    dataType: "json"
-                }).done(function(result){
-                    $('#task-'+ todo_id).remove();                                           
-                }).fail(function(error){
-                    console.log(error);
-                })
-            })
-        })
-    </script>
-
+    <!-- Peity demo data -->
+    <script src="js/demo/peity-demo.js"></script>
 </body>
 
-</html>
 
+<!-- Mirrored from webapplayers.com/inspinia_admin-v2.7.1/issue_tracker.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 07 Jul 2017 20:39:34 GMT -->
+</html>

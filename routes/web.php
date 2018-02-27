@@ -25,5 +25,9 @@ Route::group(['middleware' => ['auth.basic']], function () {
     Route::get('create_todo',  'AgileBoardController@createTodo');
     Route::get('delete_todo',  'AgileBoardController@deleteTodo');
     Route::get('move_todo',  'AgileBoardController@moveTodo');
+    // Issue tracker
+    Route::get('raise_ticket',  'AgileBoardController@issueTracker');
+    Route::get('create_ticket',  'AgileBoardController@createTicket');
+    Route::get('delete_ticket',  'AgileBoardController@deleteTicket');
     
 });

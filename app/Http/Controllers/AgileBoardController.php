@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
 
 use App\AgileBoard;
 use Auth;
@@ -20,7 +21,6 @@ class AgileBoardController extends Controller
 
         $this->validate($request, [
             'description' => 'required',
-
         ]);        
         $user = Auth::user();
         $todo = new AgileBoard;
@@ -59,6 +59,25 @@ class AgileBoardController extends Controller
         DB::table('agile_boards')->where('id', $id)->delete();    
         $data = ["id"=>$id];
         return response()->json($data);
+    }
+
+    public function issueTracker(){
+        $count = AgileBoard::where('created_by','=',Auth::user()->id)->count();
+        return view('agile_board.issuetracker', compact('count'));
+    }
+
+    public function createTicket(){
+        $todo = new AgileBoard;
+        $todo->description = Input::get('description'); // get task description ...
+        $todo->created_by = Auth::user()->id;
+        $todo->save();
+        return redirect()->back();
+    }
+
+    public function deleteTicket(){
+        $id = Input::get('id');
+        DB::table('agile_boards')->where('id', $id)->delete();  
+        return redirect()->back();
     }
     
 }
