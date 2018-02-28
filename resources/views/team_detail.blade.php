@@ -2,24 +2,19 @@
 <html>
 
 
-<!-- Mirrored from webapplayers.com/inspinia_admin-v2.7.1/issue_tracker.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 07 Jul 2017 20:39:34 GMT -->
+<!-- Mirrored from webapplayers.com/inspinia_admin-v2.7.1/project_detail.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 07 Jul 2017 20:39:08 GMT -->
 <head>
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>INSPINIA | Issue list</title>
+    <title>INSPINIA | Projects detail</title>
 
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
 
-    <!-- Toastr style -->
-    <link href="css/plugins/toastr/toastr.min.css" rel="stylesheet">
-
     <link href="css/animate.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
-
-
 
 </head>
 
@@ -110,8 +105,7 @@
                         <li><a href="profile_2.html">Profile v.2</a></li>
                         <li><a href="contacts_2.html">Contacts v.2</a></li>
                         <li><a href="projects.html">Projects</a></li>
-                        <li><a href="project_detail.html">Project detail</a></li>
-                        <li><a href="activity_stream.html">Activity stream</a></li>
+                        <li class="active"><a href="project_detail.html">Project detail</a></li>
                         <li><a href="teams_board.html">Teams board</a></li>
                         <li><a href="social_feed.html">Social feed</a></li>
                         <li><a href="clients.html">Clients</a></li>
@@ -119,7 +113,7 @@
                         <li><a href="vote_list.html">Vote list</a></li>
                         <li><a href="file_manager.html">File manager</a></li>
                         <li><a href="calendar.html">Calendar</a></li>
-                        <li class="active"><a href="issue_tracker.html">Issue tracker</a></li>
+                        <li><a href="issue_tracker.html">Issue tracker</a></li>
                         <li><a href="blog.html">Blog</a></li>
                         <li><a href="article.html">Article</a></li>
                         <li><a href="faq.html">FAQ</a></li>
@@ -265,7 +259,7 @@
 
         <div id="page-wrapper" class="gray-bg">
         <div class="row border-bottom">
-        <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+        <nav class="navbar navbar-static-top  " role="navigation" style="margin-bottom: 0">
         <div class="navbar-header">
             <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
             <form role="search" class="navbar-form-custom" action="http://webapplayers.com/inspinia_admin-v2.7.1/search_results.html">
@@ -385,47 +379,328 @@
         </nav>
         </div>
             <div class="row wrapper border-bottom white-bg page-heading">
-                <div class="col-lg-10">
-                    <h2>Issue list</h2>
+                <div class="col-sm-4">
+                    <h2>Project detail</h2>
                     <ol class="breadcrumb">
                         <li>
                             <a href="index-2.html">Home</a>
                         </li>
-                        <li>
-                            <a>App views</a>
-                        </li>
                         <li class="active">
-                            <strong>Issue list</strong>
+                            <strong>Project detail</strong>
                         </li>
                     </ol>
                 </div>
-                <div class="col-lg-2">
+            </div>
+        <div class="row">
+           <?php $teams = DB::table('teams')->where('id', $teamid)->get(); ?>
+            @foreach($teams as $team)
+            <div class="col-lg-9">
+                <div class="wrapper wrapper-content animated fadeInUp">
+                    <div class="ibox">
+                        <div class="ibox-content">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="m-b-md">
+                                        <a href="#" class="btn btn-white btn-xs pull-right">Edit project</a>
+                                        <h2>{{$team->name}}</h2>
+                                    </div>
+                                    <dl class="dl-horizontal">
+                                        <dt>Status:</dt> <dd><span class="label label-primary">Active</span></dd>
+                                    </dl>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-5">
+                                    <dl class="dl-horizontal">
 
+                                        <dt>Created by:</dt> 
+                                        <dd>
+                                            <?php $users = DB::table('users')->where('id', $team->created_by)->get(); ?>
+                                            @foreach($users as $user)
+                                                {{$user->name}}
+                                            @endforeach
+                                        </dd>
+                                        <dt>Messages:</dt> <dd>  162</dd>
+                                        <dt>Client:</dt> <dd><a href="#" class="text-navy"> {{$team->client}}y</a> </dd>
+                                        <dt>Members:</dt> 
+                                        <dd> 	{{$count}} </dd>
+                                    </dl>
+                                </div>
+                                <div class="col-lg-7" id="cluster_info">
+                                    <dl class="dl-horizontal" >
+
+                                        <dt>Last Updated:</dt> <dd>{{ date('d.m.y h:i:s A', strtotime($team->updated_at)) }}</dd>
+                                        <dt>Created:</dt> <dd> 	{{ date('d.m.y h:i:s A', strtotime($team->created_at)) }} </dd>
+                                        <dt>Participants:</dt>
+                                        <dd class="project-people">
+                                        <?php $members = DB::table('members')->where('teamid', $team->id)->get(); ?>
+                                            @foreach($members as $member)
+                                                 <a href="#"><img alt="image" class="img-circle" src="img/a3.jpg"></a>
+                                            @endforeach
+                                        </dd>
+                                    </dl>
+                                </div>
+                            </div>
+                            <div class="row">
+                              <?php
+                                    if (strpos($team->updateprogress, 'yes') !== false) {
+                                    echo '<div class="col-lg-12">
+                                    <dl class="dl-horizontal">
+                                        <dt>Completed:</dt>
+                                        <dd>
+                                            <div class="progress progress-striped active m-b-sm">
+                                                <div style="width: 60%;" class="progress-bar"></div>
+                                            </div>
+                                            <small>Project completed in <strong>60%</strong>. Remaining close the project.</small>
+                                        </dd>
+                                    </dl>
+                                </div>';
+                                    }
+                                ?>
+                            </div>
+                            <div class="row m-t-sm">
+                                <div class="col-lg-12">
+                                <div class="panel blank-panel">
+                                <div class="panel-heading">
+                                    <div class="panel-options">
+                                        <ul class="nav nav-tabs">
+                                            <li class="active"><a href="#tab-1" data-toggle="tab">Users messages</a></li>
+                                            <li class=""><a href="#tab-2" data-toggle="tab">Last activity</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div class="panel-body">
+
+                                <div class="tab-content">
+                                <div class="tab-pane active" id="tab-1">
+                                    <div class="feed-activity-list">
+                                        <div class="feed-element">
+                                            <a href="#" class="pull-left">
+                                                <img alt="image" class="img-circle" src="img/a2.jpg">
+                                            </a>
+                                            <div class="media-body ">
+                                                <small class="pull-right">2h ago</small>
+                                                <strong>Mark Johnson</strong> posted message on <strong>Monica Smith</strong> site. <br>
+                                                <small class="text-muted">Today 2:10 pm - 12.06.2014</small>
+                                                <div class="well">
+                                                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.
+                                                    Over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="feed-element">
+                                            <a href="#" class="pull-left">
+                                                <img alt="image" class="img-circle" src="img/a3.jpg">
+                                            </a>
+                                            <div class="media-body ">
+                                                <small class="pull-right">2h ago</small>
+                                                <strong>Janet Rosowski</strong> add 1 photo on <strong>Monica Smith</strong>. <br>
+                                                <small class="text-muted">2 days ago at 8:30am</small>
+                                            </div>
+                                        </div>
+                                        <div class="feed-element">
+                                            <a href="#" class="pull-left">
+                                                <img alt="image" class="img-circle" src="img/a4.jpg">
+                                            </a>
+                                            <div class="media-body ">
+                                                <small class="pull-right text-navy">5h ago</small>
+                                                <strong>Chris Johnatan Overtunk</strong> started following <strong>Monica Smith</strong>. <br>
+                                                <small class="text-muted">Yesterday 1:21 pm - 11.06.2014</small>
+                                                <div class="actions">
+                                                    <a class="btn btn-xs btn-white"><i class="fa fa-thumbs-up"></i> Like </a>
+                                                    <a class="btn btn-xs btn-white"><i class="fa fa-heart"></i> Love</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="feed-element">
+                                            <a href="#" class="pull-left">
+                                                <img alt="image" class="img-circle" src="img/a5.jpg">
+                                            </a>
+                                            <div class="media-body ">
+                                                <small class="pull-right">2h ago</small>
+                                                <strong>Kim Smith</strong> posted message on <strong>Monica Smith</strong> site. <br>
+                                                <small class="text-muted">Yesterday 5:20 pm - 12.06.2014</small>
+                                                <div class="well">
+                                                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.
+                                                    Over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="feed-element">
+                                            <a href="#" class="pull-left">
+                                                <img alt="image" class="img-circle" src="img/profile.jpg">
+                                            </a>
+                                            <div class="media-body ">
+                                                <small class="pull-right">23h ago</small>
+                                                <strong>Monica Smith</strong> love <strong>Kim Smith</strong>. <br>
+                                                <small class="text-muted">2 days ago at 2:30 am - 11.06.2014</small>
+                                            </div>
+                                        </div>
+                                        <div class="feed-element">
+                                            <a href="#" class="pull-left">
+                                                <img alt="image" class="img-circle" src="img/a7.jpg">
+                                            </a>
+                                            <div class="media-body ">
+                                                <small class="pull-right">46h ago</small>
+                                                <strong>Mike Loreipsum</strong> started following <strong>Monica Smith</strong>. <br>
+                                                <small class="text-muted">3 days ago at 7:58 pm - 10.06.2014</small>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="tab-pane" id="tab-2">
+
+                                    <table class="table table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th>Status</th>
+                                            <th>Title</th>
+                                            <th>Created at</th>
+                                            <th>Activity by</th>
+                                            <th>Comments</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <?php $activities = DB::table('activities')->where('teamid', $team->id)->orderBy('created_at', 'DESC')->get(); ?>
+                                        @foreach($activities as $activity)
+                                        <tr>
+                                            <td>
+                                                <span class="label label-primary">
+                                                <?php
+                                                if (strpos($activity->title, 'file') !== false) {
+                                                echo '<i class="fa fa-file"></i> ';
+                                                }
+                                                else {
+                                                echo '<i class="fa fa-check"></i> ';
+                                                }
+                                            ?> {{$activity->status}}</span>
+                                            </td>
+                                            <td>
+                                               {{$activity->title}}
+                                            </td>
+                                            <td>
+                                               {{ date('M d, Y h:i:s A', strtotime($team->created_at)) }}
+                                            </td>
+                                            <td>
+                                                    <?php $users = DB::table('users')->where('id', $activity->activity_by)->get(); ?>
+                                                    @foreach($users as $user)
+                                                        {{$user->name}}
+                                                    @endforeach
+                                            </td>
+                                            <td>
+                                            <p class="small">
+                                                 {!!$activity->comment!!}
+                                            </p>
+                                            </td>
+
+                                        </tr>
+                                        @endforeach
+                                       </tbody>
+                                    </table>
+
+                                </div>
+                                </div>
+
+                                </div>
+
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-
-        <div class="wrapper wrapper-content  animated fadeInRight">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="ibox">
-                        <div class="ibox-title">
-                            <h5>Issue list</h5>
-                            <div class="ibox-tools">
-                                <a data-toggle="modal" data-target="#myModal5" class="btn btn-primary btn-xs">Add new issue</a>
-                            </div>
-                            <div class="modal inmodal fade" id="myModal5" tabindex="-1" role="dialog"  aria-hidden="true">
+            @endforeach
+            <div class="col-lg-3">
+                <div class="wrapper wrapper-content project-manager">
+                    <h4>Project description</h4>
+                     <h2><dt>{{$team->project}}</dt></h2>
+                    <p class="small">
+                        {{ str_limit($team->description, 500) }}
+                    </p>
+                    <p class="small font-bold">
+                        <span><i class="fa fa-circle text-warning"></i> {{$team->priority}} priority</span>
+                    </p>
+                    </br>
+                    <h5>Project files</h5>
+                    <ul class="list-unstyled project-files">
+                        <?php $files = DB::table('documents')->where('teamid', $team->id)->get(); ?>
+                            @foreach($files as $file)
+                                <li><a href="files/{{$file->file}}" target="_blank">
+                                <?php
+                                    if (strpos($file->file, '.jpg') !== false) {
+                                    echo '<i class="fa fa-file-image-o"></i>';
+                                    }
+                                    elseif (strpos($file->file, '.pdf') !== false) {
+                                    echo '<i class="fa fa-file-pdf-o"></i>';
+                                    }
+                                    elseif (strpos($file->file, '.xlsx') !== false) {
+                                    echo '<i class="fa fa-file-excel-o"></i>';
+                                    }
+                                    elseif (strpos($file->file, '.docx') !== false) {
+                                    echo '<i class="fa fa-file"></i>';
+                                    }
+                                    elseif (strpos($file->file, '.mp4') !== false) {
+                                    echo '<i class="fa fa-file-video-o"></i>';
+                                    }
+                                ?>                                    
+                                    {{$file->file_name}}</a>
+                                </li>
+                            @endforeach
+                        <li><a href="#"><i class="fa fa-file"></i> Project_document.docx</a></li>
+                        <li><a href="#"><i class="fa fa-file-picture-o"></i> Logo_zender_company.jpg</a></li>
+                        <li><a href="#"><i class="fa fa-stack-exchange"></i> Email_from_Alex.mln</a></li>
+                        <li><a href="#"><i class="fa fa-file"></i> Contract_20_11_2014.docx</a></li>
+                    </ul>
+                    <div class="text-center m-t-md">
+                        <a data-toggle="modal" data-target="#myModa16" class="btn btn-xs btn-primary">Add files</a>
+                           <div class="modal inmodal fade" id="myModa16" tabindex="-1" role="dialog"  aria-hidden="true">
                                 <div class="modal-dialog modal-lg">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                                            <i class="fa fa-calendar modal-icon"></i>
-                                            <h4 class="modal-title">Add new issue</h4>
+                                            <i class="fa fa-file modal-icon"></i>
+                                            <h4 class="modal-title">Add file</h4>
                                             <small class="font-bold">Enterprise-X is the leading support Software.</small>
                                         </div>
                                         <div class="modal-body">
-                                            <form method="GET" action="create_ticket" >
+                                            <form id="image_upload_form" method="post" enctype="multipart/form-data" action='add_file' autocomplete="off">
+                                                {!! csrf_field() !!}
+                                                <input type="hidden" name="teamid" value="{{$team->id}}">
+                                                         <div class="form-group has-feedback">
+                                                            <input type="text" name="file_name" class="form-control" placeholder="File title" value="" required autofocus/>
+                                                           
+                                                        </div> 
+                                                        <div class="form-group has-feedback">
+                                                            <input type="file" name="upload_images[]" id="image_file" class="form-control" multiple >
+                                                            
+                                                        </div>
+                                        </div>
+                                                <div class="modal-footer">
+                                                <input type="submit" value="Submit" class="btn btn-primary">
+                                            </form>
+                                             <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <a data-toggle="modal" data-target="#myModal5" class="btn btn-xs btn-primary">Add member(s)</a>
+                         <div class="modal inmodal fade" id="myModal5" tabindex="-1" role="dialog"  aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                            <i class="fa fa-users modal-icon"></i>
+                                            <h4 class="modal-title">Add new member(s)</h4>
+                                            <small class="font-bold">Enterprise-X is the leading support Software.</small>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form method="GET" action="new_member" >
                                                 <div class="form-group has-feedback">
-                                                    <input type="text" name="description" class="form-control" placeholder="Full description of issue or task" value="" required autofocus/>
+                                                    <input type="hidden" name="teamid" value="{{$team->id}}"/>
+                                                    <input type="text" name="email" class="form-control" placeholder="Email" value="" required autofocus/>
                                                     <span class="glyphicon glyphicon-user form-control-feedback"></span>
                                                 </div>
                                        </div>
@@ -437,101 +712,10 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="ibox-content">
-
-                            <div class="m-b-lg">
-
-                                <div class="input-group">
-                                    <input type="text" placeholder="Search issue by name..." class=" form-control">
-                                    <span class="input-group-btn">
-                                        <button type="button" class="btn btn-white"> Search</button>
-                                    </span>
-                                </div>
-                                <div class="m-t-md">
-
-                                    <div class="pull-right">
-                                        <button type="button" class="btn btn-sm btn-white"> <i class="fa fa-comments"></i> </button>
-                                        <button type="button" class="btn btn-sm btn-white"> <i class="fa fa-user"></i> </button>
-                                        <button type="button" class="btn btn-sm btn-white"> <i class="fa fa-list"></i> </button>
-                                        <button type="button" class="btn btn-sm btn-white"> <i class="fa fa-pencil"></i> </button>
-                                        <button type="button" class="btn btn-sm btn-white"> <i class="fa fa-print"></i> </button>
-                                        <button type="button" class="btn btn-sm btn-white"> <i class="fa fa-cogs"></i> </button>
-                                    </div>
-                                    <strong>Found {{$count}} issues.</strong>
-                                </div>
-
-                            </div>
-
-                            <div class="table-responsive">
-                            <table class="table table-hover issue-tracker">
-                                <tbody>
-                            <?php $issues = DB::table('agile_boards')->where('created_by', Auth::user()->id)->orderBy('created_at', 'DESC')->get(); ?>
-                            @foreach($issues as $issue)
-                                <tr>
-                                    <td>
-                                        @if($issue->status == "0" || $issue->status == "1")
-                                           <span class="label label-primary">Added</span>
-                                        @elseif($issue->type == "issue" && $issue->status == "2")
-                                            <span class="label label-warning">Fixed</span>
-                                        @elseif( $issue->status == "2")
-                                            <span class="label label-primary">Done</span>
-                                        @endif
-                                    </td>
-                                    <td class="issue-info">
-                                        <a href="#">
-                                        @if($issue->type == "issue")
-                                            ISSUE-800000000000{{$issue->id}}
-                                        @else
-                                            TASK-800000000000{{$issue->id}}
-                                        @endif
-                                        </a>
-
-                                        <small>
-                                            {{$issue->description}}
-                                        </small>
-                                    </td>
-                                    <td>
-                                    <?php $users = DB::table('users')->where('id', $issue->created_by)->get(); ?>
-                                    @foreach($users as $user)
-                                        {{$user->name}}
-                                    @endforeach
-                                    </td>
-                                    <td>
-                                        {{ date('M d, Y h:i:s A', strtotime($issue->created_at)) }}
-                                    </td>
-                                    <td>
-                                    <?php $days_ago = date('Ymd') - date('Ymd', strtotime($issue->created_at)); ?>
-                                    @if($days_ago == 0)
-                                        <span class="pie">1,10</span>
-                                    @else
-                                         <span class="pie"><?php echo $days_ago+1; ?>,10</span>
-                                    @endif 
-                                       
-                                    <?php echo $days_ago;?> day(s)
-                                    </td>
-                                    <td class="text-right">
-                                        <button class="btn btn-white btn-xs"> Tag</button>
-                                        <button class="btn btn-white btn-xs"> Mag</button>
-                                    </td>
-                                    <td class="text-left">
-                                    <form method="GET" action="delete_ticket" ><input type="hidden" name="id" value="{{$issue->id}}">
-                                        <button class="btn btn-white btn-xs" title="Delete Ticket"><i class="fa fa-trash"></i></button>
-                                    </form>
-                                    </td>
-                                </tr>
-                            @endforeach
-                           
-                                </tbody>
-                            </table>
-                            </div>
-                        </div>
 
                     </div>
                 </div>
             </div>
-
-
         </div>
         <div class="footer">
             <div class="pull-right">
@@ -545,8 +729,6 @@
         </div>
         </div>
 
-
-
     <!-- Mainly scripts -->
     <script src="js/jquery-3.1.1.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
@@ -557,13 +739,36 @@
     <script src="js/inspinia.js"></script>
     <script src="js/plugins/pace/pace.min.js"></script>
 
-    <!-- Peity -->
-    <script src="js/plugins/peity/jquery.peity.min.js"></script>
+    <script>
+        $(document).ready(function(){
 
-    <!-- Peity demo data -->
-    <script src="js/demo/peity-demo.js"></script>
+            $('#loading-example-btn').click(function () {
+                btn = $(this);
+                simpleLoad(btn, true)
+
+                // Ajax example
+//                $.ajax().always(function () {
+//                    simpleLoad($(this), false)
+//                });
+
+                simpleLoad(btn, false)
+            });
+        });
+
+        function simpleLoad(btn, state) {
+            if (state) {
+                btn.children().addClass('fa-spin');
+                btn.contents().last().replaceWith(" Loading");
+            } else {
+                setTimeout(function () {
+                    btn.children().removeClass('fa-spin');
+                    btn.contents().last().replaceWith(" Refresh");
+                }, 2000);
+            }
+        }
+    </script>
 </body>
 
 
-<!-- Mirrored from webapplayers.com/inspinia_admin-v2.7.1/issue_tracker.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 07 Jul 2017 20:39:34 GMT -->
+<!-- Mirrored from webapplayers.com/inspinia_admin-v2.7.1/project_detail.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 07 Jul 2017 20:39:09 GMT -->
 </html>

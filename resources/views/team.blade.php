@@ -2,24 +2,19 @@
 <html>
 
 
-<!-- Mirrored from webapplayers.com/inspinia_admin-v2.7.1/issue_tracker.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 07 Jul 2017 20:39:34 GMT -->
+<!-- Mirrored from webapplayers.com/inspinia_admin-v2.7.1/projects.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 07 Jul 2017 20:39:08 GMT -->
 <head>
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>INSPINIA | Issue list</title>
+    <title>INSPINIA | Projects list</title>
 
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
 
-    <!-- Toastr style -->
-    <link href="css/plugins/toastr/toastr.min.css" rel="stylesheet">
-
     <link href="css/animate.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
-
-
 
 </head>
 
@@ -109,7 +104,7 @@
                         <li><a href="profile.html">Profile</a></li>
                         <li><a href="profile_2.html">Profile v.2</a></li>
                         <li><a href="contacts_2.html">Contacts v.2</a></li>
-                        <li><a href="projects.html">Projects</a></li>
+                        <li class="active"><a href="projects.html">Projects</a></li>
                         <li><a href="project_detail.html">Project detail</a></li>
                         <li><a href="activity_stream.html">Activity stream</a></li>
                         <li><a href="teams_board.html">Teams board</a></li>
@@ -119,7 +114,7 @@
                         <li><a href="vote_list.html">Vote list</a></li>
                         <li><a href="file_manager.html">File manager</a></li>
                         <li><a href="calendar.html">Calendar</a></li>
-                        <li class="active"><a href="issue_tracker.html">Issue tracker</a></li>
+                        <li><a href="issue_tracker.html">Issue tracker</a></li>
                         <li><a href="blog.html">Blog</a></li>
                         <li><a href="article.html">Article</a></li>
                         <li><a href="faq.html">FAQ</a></li>
@@ -265,7 +260,7 @@
 
         <div id="page-wrapper" class="gray-bg">
         <div class="row border-bottom">
-        <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+        <nav class="navbar navbar-static-top  " role="navigation" style="margin-bottom: 0">
         <div class="navbar-header">
             <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
             <form role="search" class="navbar-form-custom" action="http://webapplayers.com/inspinia_admin-v2.7.1/search_results.html">
@@ -385,48 +380,77 @@
         </nav>
         </div>
             <div class="row wrapper border-bottom white-bg page-heading">
-                <div class="col-lg-10">
-                    <h2>Issue list</h2>
+                <div class="col-sm-4">
+                    <h2>Team list</h2>
                     <ol class="breadcrumb">
                         <li>
                             <a href="index-2.html">Home</a>
                         </li>
-                        <li>
-                            <a>App views</a>
-                        </li>
                         <li class="active">
-                            <strong>Issue list</strong>
+                            <strong>Team list</strong>
                         </li>
                     </ol>
                 </div>
-                <div class="col-lg-2">
-
-                </div>
             </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="wrapper wrapper-content animated fadeInUp">
 
-        <div class="wrapper wrapper-content  animated fadeInRight">
-            <div class="row">
-                <div class="col-lg-12">
                     <div class="ibox">
                         <div class="ibox-title">
-                            <h5>Issue list</h5>
+                            <h5>All projects assigned to this account</h5>
                             <div class="ibox-tools">
-                                <a data-toggle="modal" data-target="#myModal5" class="btn btn-primary btn-xs">Add new issue</a>
+                                <a data-toggle="modal" data-target="#myModal5" class="btn btn-primary btn-xs">Create new project</a>
                             </div>
-                            <div class="modal inmodal fade" id="myModal5" tabindex="-1" role="dialog"  aria-hidden="true">
+                             <div class="modal inmodal fade" id="myModal5" tabindex="-1" role="dialog"  aria-hidden="true">
                                 <div class="modal-dialog modal-lg">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                                            <i class="fa fa-calendar modal-icon"></i>
-                                            <h4 class="modal-title">Add new issue</h4>
+                                            <i class="fa fa-users modal-icon"></i>
+                                            <h4 class="modal-title">Create new team</h4>
                                             <small class="font-bold">Enterprise-X is the leading support Software.</small>
                                         </div>
                                         <div class="modal-body">
-                                            <form method="GET" action="create_ticket" >
+                                            <form method="GET" action="create_team" >
                                                 <div class="form-group has-feedback">
-                                                    <input type="text" name="description" class="form-control" placeholder="Full description of issue or task" value="" required autofocus/>
+                                                    <input type="text" name="name" class="form-control" placeholder="Team name" required autofocus/>
                                                     <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                                                </div>
+                                                <div class="form-group has-feedback">
+                                                    <input type="text" name="client" class="form-control" placeholder="Client" required autofocus/>
+                                                </div>
+                                                <div class="form-group has-feedback">
+                                                    <input type="text" name="project" class="form-control" placeholder="Project title" required autofocus/>
+                                                </div>
+                                                <div class="form-group has-feedback">
+                                                    <input type="text" name="description" class="form-control" placeholder="Project description" required autofocus/>
+                                                </div>
+                                                <div class="form-group has-feedback">
+                                                    <table style="width:100%">
+                                                    <tr>
+                                                        <td>
+                                                            <select name="priority" class="form-control" placeholder="City" required>
+                                                            <option value="">-- Set priority --</option>
+                                                            <option value="High"> High </option>
+                                                            <option value="Medium"> Medium </option>
+                                                            <option value="Low"> Low </option>
+                                                            </select>
+                                                        </td>
+                                                        <td>
+                                                            <select name="updateprogress" class="form-control" placeholder="City" required>
+                                                            <option value="">-- Update Progress --</option>
+                                                            <option value="yes"> Yes</option>
+                                                            <option value="no"> No</option>
+                                                            </select>
+                                                        </td> 
+                                                        {{--  <td>
+                                                            <select name="priority" class="form-control" placeholder="City" required>
+                                                            <option value="">-- Select --</option>
+                                                            </select>
+                                                        </td>   --}}
+                                                    </tr>
+                                                    </table>
                                                 </div>
                                        </div>
                                          <div class="modal-footer">
@@ -439,99 +463,85 @@
                             </div>
                         </div>
                         <div class="ibox-content">
-
-                            <div class="m-b-lg">
-
-                                <div class="input-group">
-                                    <input type="text" placeholder="Search issue by name..." class=" form-control">
-                                    <span class="input-group-btn">
-                                        <button type="button" class="btn btn-white"> Search</button>
-                                    </span>
+                            <div class="row m-b-sm m-t-sm">
+                                <div class="col-md-1">
+                                    <button type="button" id="loading-example-btn" class="btn btn-white btn-sm" ><i class="fa fa-refresh"></i> Refresh</button>
                                 </div>
-                                <div class="m-t-md">
-
-                                    <div class="pull-right">
-                                        <button type="button" class="btn btn-sm btn-white"> <i class="fa fa-comments"></i> </button>
-                                        <button type="button" class="btn btn-sm btn-white"> <i class="fa fa-user"></i> </button>
-                                        <button type="button" class="btn btn-sm btn-white"> <i class="fa fa-list"></i> </button>
-                                        <button type="button" class="btn btn-sm btn-white"> <i class="fa fa-pencil"></i> </button>
-                                        <button type="button" class="btn btn-sm btn-white"> <i class="fa fa-print"></i> </button>
-                                        <button type="button" class="btn btn-sm btn-white"> <i class="fa fa-cogs"></i> </button>
-                                    </div>
-                                    <strong>Found {{$count}} issues.</strong>
+                                <div class="col-md-11">
+                                    <div class="input-group"><input type="text" placeholder="Search" class="input-sm form-control"> <span class="input-group-btn">
+                                        <button type="button" class="btn btn-sm btn-primary"> Go!</button> </span></div>
                                 </div>
-
                             </div>
 
-                            <div class="table-responsive">
-                            <table class="table table-hover issue-tracker">
-                                <tbody>
-                            <?php $issues = DB::table('agile_boards')->where('created_by', Auth::user()->id)->orderBy('created_at', 'DESC')->get(); ?>
-                            @foreach($issues as $issue)
-                                <tr>
-                                    <td>
-                                        @if($issue->status == "0" || $issue->status == "1")
-                                           <span class="label label-primary">Added</span>
-                                        @elseif($issue->type == "issue" && $issue->status == "2")
-                                            <span class="label label-warning">Fixed</span>
-                                        @elseif( $issue->status == "2")
-                                            <span class="label label-primary">Done</span>
-                                        @endif
-                                    </td>
-                                    <td class="issue-info">
-                                        <a href="#">
-                                        @if($issue->type == "issue")
-                                            ISSUE-800000000000{{$issue->id}}
-                                        @else
-                                            TASK-800000000000{{$issue->id}}
-                                        @endif
-                                        </a>
+                            <div class="project-list">
 
-                                        <small>
-                                            {{$issue->description}}
-                                        </small>
-                                    </td>
-                                    <td>
-                                    <?php $users = DB::table('users')->where('id', $issue->created_by)->get(); ?>
-                                    @foreach($users as $user)
-                                        {{$user->name}}
-                                    @endforeach
-                                    </td>
-                                    <td>
-                                        {{ date('M d, Y h:i:s A', strtotime($issue->created_at)) }}
-                                    </td>
-                                    <td>
-                                    <?php $days_ago = date('Ymd') - date('Ymd', strtotime($issue->created_at)); ?>
-                                    @if($days_ago == 0)
-                                        <span class="pie">1,10</span>
-                                    @else
-                                         <span class="pie"><?php echo $days_ago+1; ?>,10</span>
-                                    @endif 
-                                       
-                                    <?php echo $days_ago;?> day(s)
-                                    </td>
-                                    <td class="text-right">
-                                        <button class="btn btn-white btn-xs"> Tag</button>
-                                        <button class="btn btn-white btn-xs"> Mag</button>
-                                    </td>
-                                    <td class="text-left">
-                                    <form method="GET" action="delete_ticket" ><input type="hidden" name="id" value="{{$issue->id}}">
-                                        <button class="btn btn-white btn-xs" title="Delete Ticket"><i class="fa fa-trash"></i></button>
-                                    </form>
-                                    </td>
-                                </tr>
-                            @endforeach
-                           
+                                <table class="table table-hover">
+                                    <tbody>
+                <?php $teams = DB::table('teams')->where('created_by', Auth::user()->id)->orderBy('created_at', 'DESC')->get(); ?>
+                @foreach($teams as $team)
+                                    <tr>
+                                        <td class="project-status">
+                                            <span class="label label-primary">Active</span>
+                                        </td>
+                                        <td class="project-title">
+                                            <a href="#">{{$team->name}}</a>
+                                            <br/>
+                                            <small>Created:  {{ date('M d, Y h:i:s A', strtotime($team->created_at)) }}</small>
+                                        </td>
+                                        <td class="project-completion">
+                                                <small>Completion with: 48%</small>
+                                                <div class="progress progress-mini">
+                                                    <div style="width: 48%;" class="progress-bar"></div>
+                                                </div>
+                                        </td>
+                                        <td class="project-people">
+                                            <?php $members = DB::table('members')->where('teamid', $team->id)->get(); ?>
+                                            @foreach($members as $member)
+                                                 <a href="#"><img alt="image" class="img-circle" src="img/a3.jpg"></a>
+                                            @endforeach
+                                        </td>
+                                        <td class="project-actions">
+                                            {{--  <a href="#" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> Edit </a>  --}}
+                                            <form method="GET" action="team_detail" ><input type="hidden" name="id" value="{{$team->id}}">
+                                            <button class="btn btn-white btn-sm" title="View team progress"><i class="fa fa-folder"></i> View </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                    @endforeach
+                                    <tr>
+                                        <td class="project-status">
+                                            <span class="label label-primary">Active</span>
+                                        </td>
+                                        <td class="project-title">
+                                            <a href="project_detail.html">Contract with Zender Company</a>
+                                            <br/>
+                                            <small>Created 14.08.2014</small>
+                                        </td>
+                                        <td class="project-completion">
+                                                <small>Completion with: 48%</small>
+                                                <div class="progress progress-mini">
+                                                    <div style="width: 48%;" class="progress-bar"></div>
+                                                </div>
+                                        </td>
+                                        <td class="project-people">
+                                            <a href="#"><img alt="image" class="img-circle" src="img/a3.jpg"></a>
+                                            <a href="#"><img alt="image" class="img-circle" src="img/a1.jpg"></a>
+                                            <a href="#"><img alt="image" class="img-circle" src="img/a2.jpg"></a>
+                                            <a href="#"><img alt="image" class="img-circle" src="img/a4.jpg"></a>
+                                            <a href="#"><img alt="image" class="img-circle" src="img/a5.jpg"></a>
+                                        </td>
+                                        <td class="project-actions">
+                                            <a href="#" class="btn btn-white btn-sm"><i class="fa fa-folder"></i> View </a>
+                                            <a href="#" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> Edit </a>
+                                        </td>
+                                    </tr>      
                                 </tbody>
-                            </table>
+                                </table>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
-
-
         </div>
         <div class="footer">
             <div class="pull-right">
@@ -545,8 +555,6 @@
         </div>
         </div>
 
-
-
     <!-- Mainly scripts -->
     <script src="js/jquery-3.1.1.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
@@ -557,13 +565,36 @@
     <script src="js/inspinia.js"></script>
     <script src="js/plugins/pace/pace.min.js"></script>
 
-    <!-- Peity -->
-    <script src="js/plugins/peity/jquery.peity.min.js"></script>
+    <script>
+        $(document).ready(function(){
 
-    <!-- Peity demo data -->
-    <script src="js/demo/peity-demo.js"></script>
+            $('#loading-example-btn').click(function () {
+                btn = $(this);
+                simpleLoad(btn, true)
+
+                // Ajax example
+//                $.ajax().always(function () {
+//                    simpleLoad($(this), false)
+//                });
+
+                simpleLoad(btn, false)
+            });
+        });
+
+        function simpleLoad(btn, state) {
+            if (state) {
+                btn.children().addClass('fa-spin');
+                btn.contents().last().replaceWith(" Loading");
+            } else {
+                setTimeout(function () {
+                    btn.children().removeClass('fa-spin');
+                    btn.contents().last().replaceWith(" Refresh");
+                }, 2000);
+            }
+        }
+    </script>
 </body>
 
 
-<!-- Mirrored from webapplayers.com/inspinia_admin-v2.7.1/issue_tracker.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 07 Jul 2017 20:39:34 GMT -->
+<!-- Mirrored from webapplayers.com/inspinia_admin-v2.7.1/projects.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 07 Jul 2017 20:39:08 GMT -->
 </html>

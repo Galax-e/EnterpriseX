@@ -2,13 +2,13 @@
 <html>
 
 
-<!-- Mirrored from webapplayers.com/inspinia_admin-v2.7.1/issue_tracker.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 07 Jul 2017 20:39:34 GMT -->
+<!-- Mirrored from webapplayers.com/inspinia_admin-v2.7.1/teams_board.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 07 Jul 2017 20:39:09 GMT -->
 <head>
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>INSPINIA | Issue list</title>
+    <title>INSPINIA | Teams board</title>
 
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
@@ -112,14 +112,14 @@
                         <li><a href="projects.html">Projects</a></li>
                         <li><a href="project_detail.html">Project detail</a></li>
                         <li><a href="activity_stream.html">Activity stream</a></li>
-                        <li><a href="teams_board.html">Teams board</a></li>
+                        <li class="active"><a href="teams_board.html">Teams board</a></li>
                         <li><a href="social_feed.html">Social feed</a></li>
                         <li><a href="clients.html">Clients</a></li>
                         <li><a href="full_height.html">Outlook view</a></li>
                         <li><a href="vote_list.html">Vote list</a></li>
                         <li><a href="file_manager.html">File manager</a></li>
                         <li><a href="calendar.html">Calendar</a></li>
-                        <li class="active"><a href="issue_tracker.html">Issue tracker</a></li>
+                        <li><a href="issue_tracker.html">Issue tracker</a></li>
                         <li><a href="blog.html">Blog</a></li>
                         <li><a href="article.html">Article</a></li>
                         <li><a href="faq.html">FAQ</a></li>
@@ -386,7 +386,7 @@
         </div>
             <div class="row wrapper border-bottom white-bg page-heading">
                 <div class="col-lg-10">
-                    <h2>Issue list</h2>
+                    <h2>Teams board</h2>
                     <ol class="breadcrumb">
                         <li>
                             <a href="index-2.html">Home</a>
@@ -395,7 +395,7 @@
                             <a>App views</a>
                         </li>
                         <li class="active">
-                            <strong>Issue list</strong>
+                            <strong>Teams board</strong>
                         </li>
                     </ol>
                 </div>
@@ -404,130 +404,50 @@
                 </div>
             </div>
 
-        <div class="wrapper wrapper-content  animated fadeInRight">
+        <div class="wrapper wrapper-content animated fadeInRight">
             <div class="row">
-                <div class="col-lg-12">
+                <div class="col-lg-4">
+                <?php $teams = DB::table('teams')->where('created_by', Auth::user()->id)->orderBy('created_at', 'DESC')->get(); ?>
+                @foreach($teams as $team)
                     <div class="ibox">
                         <div class="ibox-title">
-                            <h5>Issue list</h5>
-                            <div class="ibox-tools">
-                                <a data-toggle="modal" data-target="#myModal5" class="btn btn-primary btn-xs">Add new issue</a>
-                            </div>
-                            <div class="modal inmodal fade" id="myModal5" tabindex="-1" role="dialog"  aria-hidden="true">
-                                <div class="modal-dialog modal-lg">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                                            <i class="fa fa-calendar modal-icon"></i>
-                                            <h4 class="modal-title">Add new issue</h4>
-                                            <small class="font-bold">Enterprise-X is the leading support Software.</small>
-                                        </div>
-                                        <div class="modal-body">
-                                            <form method="GET" action="create_ticket" >
-                                                <div class="form-group has-feedback">
-                                                    <input type="text" name="description" class="form-control" placeholder="Full description of issue or task" value="" required autofocus/>
-                                                    <span class="glyphicon glyphicon-user form-control-feedback"></span>
-                                                </div>
-                                       </div>
-                                         <div class="modal-footer">
-                                        <input type="submit" value="Submit" class="btn btn-primary">
-                                            </form>
-                                             <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>                                            
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            <h5>EX-{{$team->id}} - {{$team->name}}</h5>
                         </div>
                         <div class="ibox-content">
-
-                            <div class="m-b-lg">
-
-                                <div class="input-group">
-                                    <input type="text" placeholder="Search issue by name..." class=" form-control">
-                                    <span class="input-group-btn">
-                                        <button type="button" class="btn btn-white"> Search</button>
-                                    </span>
+                            <div class="team-members">
+                                <a href="#"><img alt="member" class="img-circle" src="img/a8.jpg"></a>
+                                <a href="#"><img alt="member" class="img-circle" src="img/a4.jpg"></a>
+                                <a href="#"><img alt="member" class="img-circle" src="img/a1.jpg"></a>
+                            </div>
+                            <h4>Info about {{$team->name}}</h4>
+                            <p>
+                                {{$team->description}}
+                            </p>
+                            <div>
+                                <span>Status of current project:</span>
+                                <div class="stat-percent">61%</div>
+                                <div class="progress progress-mini">
+                                    <div style="width: 61%;" class="progress-bar"></div>
                                 </div>
-                                <div class="m-t-md">
-
-                                    <div class="pull-right">
-                                        <button type="button" class="btn btn-sm btn-white"> <i class="fa fa-comments"></i> </button>
-                                        <button type="button" class="btn btn-sm btn-white"> <i class="fa fa-user"></i> </button>
-                                        <button type="button" class="btn btn-sm btn-white"> <i class="fa fa-list"></i> </button>
-                                        <button type="button" class="btn btn-sm btn-white"> <i class="fa fa-pencil"></i> </button>
-                                        <button type="button" class="btn btn-sm btn-white"> <i class="fa fa-print"></i> </button>
-                                        <button type="button" class="btn btn-sm btn-white"> <i class="fa fa-cogs"></i> </button>
-                                    </div>
-                                    <strong>Found {{$count}} issues.</strong>
+                            </div>
+                            <div class="row  m-t-sm">
+                                <div class="col-sm-4">
+                                    <div class="font-bold">PROJECTS</div>
+                                    43
                                 </div>
-
+                                <div class="col-sm-4">
+                                    <div class="font-bold">RANKING</div>
+                                    1th
+                                </div>
+                                <div class="col-sm-4 text-right">
+                                    <div class="font-bold">BUDGET</div>
+                                    $705,913 <i class="fa fa-level-up text-navy"></i>
+                                </div>
                             </div>
 
-                            <div class="table-responsive">
-                            <table class="table table-hover issue-tracker">
-                                <tbody>
-                            <?php $issues = DB::table('agile_boards')->where('created_by', Auth::user()->id)->orderBy('created_at', 'DESC')->get(); ?>
-                            @foreach($issues as $issue)
-                                <tr>
-                                    <td>
-                                        @if($issue->status == "0" || $issue->status == "1")
-                                           <span class="label label-primary">Added</span>
-                                        @elseif($issue->type == "issue" && $issue->status == "2")
-                                            <span class="label label-warning">Fixed</span>
-                                        @elseif( $issue->status == "2")
-                                            <span class="label label-primary">Done</span>
-                                        @endif
-                                    </td>
-                                    <td class="issue-info">
-                                        <a href="#">
-                                        @if($issue->type == "issue")
-                                            ISSUE-800000000000{{$issue->id}}
-                                        @else
-                                            TASK-800000000000{{$issue->id}}
-                                        @endif
-                                        </a>
-
-                                        <small>
-                                            {{$issue->description}}
-                                        </small>
-                                    </td>
-                                    <td>
-                                    <?php $users = DB::table('users')->where('id', $issue->created_by)->get(); ?>
-                                    @foreach($users as $user)
-                                        {{$user->name}}
-                                    @endforeach
-                                    </td>
-                                    <td>
-                                        {{ date('M d, Y h:i:s A', strtotime($issue->created_at)) }}
-                                    </td>
-                                    <td>
-                                    <?php $days_ago = date('Ymd') - date('Ymd', strtotime($issue->created_at)); ?>
-                                    @if($days_ago == 0)
-                                        <span class="pie">1,10</span>
-                                    @else
-                                         <span class="pie"><?php echo $days_ago+1; ?>,10</span>
-                                    @endif 
-                                       
-                                    <?php echo $days_ago;?> day(s)
-                                    </td>
-                                    <td class="text-right">
-                                        <button class="btn btn-white btn-xs"> Tag</button>
-                                        <button class="btn btn-white btn-xs"> Mag</button>
-                                    </td>
-                                    <td class="text-left">
-                                    <form method="GET" action="delete_ticket" ><input type="hidden" name="id" value="{{$issue->id}}">
-                                        <button class="btn btn-white btn-xs" title="Delete Ticket"><i class="fa fa-trash"></i></button>
-                                    </form>
-                                    </td>
-                                </tr>
-                            @endforeach
-                           
-                                </tbody>
-                            </table>
-                            </div>
                         </div>
-
                     </div>
+                @endforeach
                 </div>
             </div>
 
@@ -557,13 +477,6 @@
     <script src="js/inspinia.js"></script>
     <script src="js/plugins/pace/pace.min.js"></script>
 
-    <!-- Peity -->
-    <script src="js/plugins/peity/jquery.peity.min.js"></script>
-
-    <!-- Peity demo data -->
-    <script src="js/demo/peity-demo.js"></script>
 </body>
 
-
-<!-- Mirrored from webapplayers.com/inspinia_admin-v2.7.1/issue_tracker.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 07 Jul 2017 20:39:34 GMT -->
 </html>
