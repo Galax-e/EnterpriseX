@@ -25,7 +25,17 @@ Route::group(['middleware' => ['auth.basic']], function () {
     Route::post('create_todo',  'AgileBoardController@createTodo');
     Route::get('delete_todo',  'AgileBoardController@deleteTodo');
     Route::get('move_todo',  'AgileBoardController@moveTodo');
-    Route::get('update_todo_status',  'AgileBoardController@updateTodoStatus');
-    
+    // Issue tracker
+    Route::get('raise_ticket',  'AgileBoardController@issueTracker');
+    Route::get('create_ticket',  'AgileBoardController@createTicket');
+    Route::get('delete_ticket',  'AgileBoardController@deleteTicket');
+
+    // Module or Team
+    Route::get('team',  'AgileBoardController@team');
+    Route::get('team_detail',  'AgileBoardController@team_detail');
+    Route::get('create_team',  'AgileBoardController@create_team');
+    Route::get('new_member',  'AgileBoardController@new_member');
+    Route::post('add_file',  'AgileBoardController@add_file');
+    Route::get('teams_board',  'AgileBoardController@teams_board');
     
 });

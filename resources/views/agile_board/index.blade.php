@@ -275,7 +275,7 @@
                                         {{ $todo->description }}
                                         <div class="agile-detail">
                                             <a href="#" class="pull-right btn btn-xs btn-white delete_todo" id="delete_todo-{{$todo->id}}"><i class="trash_todo fa fa-trash"></i></a>
-                                            <i class="fa fa-clock-o"></i> {{ date('M d, Y', strtotime($todo->created_at)) }}
+                                            <i class="fa fa-clock-o"></i> {{ date('M d, Y - h:i:s A', strtotime($todo->created_at)) }}
                                         </div>
                                     </li>
                                 @endforeach
