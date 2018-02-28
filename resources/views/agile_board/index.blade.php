@@ -447,17 +447,30 @@
         $(document).ready(function(){
 
             $("#todo, #inprogress, #completed").sortable({
+                revert: true,
+                //disabled: true,
                 connectWith: ".connectList",
-                update: function( event, ui ) {
+                receive: function( event, ui ) {
 
                     var todo = $( "#todo" ).sortable( "toArray" );
                     var inprogress = $( "#inprogress" ).sortable( "toArray" );
                     var completed = $( "#completed" ).sortable( "toArray" );
                     $('.output').html("ToDo: " + window.JSON.stringify(todo) + "<br/>" + "In Progress: " + window.JSON.stringify(inprogress) + "<br/>" + "Completed: " + window.JSON.stringify(completed));
 
-                    var todos = window.JSON.stringify(todo);
-                    console.log([1, 2, 3].shift());
-                
+                    // move todo
+                    // todo.shift();
+                    console.log(event.target.id, ui.item[0].id)
+                    // update todo state
+                    $.ajax( {
+                        url: 'update_todo_status',
+                        method: 'GET',
+                        dataType: "json",
+                        data: {"status": event.target.id, "task_id": ui.item[0].id}
+                    }).done( function(result) {
+                        console.log(result);
+                    }).fail(function(error) {
+                        console.log(error);
+                    });
                 }
             }).disableSelection();
 
@@ -484,13 +497,13 @@
                     console.log(error);
                 })
             }
+
             $("#add_task").click( addTask );
             $('#add_task_description').keypress( (e) => {
                 if(e.which == 13) {
                     addTask();
                 }
             });
-
 
             $(document).on('click', '.delete_todo', function() {
 

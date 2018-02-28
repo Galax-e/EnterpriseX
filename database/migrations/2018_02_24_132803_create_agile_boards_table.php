@@ -18,9 +18,10 @@ class CreateAgileBoardsTable extends Migration
             // $table->unsignedInteger('film_id');
             $table->string('description');
             $table->unsignedInteger('created_by');
-            $table->unsignedInteger('updated_by')->default(0);
+            $table->unsignedInteger('updated_by')->nullable();
             $table->integer('status')->default(0); // 0 for todo, 1 for in-progress, 2 for completed
-            // $table->
+            $table->string('type')->default('task'); // issue, operations and task
+            $table->string('category')->nullable(); // where the issue is to be resolved
             $table->timestamps();
         });
     }

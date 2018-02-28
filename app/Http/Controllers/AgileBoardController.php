@@ -49,14 +49,15 @@ class AgileBoardController extends Controller
         return response()->json($data);
     }
 
-    public function moveTodo(Request $request) {
+    public function updateTodoStatus(Request $request) {
 
-        $id = $request->input('todo_id');
+        $task_id = $request->input('task_id');
+        $status = $request->input('status');
         // $todo = DB::table('agile_boards')->where('id', $id)->get();
         // apply condition
     
-        DB::table('agile_boards')->where('id', $id)->delete();    
-        $data = ["id"=>$id];
+        // DB::table('agile_boards')->where('id', $id)->delete();    
+        $data = ["id"=>$task_id];
         return response()->json($data);
     }
     

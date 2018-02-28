@@ -22,8 +22,10 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::group(['middleware' => ['auth.basic']], function () {
     // auth route  ['as' => 'agile_board',        'uses' => 'AgileBoardController@index']
     Route::get('agile_board', ['as' => 'agile_board','uses' => 'AgileBoardController@index']);
-    Route::get('create_todo',  'AgileBoardController@createTodo');
+    Route::post('create_todo',  'AgileBoardController@createTodo');
     Route::get('delete_todo',  'AgileBoardController@deleteTodo');
     Route::get('move_todo',  'AgileBoardController@moveTodo');
+    Route::get('update_todo_status',  'AgileBoardController@updateTodoStatus');
+    
     
 });
