@@ -15,9 +15,8 @@ class CreateMembersTable extends Migration
     {
         Schema::create('members', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('teamid');
-            $table->string('member_id');
-            $table->string('type')->nullable();
+            $table->unsignedInteger('user_id');
+            $table->unsignedInteger('team_id');
             $table->unsignedInteger('added_by');
             $table->timestamps();
         });

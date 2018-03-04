@@ -1,11 +1,14 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 
 use App\AgileBoard;
 use App\Team;
+use App\Model\Project;
 use App\Member;
 use App\Document;
 use App\Activity;
@@ -15,21 +18,27 @@ use DB;
 class AgileBoardController extends Controller
 {
     //
-    public function index(Request $request) {
+    public function index(Request $request, $p_id, $t_id) {
 
-        $todos = DB::table('agile_boards')->orderBy('created_at', 'DESC')->get();
-        return view('agile_board.index', compact('todos'));
+        $team_id = $t_id; //$request->query('id');
+        $user = Auth::user();
+        $todos = DB::table('agile_boards')->where('team_id', $team_id)->orderBy('created_at', 'DESC')->get();
+        return view('agile_board.index', compact('todos', 'p_id', 't_id', 'user'));
     }
 
     public function createTodo(Request $request) {
 
         $this->validate($request, [
             'description' => 'required',
-        ]);        
+            'team_id' => 'required',
+            'project_id' => 'required'
+        ]); 
+
         $user = Auth::user();
         $todo = new AgileBoard;
         $todo->description = $request->input('description'); // get task description ...
         $todo->created_by = $user->id;
+        $todo->team_id = $request->input('team_id');
         $todo->save();
 
 
@@ -56,12 +65,19 @@ class AgileBoardController extends Controller
     public function updateTodoStatus(Request $request) {
 
         $task_id = $request->input('task_id');
+        $task_id = explode("-", $task_id)[1];
         $status = $request->input('status');
+
+        $todo_status = ["todo"=>0, "inprogress"=>1, "completed"=>2];
+
+        $status = $todo_status[$status];
+
+        DB::table('agile_boards')->where('id', $task_id)->update(['status' => $status, 'updated_by' => Auth::user()->id]);
         // $todo = DB::table('agile_boards')->where('id', $id)->get();
         // apply condition
     
         // DB::table('agile_boards')->where('id', $id)->delete();    
-        $data = ["id"=>$task_id];
+        $data = ["id"=>$task_id, "status"=>$status];
         return response()->json($data);
     }
 
@@ -84,28 +100,59 @@ class AgileBoardController extends Controller
         return redirect()->back();
     }
 
-// Team or Module
-    public function team()
+    // Team or Module
+
+    public function projects(Request $request)
     {
-        return view('team');
+        return view('project_team.projects');
     }
 
-    public function team_detail()
+    public function create_project(Request $request)
     {
-        $teamid = Input::get('id');
-        $count = Member::where('teamid','=', $teamid)->count();
-        return view('team_detail', compact('teamid', 'count'));
+        $project = new Project;
+        $project->title = Input::get('name'); 
+        $project->client = Input::get('client');
+        $project->description = Input::get('description');
+        // $project->project = Input::get('project');
+        $project->priority = Input::get('priority');
+        // $project->progress_update = 'no';// Input::get('progress_update');
+        $project->created_by = Auth::user()->id;
+        $project->save();
+        return redirect()->back();
+    }
+
+    public function teams(Request $request)
+    {
+        return view('project_team.teams');
+    }
+
+    public function project_teams(Request $request, $id)
+    {
+        // dd($request->get('id'));
+        // $project_teams = DB::table('teams')->where('project_id', $id)->get();
+        return view('project_team.teams', compact('id'));
+    }
+
+    public function team_detail(Request $request, $p_id, $t_id)
+    {
+        $teamid = $t_id; //Input::get('id');
+        $count = Member::where('team_id','=', $teamid)->count();
+        $agile_board = AgileBoard::where('team_id', $t_id)->get();
+        $project = DB::table('projects')->where('id', $p_id)->get()[0];
+        // dd( $project);
+        return view('team_detail', compact('teamid', 'count', 'project', 'p_id', 't_id'));
     }
     
-    public function create_team()
+    public function create_team(Request $request, $id)
     {
         $team = new Team;
-        $team->name = Input::get('name'); 
-        $team->client = Input::get('client'); 
-        $team->description = Input::get('description');
-        $team->project = Input::get('project');
-        $team->priority = Input::get('priority');
-        $team->updateprogress = Input::get('updateprogress');
+        $team->name = $request->input('name'); 
+        // $team->client = Input::get('client'); 
+        // $team->description = Input::get('description');
+        // $team->project = Input::get('project');
+        // $team->priority = Input::get('priority');
+        $team->project_id = $id; //  $request->input('project_id');
+        $team->updateprogress = $request->input('updateprogress');
         $team->created_by = Auth::user()->id;
         $team->save();
         return redirect()->back();
@@ -113,9 +160,12 @@ class AgileBoardController extends Controller
 
     public function new_member()
     {
+        $newMember_email = Input::get('email');
+        $newMember_userID = DB::table('users')->where('email', $newMember_email);
+
         $member = new Member;
-        $member->teamid = Input::get('teamid');
-        $member->member_id = Input::get('email'); 
+        $member->team_id = Input::get('teamid');
+        $member->user_id = $newMember_userID;
         $member->added_by = Auth::user()->id;
         $member->save();
         return redirect()->back();

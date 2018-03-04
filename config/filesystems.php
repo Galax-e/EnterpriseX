@@ -43,6 +43,26 @@ return [
 
     'disks' => [
 
+        // used for Backpack/BackupManager
+        // This is where you choose a different 
+        // driver if you want your backups to be stored 
+        // somewhere else (S3, Dropbox, Google Drive, Box, etc).
+        'backups' => [
+            'driver' => 'local',
+            'root'   => storage_path('backups'), // that's where your backups are stored by default: storage/backups
+        ],
+
+        // used for Backpack/LogManager
+        'storage' => [
+            'driver' => 'local',
+            'root'   => storage_path(),
+        ],
+
+        'uploads' => [
+            'driver' => 'local',
+            'root' => public_path('uploads'),
+        ],
+
         'local' => [
             'driver' => 'local',
             'root' => storage_path('app'),

@@ -8,32 +8,17 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('font-awesome/css/font-awesome.css') }}" rel="stylesheet">
 
     <!-- Toastr style -->
-    <link href="css/plugins/toastr/toastr.min.css" rel="stylesheet">
+    <link href="{{ asset('css/plugins/toastr/toastr.min.css')}}" rel="stylesheet">
 
-    <link href="css/animate.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet">
+    <link href="{{ asset('css/animate.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+
     <!-- Set a meta reference to the CSRF token for use in AJAX request -->
     <meta name="csrf-token" content="{{ csrf_token() }}" />
-
-    <!-- Mainly scripts -->
-    <script src="js/jquery-3.1.1.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
-    <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
-
-    <!-- jquery UI -->
-    <script src="js/plugins/jquery-ui/jquery-ui.min.js"></script>
-
-    <!-- Touch Punch - Touch Event Support for jQuery UI -->
-    <script src="js/plugins/touchpunch/jquery.ui.touch-punch.min.js"></script>
-
-    <!-- Custom and plugin javascript -->
-    <script src="js/inspinia.js"></script>
-    <script src="js/plugins/pace/pace.min.js"></script>
 
 </head>
 
@@ -46,7 +31,8 @@
             <ul class="nav metismenu" id="side-menu">
                 <li class="nav-header">
                     <div class="dropdown profile-element"> <span>
-                            <img alt="image" class="img-circle" src="img/profile_small.jpg" />
+                            {{--  <img alt="image" class="img-circle" src="{{ asset('img/profile_small.jpg')}}" />  --}}
+                            <img src="{{ backpack_avatar_url(Auth::user()) }}" class="img-circle" style="width: 80px; height: 80px;" alt="User Image">
                              </span>
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                             <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold">David Williams</strong>
@@ -71,8 +57,11 @@
                     </ul>
                 </li>
                 <li>
-                    <a href="{{route('agile_board')}}"><i class="fa fa-diamond"></i> <span class="nav-label">Layouts</span></a>
+                    <a href="{{url('projects')}}"><i class="fa fa-diamond"></i> <span class="nav-label">Projects</span></a>
                 </li>
+                {{--  <li>
+                    <a href="{{route('agile_board')}}"><i class="fa fa-diamond"></i> <span class="nav-label">Agile Board</span></a>
+                </li>  --}}
                 <li>
                     <a href="#"><i class="fa fa-bar-chart-o"></i> <span class="nav-label">Graphs</span><span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level collapse">
@@ -116,7 +105,7 @@
                         <li>
                             <div class="dropdown-messages-box">
                                 <a href="profile.html" class="pull-left">
-                                    <img alt="image" class="img-circle" src="img/a7.jpg">
+                                    <img alt="image" class="img-circle" src="{{ asset('img/a7.jpg')}}">
                                 </a>
                                 <div class="media-body">
                                     <small class="pull-right">46h ago</small>
@@ -129,7 +118,7 @@
                         <li>
                             <div class="dropdown-messages-box">
                                 <a href="profile.html" class="pull-left">
-                                    <img alt="image" class="img-circle" src="img/a4.jpg">
+                                    <img alt="image" class="img-circle" src="{{ asset('img/a4.jpg')}}">
                                 </a>
                                 <div class="media-body ">
                                     <small class="pull-right text-navy">5h ago</small>
@@ -142,7 +131,7 @@
                         <li>
                             <div class="dropdown-messages-box">
                                 <a href="profile.html" class="pull-left">
-                                    <img alt="image" class="img-circle" src="img/profile.jpg">
+                                    <img alt="image" class="img-circle" src="{{ asset('img/profile.jpg')}}">
                                 </a>
                                 <div class="media-body ">
                                     <small class="pull-right">23h ago</small>
@@ -263,21 +252,31 @@
 
                             <div class="input-group">
                                 <input type="text" id="add_task_description" placeholder="Add new task. " class="input input-sm form-control">
+                                <input type="hidden" id="team_id" name="team_id" value="{{ $t_id }}">
+                                <input type="hidden" id="project_id" name="project_id" value="{{ $p_id }}">
+                                
                                 <span class="input-group-btn">
                                         <button type="button" class="btn btn-sm btn-white" id="add_task"> <i class="fa fa-plus"></i> Add task</button>
                                 </span>
                             </div>
 
                             <ul class="sortable-list connectList agile-list" id="todo">                                
-                                <li class='new_todos warning-element' hidden="true"></li>
+                                <li class='new_todos warning-element sortable-yes' hidden="true"></li>
                                 @foreach($todos as $todo)                                  
-                                    <li class="warning-element" id="task-{{$todo->id}}">
-                                        {{ $todo->description }}
-                                        <div class="agile-detail">
-                                            <a href="#" class="pull-right btn btn-xs btn-white delete_todo" id="delete_todo-{{$todo->id}}"><i class="trash_todo fa fa-trash"></i></a>
-                                            <i class="fa fa-clock-o"></i> {{ date('M d, Y - h:i:s A', strtotime($todo->created_at)) }}
-                                        </div>
-                                    </li>
+                                    @if($todo->status === 0)
+                                        {{-- Add Auth::roles()->user; --}}
+                                        <li class="warning-element sortable-<?php if(!$todo->updated_by OR $todo->updated_by === Auth::user()->id) {echo 'yes';} else {echo 'no';} ?>" id="task-{{$todo->id}}">
+                                            {{ $todo->description }}
+                                            <div class="agile-detail">
+                                                {{-- if user is the creator of todo. For now use auth::user()--}}
+                                                @if( $todo->created_by === Auth::user()->id )
+                                                    <a href="#" class="pull-right btn btn-xs btn-white delete_todo" id="delete_todo-{{$todo->id}}"><i class="trash_todo fa fa-trash"></i> Delete</a>
+                                                @endif
+                                                <a href="#" data-toggle="modal" data-target="#agileBoardModal" class="pull-right btn btn-xs btn-white todo_info" id="todo_info-{{$todo->id}}"><i class="trash_todo fa fa-info"></i> Info</a>
+                                                <i class="fa fa-clock-o"></i> {{ date('M d, Y - h:i:s A', strtotime($todo->created_at)) }}
+                                            </div>
+                                        </li>
+                                    @endif
                                 @endforeach
                             </ul>
                         </div>
@@ -289,54 +288,22 @@
                             <h3>In Progress</h3>
                             <p class="small"><i class="fa fa-hand-o-up"></i> Drag task between list</p>
                             <ul class="sortable-list connectList agile-list" id="inprogress">
+                                @foreach($todos as $todo)                                  
+                                    @if($todo->status === 1)
+                                        <li class="warning-element sortable-<?php if(!$todo->updated_by OR $todo->updated_by === Auth::user()->id) {echo 'yes';} else {echo 'no';} ?>" id="task-{{$todo->id}}">
+                                            {{ $todo->description }}
+                                            <div class="agile-detail">
+                                                <a href="#" data-toggle="modal" data-target="#agileBoardModal" class="pull-right btn btn-xs btn-white todo_info" id="todo_info-{{$todo->id}}"><i class="trash_todo fa fa-info"></i> Info</a>
+                                                <i class="fa fa-clock-o"></i> {{ date('M d, Y - h:i:s A', strtotime($todo->created_at)) }}
+                                            </div>
+                                        </li>
+                                    @endif
+                                @endforeach
                                 <li class="success-element" id="task9">
                                     Quisque venenatis ante in porta suscipit.
                                     <div class="agile-detail">
                                         <a href="#" class="pull-right btn btn-xs btn-white">Tag</a>
                                         <i class="fa fa-clock-o"></i> 12.10.2015
-                                    </div>
-                                </li>
-                                <li class="success-element" id="task10">
-                                    Phasellus sit amet tortor sed enim mollis accumsan in consequat orci.
-                                    <div class="agile-detail">
-                                        <a href="#" class="pull-right btn btn-xs btn-white">Mark</a>
-                                        <i class="fa fa-clock-o"></i> 05.04.2015
-                                    </div>
-                                </li>
-                                <li class="warning-element" id="task11">
-                                    Nunc sed arcu at ligula faucibus tempus ac id felis. Vestibulum et nulla quis turpis sagittis fringilla.
-                                    <div class="agile-detail">
-                                        <a href="#" class="pull-right btn btn-xs btn-white">Mark</a>
-                                        <i class="fa fa-clock-o"></i> 16.11.2015
-                                    </div>
-                                </li>
-                                <li class="warning-element" id="task12">
-                                    Ut porttitor augue non sapien mollis accumsan.
-                                    Nulla non elit eget lacus elementum viverra.
-                                    <div class="agile-detail">
-                                        <a href="#" class="pull-right btn btn-xs btn-white">Tag</a>
-                                        <i class="fa fa-clock-o"></i> 09.12.2015
-                                    </div>
-                                </li>
-                                <li class="info-element" id="task13">
-                                    Packages and web page editors now use Lorem Ipsum as
-                                    <div class="agile-detail">
-                                        <a href="#" class="pull-right btn btn-xs btn-primary">Done</a>
-                                        <i class="fa fa-clock-o"></i> 08.04.2015
-                                    </div>
-                                </li>
-                                <li class="success-element" id="task14">
-                                    Quisque lacinia tellus et odio ornare maximus.
-                                    <div class="agile-detail">
-                                        <a href="#" class="pull-right btn btn-xs btn-white">Mark</a>
-                                        <i class="fa fa-clock-o"></i> 05.04.2015
-                                    </div>
-                                </li>
-                                <li class="danger-element" id="task15">
-                                    Enim mollis accumsan in consequat orci.
-                                    <div class="agile-detail">
-                                        <a href="#" class="pull-right btn btn-xs btn-white">Mark</a>
-                                        <i class="fa fa-clock-o"></i> 11.04.2015
                                     </div>
                                 </li>
                             </ul>
@@ -349,68 +316,44 @@
                             <h3>Completed</h3>
                             <p class="small"><i class="fa fa-hand-o-up"></i> Drag task between list</p>
                             <ul class="sortable-list connectList agile-list" id="completed">
-                                <li class="info-element" id="task16">
-                                    Sometimes by accident, sometimes on purpose (injected humour and the like).
-                                    <div class="agile-detail">
-                                        <a href="#" class="pull-right btn btn-xs btn-white">Mark</a>
-                                        <i class="fa fa-clock-o"></i> 16.11.2015
-                                    </div>
-                                </li>
-                                <li class="warning-element" id="task17">
-                                    Ut porttitor augue non sapien mollis accumsan.
-                                    Nulla non elit eget lacus elementum viverra.
-                                    <div class="agile-detail">
-                                        <a href="#" class="pull-right btn btn-xs btn-white">Tag</a>
-                                        <i class="fa fa-clock-o"></i> 09.12.2015
-                                    </div>
-                                </li>
-                                <li class="warning-element" id="task18">
-                                    Which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.
-                                    <div class="agile-detail">
-                                        <a href="#" class="pull-right btn btn-xs btn-white">Tag</a>
-                                        <i class="fa fa-clock-o"></i> 09.12.2015
-                                    </div>
-                                </li>
-                                <li class="warning-element" id="task19">
-                                    Packages and web page editors now use Lorem Ipsum as
-                                    <div class="agile-detail">
-                                        <a href="#" class="pull-right btn btn-xs btn-primary">Done</a>
-                                        <i class="fa fa-clock-o"></i> 08.04.2015
-                                    </div>
-                                </li>
-                                <li class="success-element" id="task20">
-                                    Many desktop publishing packages and web page editors now use Lorem Ipsum as their default.
-                                    <div class="agile-detail">
-                                        <a href="#" class="pull-right btn btn-xs btn-white">Mark</a>
-                                        <i class="fa fa-clock-o"></i> 05.04.2015
-                                    </div>
-                                </li>
-                                <li class="info-element" id="task21">
-                                    Sometimes by accident, sometimes on purpose (injected humour and the like).
-                                    <div class="agile-detail">
-                                        <a href="#" class="pull-right btn btn-xs btn-white">Mark</a>
-                                        <i class="fa fa-clock-o"></i> 16.11.2015
-                                    </div>
-                                </li>
-                                <li class="warning-element" id="task22">
-                                    Simply dummy text of the printing and typesetting industry.
-                                    <div class="agile-detail">
-                                        <a href="#" class="pull-right btn btn-xs btn-white">Tag</a>
-                                        <i class="fa fa-clock-o"></i> 12.10.2015
-                                    </div>
-                                </li>
-                                <li class="success-element" id="task23">
-                                    Many desktop publishing packages and web page editors now use Lorem Ipsum as their default.
-                                    <div class="agile-detail">
-                                        <a href="#" class="pull-right btn btn-xs btn-white">Mark</a>
-                                        <i class="fa fa-clock-o"></i> 05.04.2015
-                                    </div>
-                                </li>
+                                @foreach($todos as $todo)                                  
+                                    @if($todo->status === 2)
+                                        <li class="warning-element sortable-<?php if(!$todo->updated_by OR $todo->updated_by === Auth::user()->id) {echo 'yes';} else {echo 'no';} ?>" id="task-{{$todo->id}}">
+                                            {{ $todo->description }}
+                                            <div class="agile-detail">
+                                                <a href="#" data-toggle="modal" data-target="#agileBoardModal" class="pull-right btn btn-xs btn-white todo_info" id="todo_info-{{$todo->id}}"><i class="trash_todo fa fa-info"></i> Info</a>
+                                                <i class="fa fa-clock-o"></i> {{ date('M d, Y - h:i:s A', strtotime($todo->created_at)) }}
+                                            </div>
+                                        </li>
+                                    @endif
+                                @endforeach
                             </ul>
                         </div>
                     </div>
                 </div>
 
+            </div>
+
+            <div class="modal inmodal fade" id="agileBoardModal" tabindex="-1" role="dialog"  aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                            <i class="fa fa-users modal-icon"></i>
+                            <h4 class="modal-title">Create new team</h4>
+                            <small class="font-bold">Enterprise-X is the leading support Software.</small>
+                        </div>
+                        <div class="modal-body">
+                            
+                            <p>
+                                Modal Body
+                            </p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>                                            
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="row">
@@ -443,10 +386,29 @@
         </div>
         </div>
 
+    <!-- Mainly scripts -->
+    <script src="{{ asset('js/jquery-3.1.1.min.js')}}"></script>
+    <script src="{{ asset('js/bootstrap.min.js')}}"></script>
+    <script src="{{ asset('js/plugins/metisMenu/jquery.metisMenu.js')}}"></script>
+    <script src="{{ asset('js/plugins/slimscroll/jquery.slimscroll.min.js')}}"></script>
+
+    <!-- jquery UI -->
+    <script src="{{ asset('js/plugins/jquery-ui/jquery-ui.min.js')}}"></script>
+
+    <!-- Touch Punch - Touch Event Support for jQuery UI -->
+    <script src="{{ asset('js/plugins/touchpunch/jquery.ui.touch-punch.min.js')}}"></script>
+
+    <!-- Custom and plugin javascript -->
+    <script src="{{ asset('js/inspinia.js')}}"></script>
+    <script src="{{ asset('js/plugins/pace/pace.min.js')}}"></script>
+
     <script>
         $(document).ready(function(){
 
+            var drag_disabled = $('#disable_drag').val();
+
             $("#todo, #inprogress, #completed").sortable({
+                items: "li:not(.sortable-no)",
                 revert: true,
                 //disabled: true,
                 connectWith: ".connectList",
@@ -458,8 +420,7 @@
                     $('.output').html("ToDo: " + window.JSON.stringify(todo) + "<br/>" + "In Progress: " + window.JSON.stringify(inprogress) + "<br/>" + "Completed: " + window.JSON.stringify(completed));
 
                     // move todo
-                    // todo.shift();
-                    console.log(event.target.id, ui.item[0].id)
+                    // console.log(event.target.id, ui.item[0].id)
                     // update todo state
                     $.ajax( {
                         url: 'update_todo_status',
@@ -467,7 +428,7 @@
                         dataType: "json",
                         data: {"status": event.target.id, "task_id": ui.item[0].id}
                     }).done( function(result) {
-                        console.log(result);
+                        console.log("Moved todo status");
                     }).fail(function(error) {
                         console.log(error);
                     });
@@ -481,12 +442,15 @@
 
             function addTask() {
                 var description = $("#add_task_description").val();
+                var t_id = $("#team_id").val();
+                var p_id = $("#project_id").val();
+
                 $("#add_task_description").val('');
                 // var data = {description: description};
                 $.ajax({
                     url: "create_todo",
-                    method: "GET",
-                    data: {description: description},
+                    method: "POST",
+                    data: {description: description, project_id: p_id, team_id: t_id, _token: "{{ csrf_token() }}"},
                     dataType: "json"
                 }).done(function(result){
                     // console.log(result.html);
@@ -521,6 +485,9 @@
                 }).fail(function(error){
                     console.log(error);
                 })
+            });
+            $(document).on('click', '.warning-element', function() {
+                // console.log(this);
             })
         })
     </script>

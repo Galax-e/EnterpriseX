@@ -15,11 +15,12 @@ class CreateTeamsTable extends Migration
     {
         Schema::create('teams', function (Blueprint $table) {
             $table->increments('id');
+            $table->unsignedInteger('project_id');
             $table->string('name');
-            $table->string('project');
-            $table->string('description');
-            $table->string('client');
-            $table->string('priority');
+            // $table->string('project');
+            // $table->string('description');
+            // $table->string('client');
+            // $table->string('priority');
             $table->string('updateprogress');
             $table->unsignedInteger('created_by');
             $table->timestamps();

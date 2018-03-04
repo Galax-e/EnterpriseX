@@ -10,11 +10,11 @@
 
     <title>INSPINIA | Projects detail</title>
 
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('font-awesome/css/font-awesome.css') }}" rel="stylesheet">
 
-    <link href="css/animate.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet">
+    <link href=" {{ asset('css/animate.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
 
 </head>
 
@@ -421,7 +421,7 @@
                                             @endforeach
                                         </dd>
                                         <dt>Messages:</dt> <dd>  162</dd>
-                                        <dt>Client:</dt> <dd><a href="#" class="text-navy"> {{$team->client}}y</a> </dd>
+                                        <dt>Client:</dt> <dd><a href="#" class="text-navy"> {{$project->client}}y</a> </dd>
                                         <dt>Members:</dt> 
                                         <dd> 	{{$count}} </dd>
                                     </dl>
@@ -433,7 +433,7 @@
                                         <dt>Created:</dt> <dd> 	{{ date('d.m.y h:i:s A', strtotime($team->created_at)) }} </dd>
                                         <dt>Participants:</dt>
                                         <dd class="project-people">
-                                        <?php $members = DB::table('members')->where('teamid', $team->id)->get(); ?>
+                                        <?php $members = DB::table('members')->where('team_id', $team->id)->get(); ?>
                                             @foreach($members as $member)
                                                  <a href="#"><img alt="image" class="img-circle" src="img/a3.jpg"></a>
                                             @endforeach
@@ -616,12 +616,12 @@
             <div class="col-lg-3">
                 <div class="wrapper wrapper-content project-manager">
                     <h4>Project description</h4>
-                     <h2><dt>{{$team->project}}</dt></h2>
+                     <h2><dt>{{$project->title}}</dt></h2>
                     <p class="small">
-                        {{ str_limit($team->description, 500) }}
+                        {{ str_limit($project->description, 500) }}
                     </p>
                     <p class="small font-bold">
-                        <span><i class="fa fa-circle text-warning"></i> {{$team->priority}} priority</span>
+                        <span><i class="fa fa-circle text-warning"></i> {{$project->priority }} priority</span>
                     </p>
                     </br>
                     <h5>Project files</h5>
@@ -654,7 +654,9 @@
                         <li><a href="#"><i class="fa fa-stack-exchange"></i> Email_from_Alex.mln</a></li>
                         <li><a href="#"><i class="fa fa-file"></i> Contract_20_11_2014.docx</a></li>
                     </ul>
+                    
                     <div class="text-center m-t-md">
+                        <a href="{{url('project/'.$p_id.'/team/'.$t_id.'/agile_board')}}" class="btn btn-xs btn-primary pull-left">Agile Board</a>
                         <a data-toggle="modal" data-target="#myModa16" class="btn btn-xs btn-primary">Add files</a>
                            <div class="modal inmodal fade" id="myModa16" tabindex="-1" role="dialog"  aria-hidden="true">
                                 <div class="modal-dialog modal-lg">
@@ -729,15 +731,16 @@
         </div>
         </div>
 
+    
     <!-- Mainly scripts -->
-    <script src="js/jquery-3.1.1.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
-    <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="{{ asset('js/jquery-3.1.1.min.js') }}"></script>
+    <script src="{{ asset('js/bootstrap.min.js')}}"></script>
+    <script src="{{ asset('js/plugins/metisMenu/jquery.metisMenu.js')}}"></script>
+    <script src="{{ asset('js/plugins/slimscroll/jquery.slimscroll.min.js')}}"></script>
 
     <!-- Custom and plugin javascript -->
-    <script src="js/inspinia.js"></script>
-    <script src="js/plugins/pace/pace.min.js"></script>
+    <script src="{{ asset('js/inspinia.js')}}"></script>
+    <script src="{{ asset('js/plugins/pace/pace.min.js')}}"></script>
 
     <script>
         $(document).ready(function(){

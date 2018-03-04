@@ -32,7 +32,8 @@
                 <ul class="nav metismenu" id="side-menu">
                     <li class="nav-header">
                         <div class="dropdown profile-element"> <span>
-                            <img alt="image" class="img-circle" src="img/profile_small.jpg" />
+                            {{--  <img alt="image" class="img-circle" src="img/profile_small.jpg" />  --}}
+                             <img src="{{ backpack_avatar_url(Auth::user()) }}" class="img-circle" style="width: 80px; height: 80px;" alt="User Image">
                              </span>
                             <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                             <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold">David Williams</strong>
@@ -57,7 +58,7 @@
                         </ul>
                     </li>
                     <li>
-                        <a href="{{route('agile_board')}}"><i class="fa fa-diamond"></i> <span class="nav-label">Agile Board</span></a>
+                        <a href="{{url('projects')}}"><i class="fa fa-diamond"></i> <span class="nav-label">Projects</span></a>
                     </li>
                     <li>
                         <a href="#"><i class="fa fa-bar-chart-o"></i> <span class="nav-label">Graphs</span><span class="fa arrow"></span></a>
@@ -72,6 +73,7 @@
                             <li><a href="graph_sparkline.html">Sparkline Charts</a></li>
                         </ul>
                     </li>
+                    if (Auth::user()->hasRole('admin'))
                 </ul>
 
             </div>
