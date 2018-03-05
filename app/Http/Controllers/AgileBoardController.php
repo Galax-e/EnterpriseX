@@ -7,8 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 
 use App\AgileBoard;
-use App\Team;
-use App\Project;
+use App\Models\Team;
+use App\Models\Project;
 use App\Member;
 use App\Document;
 use App\Activity;
@@ -111,14 +111,14 @@ class AgileBoardController extends Controller
     {
         $project = new Project;
         $project->title = Input::get('name'); 
-        $project->client = Input::get('client');
+        // $project->client_id = Input::get('client');
         $project->description = Input::get('description');
         // $project->project = Input::get('project');
         $project->priority = Input::get('priority');
         // $project->progress_update = 'no';// Input::get('progress_update');
         $project->created_by = Auth::user()->id;
         $project->save();
-        return redirect()->back();
+        return redirect()->back()->with('message', 'New project created');
     }
 
     public function teams(Request $request)
@@ -151,11 +151,12 @@ class AgileBoardController extends Controller
         // $team->description = Input::get('description');
         // $team->project = Input::get('project');
         // $team->priority = Input::get('priority');
+        $team->belongs_to = $request->input('belongs_to');
         $team->project_id = $id; //  $request->input('project_id');
-        $team->updateprogress = $request->input('updateprogress');
+        // $team->progress_update = $request->input('update_progress');
         $team->created_by = Auth::user()->id;
         $team->save();
-        return redirect()->back();
+        return redirect()->back()->with('message', 'New team created');
     }
 
     public function new_member()

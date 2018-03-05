@@ -33,6 +33,28 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    /*
+    |--------------------------------------------------------------------------
+    | RELATIONS
+    |--------------------------------------------------------------------------
+    */
+
+    /**
+     * A user can be a member
+    */
+
+    public function member(){
+        return $this->hasOne('App\Member');
+    }
+
+    /**
+     * Get the roles that belong to each user
+     */
+    public function roles(){
+        
+        return $this->belongsToMany('Backpack\PermissionManager\app\Models');
+    }
+
     /**
      * Send the password reset notification.
      *

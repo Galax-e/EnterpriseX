@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Backpack\CRUD\CrudTrait;
 
-class Project extends Model
+class Organization extends Model
 {
     use CrudTrait;
 
@@ -15,13 +15,13 @@ class Project extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected $table = 'projects';
+    protected $table = 'organizations';
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     // protected $guarded = ['id'];
     protected $fillable = [];
     // protected $hidden = [];
-    // protected $dates = ['Y-m-d H:i:s'];
+    // protected $dates = [];
 
     /*
     |--------------------------------------------------------------------------
@@ -36,18 +36,18 @@ class Project extends Model
     */
 
     //
+    public function projects() {
+        return $this->hasMany('App\Models\Project'); 
+    }
+
+    //
     public function teams() {
         return $this->hasMany('App\Models\Team'); 
     }
 
     //
-    public function client() {
-        return $this->hasOne('App\Models\Client'); 
-    }
-
-    //
-    public function organization() {
-        return $this->belongsTo('App\Models\Organization'); 
+    public function clients() {
+        return $this->hasMany('App\Models\Client'); 
     }
 
     /*
@@ -68,6 +68,3 @@ class Project extends Model
     |--------------------------------------------------------------------------
     */
 }
-
-
-

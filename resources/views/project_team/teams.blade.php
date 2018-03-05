@@ -21,6 +21,11 @@
             <div class="col-lg-12">
                 <div class="wrapper wrapper-content animated fadeInUp">
 
+                    @if (session('status'))
+                        <div class="alert alert-success">
+                            {{ session('status') }}
+                        </div>
+                    @endif
                     <div class="ibox">
                         <div class="ibox-title">
                             <h5>All projects assigned to this account</h5>
@@ -66,11 +71,18 @@
                                                             <option value="Low"> Low </option>
                                                             </select>
                                                         </td>  --}}
-                                                        <td>
+                                                        {{--  <td>
                                                             <select name="updateprogress" class="form-control" placeholder="City" required>
                                                             <option value="">-- Update Progress --</option>
                                                             <option value="yes"> Yes</option>
                                                             <option value="no"> No</option>
+                                                            </select>
+                                                        </td>   --}}
+                                                        <td>
+                                                            <select name="belongs_to" class="form-control" placeholder="Team belongs to" required>
+                                                                <option value="">-- Team belongs to --</option>
+                                                                <option value="organization"> Organization</option>
+                                                                <option value="client"> Client</option>
                                                             </select>
                                                         </td> 
                                                         {{--  <td>

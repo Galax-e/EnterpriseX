@@ -16,12 +16,13 @@ class CreateProjectsTable extends Migration
         Schema::create('projects', function (Blueprint $table) {
             $table->increments('id');
             $table->string('title');
-            // $table->string('project');
-            $table->string('description');
-            $table->string('client');
-            $table->string('priority')->default('High');
-            $table->string('progress_update')->default('no');
+            // $table->string('project');            
             $table->unsignedInteger('created_by');
+            $table->unsignedInteger('client_id')->nullable();
+            $table->string('description');
+            $table->enum('priority', ['high', 'medium', 'low'])->default('high');
+            $table->enum('progress_update', ['yes', 'no'])->default('no');
+            // $table->boolean('progress_update')->default(false);
             $table->timestamps();
         });
     }

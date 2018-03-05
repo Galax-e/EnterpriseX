@@ -28,9 +28,10 @@
               <li><a href="{{ url(config('backpack.base.route_prefix', 'admin') . '/permission') }}"><i class="fa fa-key"></i> <span>Permissions</span></a></li>
             </ul>
           </li>
-          <li><a href="{{ backpack_url('team') }}"><i class="fa fa-tag"></i> <span>Manage Teams</span></a></li>
-          <li><a href="{{ backpack_url('client') }}"><i class="fa fa-tag"></i> <span>Manage Clients</span></a></li>
-          <li><a href="{{ backpack_url('project') }}"><i class="fa fa-tag"></i> <span>Manage Projects</span></a></li>
+          <li><a href="{{ backpack_url('team') }}"><i class="fa fa-users"></i> <span>Manage Teams</span></a></li>
+          <li><a href="{{ backpack_url('organization') }}"><i class="fa fa-suitcase"></i> <span>Manage Organizations</span></a></li>
+          <li><a href="{{ backpack_url('client') }}"><i class="fa fa-handshake-o"></i> <span>Manage Clients</span></a></li>
+          <li><a href="{{ backpack_url('project') }}"><i class="fa fa-briefcase"></i> <span>Manage Projects</span></a></li>
           <li><a href="{{ url(config('backpack.base.route_prefix', 'admin') . '/menu-item') }}"><i class="fa fa-list"></i> <span>Menu</span></a></li>
           <li><a href="{{  backpack_url('language') }}"><i class="fa fa-flag-o"></i> <span>Languages</span></a></li>
           <li><a href="{{ backpack_url( 'language/texts') }}"><i class="fa fa-language"></i> <span>Language Files</span></a></li>

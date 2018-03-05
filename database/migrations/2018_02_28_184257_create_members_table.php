@@ -18,6 +18,7 @@ class CreateMembersTable extends Migration
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('team_id');
             $table->unsignedInteger('added_by');
+            $table->enum('part_of', ['organization', 'client']);
             $table->timestamps();
         });
     }

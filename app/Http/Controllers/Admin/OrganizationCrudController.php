@@ -5,10 +5,10 @@ namespace App\Http\Controllers\Admin;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 
 // VALIDATION: change the requests to match your own file names if you need form validation
-use App\Http\Requests\TeamRequest as StoreRequest;
-use App\Http\Requests\TeamRequest as UpdateRequest;
+use App\Http\Requests\OrganizationRequest as StoreRequest;
+use App\Http\Requests\OrganizationRequest as UpdateRequest;
 
-class TeamCrudController extends CrudController
+class OrganizationCrudController extends CrudController
 {
     public function setup()
     {
@@ -18,9 +18,9 @@ class TeamCrudController extends CrudController
         | BASIC CRUD INFORMATION
         |--------------------------------------------------------------------------
         */
-        $this->crud->setModel('App\Models\Team');
-        $this->crud->setRoute(config('backpack.base.route_prefix') . '/team');
-        $this->crud->setEntityNameStrings('team', 'teams');
+        $this->crud->setModel('App\Models\Organization');
+        $this->crud->setRoute(config('backpack.base.route_prefix') . '/organization');
+        $this->crud->setEntityNameStrings('organization', 'organizations');
 
         /*
         |--------------------------------------------------------------------------
@@ -28,97 +28,7 @@ class TeamCrudController extends CrudController
         |--------------------------------------------------------------------------
         */
 
-        // $this->crud->setFromDb();
-
-        $this->crud->allowAccess('reorder');
-        $this->crud->enableReorder('name', 2);
-
-        $this->crud->addColumn([
-                                'name' => 'name',
-                                'label' => 'Name',
-                                'type' => 'text',
-                                // 'attributes' => [
-                                //     'placeholder' => 'Enter Project Team Name'
-                                //   ],
-                            ]);
-        $this->crud->addColumn([
-                                'name' => 'project_id',
-                                'label' => 'Project Id',
-                            ]);
-        $this->crud->addColumn([
-                                'name' => 'updateprogress',
-                                'label' => 'Update Progress',
-                            ]);
-        $this->crud->addColumn([
-                                'name' => 'created_by',
-                                'label' => 'Created By',
-                            ]);
-
-
-        // $this->crud->addColumn([
-        //                         'label' => 'Client',
-        //                         // 'type' => 'select',
-        //                         'name' => 'parent_id',
-        //                         'entity' => 'parent',
-        //                         'attribute' => 'name',
-        //                         'model' => "\App\Models\MenuItem",
-        //                     ]);
-
-        
-        $this->crud->addField([       // Select2Multiple = n-n relationship (with pivot table)
-            'label' => "Name",
-            'type' => 'text',
-            'name' => 'name', // the method that defines the relationship in your Model
-            'attributes' => [
-                'placeholder' => 'Edit Project Team Name'
-              ],
-        ], 'update');
-
-        $this->crud->addField([       // Select2Multiple = n-n relationship (with pivot table)
-            'label' => "Update Progress",
-            'type' => 'select',
-            'name' => 'updateprogress', // the method that defines the relationship in your Model
-            'attributes' => [
-                'placeholder' => 'Choose Yes or No',
-                'default' => 'no'
-              ],
-        ], 'update');
-
-        $this->crud->addField([       // Select2Multiple = n-n relationship (with pivot table)
-            'label' => "Created By",
-            'type' => 'number',
-            'name' => 'created_by', // the method that defines the relationship in your Model
-            'attributes' => [
-                'disabled'  => 'disabled'
-            ],
-            'entity' => 'users',
-            'attribute' => 'name', // foreign key attribute that is shown to user
-            'model' => "App\User",
-            'pivot' => true, // on create&update, do you need to add/delete pivot table entries?
-        ], 'update');
-
-        $this->crud->addField([       // Select2Multiple = n-n relationship (with pivot table)
-            'label' => "Project ID",
-            'type' => 'text',
-            'name' => 'project_id', // the method that defines the relationship in your Model
-            'attributes' => [
-                'disabled'  => 'disabled'
-            ],
-            'entity' => 'projects',
-            'attribute' => 'title', // foreign key attribute that is shown to user
-            'model' => "App\Models\Project",
-            'pivot' => true, // on create&update, do you need to add/delete pivot table entries?
-        ], 'update');
-
-        // $this->crud->addField([       // Select2Multiple = n-n relationship (with pivot table)
-        //     'label' => "Articles",
-        //     'type' => 'select2_multiple',
-        //     'name' => 'articles', // the method that defines the relationship in your Model
-        //     'entity' => 'articles', // the method that defines the relationship in your Model
-        //     'attribute' => 'title', // foreign key attribute that is shown to user
-        //     'model' => "App\Models\Article", // foreign key model
-        //     'pivot' => true, // on create&update, do you need to add/delete pivot table entries?
-        // ], 'update');
+        $this->crud->setFromDb();
 
         // ------ CRUD FIELDS
         // $this->crud->addField($options, 'update/create/both');

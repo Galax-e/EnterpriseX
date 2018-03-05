@@ -37,12 +37,17 @@ class Client extends Model
 
     //
     public function projects() {
-        return $this->hasMany('App\Models\Project'); 
+        return $this->belongsToMany('App\Models\Project'); 
     }
 
     //
     public function teams() {
         return $this->hasMany('App\Models\Team'); 
+    }
+
+    //
+    public function organization() {
+        return $this->belongsTo('App\Models\Organization'); 
     }
 
     /*

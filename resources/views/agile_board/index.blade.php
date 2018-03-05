@@ -80,13 +80,13 @@
                                         </li>
                                     @endif
                                 @endforeach
-                                <li class="success-element" id="task9">
+                                {{--  <li class="success-element" id="task9">
                                     Quisque venenatis ante in porta suscipit.
                                     <div class="agile-detail">
                                         <a href="#" class="pull-right btn btn-xs btn-white">Tag</a>
                                         <i class="fa fa-clock-o"></i> 12.10.2015
                                     </div>
-                                </li>
+                                </li>  --}}
                             </ul>
                         </div>
                     </div>
@@ -141,10 +141,10 @@
                 <div class="col-lg-12">
 
                     <h4>
-                        Serialised Output
+                        Counts Number of projects: 
                     </h4>
                     <p>
-                        Serializes the sortable's item id's into an array of string.
+                        Todo, In progress, and Completed
                     </p>
 
                     <div class="output p-m m white-bg"></div>
