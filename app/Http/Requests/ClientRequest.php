@@ -27,9 +27,11 @@ class ClientRequest extends FormRequest
     {
         return [
             'name' => 'required|min:5|max:255',
+            'address' => 'required|min:5|max:255',
             'city' => 'required|min:5|max:255',
             'state' => 'required|min:5|max:255',
             'country' => 'required|min:5|max:255',
+            'number_of_staff' => 'required|min:5|max:305',
             'description' => 'required|min:5|max:305',
             'industry' => 'required|min:5|max:255',
         ];

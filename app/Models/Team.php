@@ -58,7 +58,14 @@ class Team extends Model
     }
 
     /**
-     * A Team has many members to a project
+     * A Team belongs to organization
+    */
+    public function organization() {
+        return $this->belongsTo('App\Models\Organization'); 
+    }
+
+    /**
+     * A Team has belongs to client
     */
     public function client() {
         return $this->belongsTo('App\Models\Client'); 

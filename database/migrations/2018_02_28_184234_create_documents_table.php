@@ -15,7 +15,7 @@ class CreateDocumentsTable extends Migration
     {
         Schema::create('documents', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('teamid');
+            $table->unsignedInteger('team_id');
             $table->string('file_name');
             $table->string('file');
             $table->unsignedInteger('uploaded_by');

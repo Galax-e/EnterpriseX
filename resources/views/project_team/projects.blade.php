@@ -418,9 +418,10 @@
                                                     <input type="text" name="name" class="form-control" placeholder="Project title" required autofocus/>
                                                     <span class="glyphicon glyphicon-user form-control-feedback"></span>
                                                 </div>
-                                                <div class="form-group has-feedback">
+                                                <!-- configure getting client name from list of clients // a dropdown of clients -->
+                                                {{--  <div class="form-group has-feedback">
                                                     <input type="text" name="client" class="form-control" placeholder="Client name" required/>
-                                                </div>
+                                                </div>  --}}
                                                 <div class="form-group has-feedback">
                                                     <input type="text" name="description" class="form-control" placeholder="Project description" required autofocus/>
                                                 </div>

@@ -47,6 +47,7 @@ Route::group(['prefix' => config('backpack.base.route_prefix', 'admin'), 'middle
     CRUD::resource('client', 'ClientCrudController');
     CRUD::resource('project', 'ProjectCrudController');
     CRUD::resource('team', 'TeamCrudController');
+    CRUD::resource('organization', 'OrganizationCrudController');
 });
 
 /** CATCH-ALL ROUTE for Backpack/PageManager - needs to be at the end of your routes.php file  **/
