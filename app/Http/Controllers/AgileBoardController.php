@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Input;
 
 use App\AgileBoard;
 use App\Team;
-use App\Model\Project;
+use App\Project;
 use App\Member;
 use App\Document;
 use App\Activity;
