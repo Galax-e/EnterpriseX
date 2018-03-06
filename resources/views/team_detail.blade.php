@@ -189,7 +189,7 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <?php $activities = DB::table('activities')->where('teamid', $team->id)->orderBy('created_at', 'DESC')->get(); ?>
+                                        <?php $activities = DB::table('activities')->where('team_id', $team->id)->orderBy('created_at', 'DESC')->get(); ?>
                                         @foreach($activities as $activity)
                                         <tr>
                                             <td>
@@ -252,7 +252,7 @@
                     </br>
                     <h5>Project files</h5>
                     <ul class="list-unstyled project-files">
-                        <?php $files = DB::table('documents')->where('teamid', $team->id)->get(); ?>
+                        <?php $files = DB::table('documents')->where('team_id', $team->id)->get(); ?>
                             @foreach($files as $file)
                                 <li><a href="files/{{$file->file}}" target="_blank">
                                 <?php
