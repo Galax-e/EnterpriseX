@@ -77,7 +77,12 @@
                                         <button type="button" class="btn btn-sm btn-white"> <i class="fa fa-print"></i> </button>
                                         <button type="button" class="btn btn-sm btn-white"> <i class="fa fa-cogs"></i> </button>
                                     </div>
-                                    <strong>Found {{$count}} issues.</strong>
+                                    
+                                    <div class="col-md-3">
+                                        <div class="panel panel-info">
+                                            <div class="panel-heading"><strong>Found {{$count}} issues.</strong></div>
+                                        </div>
+                                    </div>
                                 </div>
 
                             </div>

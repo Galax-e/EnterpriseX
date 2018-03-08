@@ -18,7 +18,7 @@
 
 @section('content')
         <div class="row">
-           <?php $teams = DB::table('teams')->where('id', $teamid)->get(); ?>
+           <?php $teams = DB::table('teams')->where('id', $team_id)->get(); ?>
             @foreach($teams as $team)
             <div class="col-lg-9">
                 <div class="wrapper wrapper-content animated fadeInUp">
@@ -296,7 +296,7 @@
                                         <div class="modal-body">
                                             <form id="image_upload_form" method="post" enctype="multipart/form-data" action='add_file' autocomplete="off">
                                                 {!! csrf_field() !!}
-                                                <input type="hidden" name="teamid" value="{{$team->id}}">
+                                                <input type="hidden" name="team_id" value="{{$team->id}}">
                                                          <div class="form-group has-feedback">
                                                             <input type="text" name="file_name" class="form-control" placeholder="File title" value="" required autofocus/>
                                                            
@@ -327,7 +327,7 @@
                                         <div class="modal-body">
                                             <form method="GET" action="new_member" >
                                                 <div class="form-group has-feedback">
-                                                    <input type="hidden" name="teamid" value="{{$team->id}}"/>
+                                                    <input type="hidden" name="team_id" value="{{$team->id}}"/>
                                                     <input type="text" name="email" class="form-control" placeholder="Email" value="" required autofocus/>
                                                     <span class="glyphicon glyphicon-user form-control-feedback"></span>
                                                 </div>

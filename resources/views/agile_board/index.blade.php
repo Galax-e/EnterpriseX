@@ -6,7 +6,7 @@
                     <h2>Agile board</h2>
                     <ol class="breadcrumb">
                         <li>
-                            <a href="index-2.html">Home</a>
+                            <a href="{{url('/home')}}">Home</a>
                         </li>
                         <li>
                             <a>Miscellaneous</a>
