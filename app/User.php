@@ -8,10 +8,11 @@ use Backpack\Base\app\Notifications\ResetPasswordNotification as ResetPasswordNo
 
 use Backpack\CRUD\CrudTrait; // <------------------------------- this one
 use Spatie\Permission\Traits\HasRoles;// <---------------------- and this one
+// use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use Notifiable;
+    use Notifiable; //, HasApiTokens
     use CrudTrait; // <----- this
     use HasRoles; // <------ and this
 

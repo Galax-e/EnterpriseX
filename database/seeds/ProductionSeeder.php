@@ -20,6 +20,7 @@ class ProductionSeeder extends Seeder
             'name'   => 'Super User',
             'email'    => 'admin@admin.com',
             'password' => bcrypt('Password1'),
+            'active' => 1,
             // 'role' => 'admin'
         ]);
         // DB::table('users')
@@ -30,6 +31,7 @@ class ProductionSeeder extends Seeder
             'name'   => 'Super Admin',
             'email'    => 'nwaugha@gmail.com',
             'password' => bcrypt('Password1'),
+            'active' => 1
             // 'role' => 'admin'
         ]);
     }
