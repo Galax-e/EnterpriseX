@@ -22,6 +22,8 @@ class TeamCrudController extends CrudController
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/team');
         $this->crud->setEntityNameStrings('team', 'teams');
 
+        // $this->crud->removeButton( 'delete' );
+
         /*
         |--------------------------------------------------------------------------
         | BASIC CRUD INFORMATION

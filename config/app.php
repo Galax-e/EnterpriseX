@@ -17,6 +17,20 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Deployment Type
+    |--------------------------------------------------------------------------
+    |
+    | This value is the deployment type of the application. It is used to 
+    | determine if the application is meant for web where it could have
+    | multiple owners, or locally where it is deployed to a single 
+    | owner.
+    |
+    */
+
+    'deployment_type' => env('APP_DEPLOYMENT_TYPE', 'local'),
+
+    /*
+    |--------------------------------------------------------------------------
     | Application Environment
     |--------------------------------------------------------------------------
     |

@@ -22,7 +22,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'username', 'email', 'password',
     ];
 
     /**
@@ -53,7 +53,8 @@ class User extends Authenticatable
      */
     public function roles(){
         
-        return $this->belongsToMany('Backpack\PermissionManager\app\Models');
+        // Backpack\PermissionManager\app\Models\Role, belongsToMany
+        return $this->belongsToMany('Backpack\PermissionManager\app\Models\Role', 'role_users')->withTimestamps();
     }
 
     /**
@@ -65,5 +66,27 @@ class User extends Authenticatable
     public function sendPasswordResetNotification($token)
     {
         $this->notify(new ResetPasswordNotification($token));
+    }
+
+    
+    /**
+     * @return string
+     */
+    public function getNameAndUsernameAttribute()
+    {
+        return "$this->name ($this->username)";
+    }
+
+    /**
+     * @return bool
+     */
+    public function isRootAdmin()
+    {
+        // Protect the root user from edits.
+        if ('superadmin' == $this->username OR 'superuser' == $this->username) {
+            return true;
+        }
+        // Otherwise
+        return false;
     }
 }

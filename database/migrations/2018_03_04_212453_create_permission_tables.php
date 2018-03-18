@@ -17,6 +17,8 @@ class CreatePermissionTables extends Migration
 
         Schema::create($tableNames['roles'], function (Blueprint $table) {
             $table->increments('id');
+            $table->string('display_name')->unique();
+            $table->string('description');
             $table->string('name')->unique();
             $table->timestamps();
         });
@@ -47,6 +49,7 @@ class CreatePermissionTables extends Migration
         Schema::create($tableNames['user_has_roles'], function (Blueprint $table) use ($tableNames, $foreignKeys) {
             $table->integer('role_id')->unsigned();
             $table->integer($foreignKeys['users'])->unsigned();
+            $table->timestamps();
 
             $table->foreign('role_id')
                 ->references('id')
