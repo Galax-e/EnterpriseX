@@ -21,7 +21,7 @@ class UserCrudController extends ParentCrudController
         $this->crud->setEntityNameStrings(trans('backpack::permissionmanager.user'), trans('backpack::permissionmanager.users'));
         $this->crud->setRoute(config('backpack.base.route_prefix').'/user');
         $this->crud->enableAjaxTable();
-
+        
         // Columns.
         $this->crud->setColumns([
             [
@@ -114,6 +114,7 @@ class UserCrudController extends ParentCrudController
                 ],
             ],
         ]);
+        $this->crud->enableExportButtons();
     }
 
     /**

@@ -9,6 +9,8 @@ use Backpack\Base\app\Notifications\ResetPasswordNotification as ResetPasswordNo
 use Backpack\CRUD\CrudTrait; // <------------------------------- this one
 use Spatie\Permission\Traits\HasRoles;// <---------------------- and this one
 // use Laravel\Passport\HasApiTokens;
+use DB;
+use Backpack\PermissionManager\app\Models\Role;
 
 class User extends Authenticatable
 {
@@ -95,5 +97,39 @@ class User extends Authenticatable
         }
         // Otherwise
         return false;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAdmin()
+    {
+        // Protect the root user from edits.
+        if ($this->hasRole('admin')) {
+            return true;
+        }
+        // Otherwise
+        return false;
+    }
+
+    // public function getOrganization() {
+
+    //     // checks that user is an owner
+    //     if ($this->hasRole('owner')) {
+    //         $org = DB::table('organizations')->where('user_id', $this->id)->first();
+    //         return $org;
+    //     }else{
+    //         return null;
+    //     }
+    // }
+
+    public function getRoles() {
+        $roles = $this->roles;
+
+        $user_roles = [];
+        foreach($roles as $role) {
+            $user_roles[] = $role->name;
+        }
+        return collect($user_roles);
     }
 }

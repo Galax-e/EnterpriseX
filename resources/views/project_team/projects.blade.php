@@ -59,14 +59,16 @@
                                                     <table style="width:100%">
                                                     <tr>
                                                         <td>
-                                                            <select name="internal" class="form-control" placeholder="Whether Internal" required>
+                                                            <label for="internal" class="text-muted">Whether project is internal?</label>
+                                                            <select id="internal" name="internal" class="form-control" placeholder="Whether Internal" required>
                                                                 <option value="yes">Yes</option>
                                                                 <option value="no">No</option>
                                                             </select>
                                                         </td>
                                                         <td>
-                                                            <select name="priority" class="form-control" placeholder="Priority" required>
-                                                            <option value="">-- Set priority --</option>
+                                                            <label for="priority" class="text-muted">Set project priority</label>
+                                                            <select id="priority" name="priority" class="form-control" placeholder="Priority" required>
+                                                            {{--  <option value="">-- Set priority --</option>  --}}
                                                             <option value="High"> High </option>
                                                             <option value="Medium"> Medium </option>
                                                             <option value="Low"> Low </option>
@@ -113,74 +115,82 @@
 
                                 <table class="table table-hover">
                                     <tbody>
-                            <?php $projects = DB::table('projects')->where('organization_id', Auth::user()->organization()->id)->orderBy('created_at', 'DESC')->get(); ?>
-                            @if($projects->count() === 0)
-                                <div class="panel panel-info">
-                                    <div class="panel-heading">Status</div>
-                                    <div class="panel-body"><b>No Projects, create one</b></div>
-                                </div>
-                            @endif
-                            @foreach($projects as $project)
-                                    <tr>
-                                        <td class="project-status">
-                                            <span class="label label-primary">Active</span>
-                                        </td>
-                                        <td class="project-title">
-                                            <a href="#">{{$project->title}}</a>
-                                            <br/>
-                                            <small>Created:  {{ date('M d, Y h:i:s A', strtotime($project->created_at)) }}</small>
-                                        </td>
-                                        <td class="project-completion">
-                                                <small>Completion with: 48%</small>
-                                                <div class="progress progress-mini">
-                                                    <div style="width: 48%;" class="progress-bar"></div>
-                                                </div>
-                                        </td>
-                                        <td class="project-people">
-                                            <?php $teams = DB::table('teams')->where('project_id', $project->id)->get(); ?>
-                                            @foreach($teams as $team)
-                                                 <a href="#"><img alt="image" class="img-circle" src="img/a3.jpg"></a>
+                                    <?php  
+                                        if (Auth::user()->isAdmin()) {
+                                            $projects = App\Models\Project::paginate(10);
+                                        }else{
+                                            $projects = DB::table('projects')->where('organization_id', Auth::user()->organization->id)->orderBy('created_at', 'DESC')->get()->paginate(10);
+                                        }
+                                    ?>
+                                    @if($projects->count() === 0)
+                                        <div class="panel panel-info">
+                                            <div class="panel-heading">Status</div>
+                                            <div class="panel-body"><b>No Projects, create one</b></div>
+                                        </div>
+                                    @endif
+                                    @foreach($projects as $project)
+                                            <tr>
+                                                <td class="project-status">
+                                                    <span class="label label-primary">Active</span>
+                                                </td>
+                                                <td class="project-title">
+                                                    <a href="#">{{$project->title}}</a>
+                                                    <br/>
+                                                    <small>Created:  {{ date('M d, Y h:i:s A', strtotime($project->created_at)) }}</small>
+                                                </td>
+                                                <td class="project-completion">
+                                                        <small>Completion with: 48%</small>
+                                                        <div class="progress progress-mini">
+                                                            <div style="width: 48%;" class="progress-bar"></div>
+                                                        </div>
+                                                </td>
+                                                <td class="project-people">
+                                                    <?php $teams = DB::table('teams')->where('project_id', $project->id)->get(); ?>
+                                                    @foreach($teams as $team)
+                                                        <a href="#"><img alt="image" class="img-circle" src="{{asset('img/a3.jpg')}}"></a>
+                                                    @endforeach
+                                                </td>
+                                                <td class="project-actions">
+                                                    {{--  <a href="#" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> Edit </a>  --}}
+                                                    <form method="GET" action="project/{{$project->id}}/teams" >
+                                                        {{--  <input type="hidden" name="id" value="{{$project->id}}">  --}}
+                                                        {{ csrf_field() }}
+                                                        <button class="btn btn-white btn-sm" title="View team progress"><i class="fa fa-users"></i> View Teams </button>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                            
+                                            {{--  <tr>
+                                                <td class="project-status">
+                                                    <span class="label label-primary">Active</span>
+                                                </td>
+                                                <td class="project-title">
+                                                    <a href="project_detail.html">Contract with Zender Company</a>
+                                                    <br/>
+                                                    <small>Created 14.08.2014</small>
+                                                </td>
+                                                <td class="project-completion">
+                                                        <small>Completion with: 48%</small>
+                                                        <div class="progress progress-mini">
+                                                            <div style="width: 48%;" class="progress-bar"></div>
+                                                        </div>
+                                                </td>
+                                                <td class="project-people">
+                                                    <a href="#"><img alt="image" class="img-circle" src="{{asset('img/a3.jpg')}}"></a>
+                                                    <a href="#"><img alt="image" class="img-circle" src="{{asset('img/a1.jpg')}}"></a>
+                                                    <a href="#"><img alt="image" class="img-circle" src="{{asset('img/a2.jpg')}}"></a>
+                                                    <a href="#"><img alt="image" class="img-circle" src="{{asset('img/a4.jpg')}}"></a>
+                                                    <a href="#"><img alt="image" class="img-circle" src="{{asset('img/a5.jpg')}}"></a>
+                                                </td>
+                                                <td class="project-actions">
+                                                    <a href="#" class="btn btn-white btn-sm"><i class="fa fa-users"></i> View Teams</a>
+                                                    <a href="#" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> Edit </a>
+                                                </td>
+                                            </tr>        --}}
                                             @endforeach
-                                        </td>
-                                        <td class="project-actions">
-                                            {{--  <a href="#" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> Edit </a>  --}}
-                                            <form method="GET" action="project/{{$project->id}}/teams" >
-                                                {{--  <input type="hidden" name="id" value="{{$project->id}}">  --}}
-                                                {{ csrf_field() }}
-                                                <button class="btn btn-white btn-sm" title="View team progress"><i class="fa fa-users"></i> View Teams </button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                    
-                                    {{--  <tr>
-                                        <td class="project-status">
-                                            <span class="label label-primary">Active</span>
-                                        </td>
-                                        <td class="project-title">
-                                            <a href="project_detail.html">Contract with Zender Company</a>
-                                            <br/>
-                                            <small>Created 14.08.2014</small>
-                                        </td>
-                                        <td class="project-completion">
-                                                <small>Completion with: 48%</small>
-                                                <div class="progress progress-mini">
-                                                    <div style="width: 48%;" class="progress-bar"></div>
-                                                </div>
-                                        </td>
-                                        <td class="project-people">
-                                            <a href="#"><img alt="image" class="img-circle" src="img/a3.jpg"></a>
-                                            <a href="#"><img alt="image" class="img-circle" src="img/a1.jpg"></a>
-                                            <a href="#"><img alt="image" class="img-circle" src="img/a2.jpg"></a>
-                                            <a href="#"><img alt="image" class="img-circle" src="img/a4.jpg"></a>
-                                            <a href="#"><img alt="image" class="img-circle" src="img/a5.jpg"></a>
-                                        </td>
-                                        <td class="project-actions">
-                                            <a href="#" class="btn btn-white btn-sm"><i class="fa fa-users"></i> View Teams</a>
-                                            <a href="#" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> Edit </a>
-                                        </td>
-                                    </tr>        --}}
-                                    @endforeach
-                                </tbody>
+
+                                            {{ $projects->links() }}
+                                        </tbody>
                                 </table>
                             </div>
                         </div>

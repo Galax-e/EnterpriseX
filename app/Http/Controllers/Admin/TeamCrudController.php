@@ -110,20 +110,34 @@ class TeamCrudController extends CrudController
                 'disabled'  => 'disabled'
             ],
             'entity' => 'projects',
-            'attribute' => 'title', // foreign key attribute that is shown to user
             'model' => "App\Models\Project",
             'pivot' => true, // on create&update, do you need to add/delete pivot table entries?
         ], 'update');
 
         $this->crud->addField([       // Select2Multiple = n-n relationship (with pivot table)
             'label' => "Type",
-            'type' => 'select',
+            'type' => 'select_from_array',
             'name' => 'type', // the method that defines the relationship in your Model
+            'attribute' => 'type', // foreign key attribute that is shown to user
+            'options' => ['organization', 'client'],
+            'entity' => 'teams',
             'model' => "App\Models\Team", // foreign key model
-            'attributes' => [
-                'placeholder' => 'Set team to either be of type client or organization'
-              ],
+            // 'attributes' => [
+            //     'placeholder' => 'Set team to either be of type client or organization'
+            //   ],
         ], 'update');
+
+
+        // this can be used to create tabbed views
+        // $this->crud->addField([ // select_from_array
+        //     'name' => 'select_from_array',
+        //     'label' => "Select from array",
+        //     'type' => 'select_from_array',
+        //     'options' => ['one' => 'One', 'two' => 'Two', 'three' => 'Three'],
+        //     'allows_null' => false,
+        //     'allows_multiple' => true,
+        //     'tab' => 'Tab name here'
+        // ]);
 
         // $this->crud->addField([       // Select2Multiple = n-n relationship (with pivot table)
         //     'label' => "Articles",
@@ -134,6 +148,27 @@ class TeamCrudController extends CrudController
         //     'model' => "App\Models\Article", // foreign key model
         //     'pivot' => true, // on create&update, do you need to add/delete pivot table entries?
         // ], 'update');
+
+
+        $this->crud->addFilter([ // add a "simple" filter called Draft 
+            'type' => 'dropdown',
+            'name' => 'type',
+            'label'=> 'Type'
+          ],
+          [
+            'organization' =>'Organization',
+            'client' => 'Client'
+          ], // the simple filter has no values, just the "Draft" label specified above
+          function($value) { // if the filter is active (the GET parameter "draft" exits)
+            //   $this->crud->addClause('where', 'draft', '1'); 
+            $this->crud->addClause('where', 'type', $value);
+            // $this->crud->addClause('type');
+              // we've added a clause to the CRUD so that only elements with draft=1 are shown in the table
+              // an alternative syntax to this would have been
+              // $this->crud->query = $this->crud->query->where('draft', '1'); 
+              // another alternative syntax, in case you had a scopeDraft() on your model:
+              // $this->crud->addClause('draft'); 
+          });
 
         // ------ CRUD FIELDS
         // $this->crud->addField($options, 'update/create/both');
@@ -160,6 +195,7 @@ class TeamCrudController extends CrudController
         // $this->crud->removeAllButtonsFromStack('line');
 
         // ------ CRUD ACCESS
+        $this->crud->allowAccess('revisions');
         // $this->crud->allowAccess(['list', 'create', 'update', 'reorder', 'delete']);
         // $this->crud->denyAccess(['list', 'create', 'update', 'reorder', 'delete']);
 
@@ -186,7 +222,7 @@ class TeamCrudController extends CrudController
         // ------ DATATABLE EXPORT BUTTONS
         // Show export to PDF, CSV, XLS and Print buttons on the table view.
         // Does not work well with AJAX datatables.
-        // $this->crud->enableExportButtons();
+        $this->crud->enableExportButtons();
 
         // ------ ADVANCED QUERIES
         // $this->crud->addClause('active');
@@ -199,6 +235,7 @@ class TeamCrudController extends CrudController
         // $this->crud->addClause('withoutGlobalScopes');
         // $this->crud->addClause('withoutGlobalScope', VisibleScope::class);
         // $this->crud->with(); // eager load relationships
+        $this->crud->with('revisionHistory');
         // $this->crud->orderBy();
         // $this->crud->groupBy();
         // $this->crud->limit();

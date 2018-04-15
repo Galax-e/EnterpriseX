@@ -75,7 +75,9 @@
                     </ul>
                 </li>
                  <li>
-                    <a href="{{route('projects')}}"><i class="fa fa-list-alt"></i> <span class="nav-label">Projects</span></a>
+                    @if (Auth::user()->hasRole('owner') || Auth::user()->hasRole('admin'))
+                        <a href="{{route('projects')}}"><i class="fa fa-list-alt"></i> <span class="nav-label">Projects</span></a>
+                    @endif
                 </li> 
                 <li>
                     <a href="raise_ticket"><i class="fa fa-cubes"></i> <span class="nav-label">Issue Tracker</span></a>

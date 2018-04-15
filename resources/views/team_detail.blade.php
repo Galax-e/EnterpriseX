@@ -59,7 +59,7 @@
                                         <dt>Created:</dt> <dd> 	{{ date('d.m.y h:i:s A', strtotime($team->created_at)) }} </dd>
                                         <dt>Participants:</dt>
                                         <dd class="project-people">
-                                        <?php $members = DB::table('members')->where('team_id', $team->id)->get(); ?>
+                                        <?php $members = DB::table('team_members')->where('team_id', $team->id)->get(); ?>
                                             @foreach($members as $member)
                                                  <a href="#"><img alt="image" class="img-circle" src="{{asset('img/a3.jpg')}}"></a>
                                             @endforeach
@@ -69,7 +69,7 @@
                             </div>
                             <div class="row">
                               <?php
-                                    if (strpos($team->progress_update, 'yes') !== false) {
+                                    //if (strpos($team->progress_update, 'yes') !== false) {
                                     echo '<div class="col-lg-12">
                                     <dl class="dl-horizontal">
                                         <dt>Completed:</dt>
@@ -81,7 +81,7 @@
                                         </dd>
                                     </dl>
                                 </div>';
-                                    }
+                                    //}
                                 ?>
                             </div>
                             <div class="row m-t-sm">

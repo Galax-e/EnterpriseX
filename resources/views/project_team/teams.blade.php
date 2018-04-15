@@ -142,9 +142,9 @@
                                                 </div>
                                         </td>
                                         <td class="project-people">
-                                            <?php $members = DB::table('members')->where('team_id', $team->id)->get(); ?>
+                                            <?php $members = DB::table('team_members')->where('team_id', $team->id)->get(); ?>
                                             @foreach($members as $member)
-                                                 <a href="#"><img alt="image" class="img-circle" src="img/a3.jpg"></a>
+                                                 <a href="#"><img alt="image" class="img-circle" src="{{asset('img/a3.jpg')}}"></a>
                                             @endforeach
                                         </td>
                                         <td class="project-actions">

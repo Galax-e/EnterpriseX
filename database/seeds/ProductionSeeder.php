@@ -120,7 +120,7 @@ class ProductionSeeder extends Seeder
     }
     
     protected function createFakeMembers() {
-        $members = factory(App\Member::class, 150)
+        $members = factory(App\Member::class, 120)
             ->create()
             ->each(function ($m) {
                 if ($m->client_id === 0) {
@@ -131,6 +131,12 @@ class ProductionSeeder extends Seeder
                     $m->type = 'client';
                 }                
                 $m->save();
+
+                $user = User::find($m->user_id);
+
+                if (!$user->hasRole('member')) {
+                    $user->assignRole('member');
+                }
             }); 
     }
 

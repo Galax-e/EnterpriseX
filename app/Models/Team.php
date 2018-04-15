@@ -4,10 +4,17 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Backpack\CRUD\CrudTrait;
+use Venturecraft\Revisionable\RevisionableTrait;
 
 class Team extends Model
 {
-    use CrudTrait;
+    use CrudTrait, RevisionableTrait;
+
+    // If you are using another bootable trait the be sure to override the boot method in your model
+    public static function boot()
+    {
+        parent::boot();
+    }
 
     /*
     |--------------------------------------------------------------------------

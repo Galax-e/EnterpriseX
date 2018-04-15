@@ -31,7 +31,7 @@ $factory->define(App\User::class, function (Faker $faker) {
 
 $factory->define(App\Member::class, function (Faker $faker)  {
     return [
-        'user_id' => $faker->unique()->numberBetween(3, 153), // randomElement($users), //  // 8567,
+        'user_id' => $faker->unique()->numberBetween(3, 152), // randomElement($users), //  // 8567,
         'organization_id' => $faker->randomDigitNotNull,
         'client_id' => $faker->numberBetween(0, 25)
     ];

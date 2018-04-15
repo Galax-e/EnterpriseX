@@ -12,6 +12,7 @@ use App\Models\Client;
 use App\Models\Team;
 use App\Models\Project;
 use App\Member;
+use App\TeamMember;
 use App\Document;
 use App\Activity;
 use Auth;
@@ -234,7 +235,7 @@ class AgileBoardController extends Controller
     public function team_detail(Request $request, $p_id, $t_id)
     {
         $team_id = $t_id; //Input::get('id');
-        $count = Member::where('team_id','=', $team_id)->count();
+        $count = TeamMember::where('team_id','=', $team_id)->count();
         $agile_board = AgileBoard::where('team_id', $t_id)->get();
         $project = DB::table('projects')->where('id', $p_id)->get()[0];
         // dd( $project);
