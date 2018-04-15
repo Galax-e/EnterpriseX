@@ -17,11 +17,12 @@ class CreateProjectsTable extends Migration
             $table->increments('id');
             $table->string('title');
             // $table->string('project');            
-            $table->unsignedInteger('created_by');
+            $table->unsignedInteger('organization_id');
             $table->unsignedInteger('client_id')->nullable();
+            $table->boolean('internal')->default(1);
             $table->string('description');
             $table->enum('priority', ['high', 'medium', 'low'])->default('high');
-            $table->enum('progress_update', ['yes', 'no'])->default('no');
+            // $table->enum('progress_update', ['yes', 'no'])->default('no');
             // $table->boolean('progress_update')->default(false);
             $table->timestamps();
         });

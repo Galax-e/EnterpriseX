@@ -6,13 +6,27 @@ use Illuminate\Database\Eloquent\Model;
 
 class Member extends Model
 {
+
+
+    protected $fillable = [];
+    
     //
-    public function teams(){
-        return $this->belongsToMany('App\Models\Team');
+    public function organization() {
+        return $this->belongsTo('App\Models\Organization');
+    }
+    
+    //
+    public function client(){
+        return $this->belongsTo('App\Models\Client');
     }
 
     public function user(){
-        return $this->hasOne('App\User');
+        return $this->belongsTo('App\User');
     }
+
+    public function team_members(){
+        return $this->hasMany('App\TeamMember');
+    }
+
 
 }

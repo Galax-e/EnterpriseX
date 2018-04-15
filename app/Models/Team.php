@@ -51,9 +51,9 @@ class Team extends Model
     }
 
     /**
-     * A Team has many members to a project
+     * A Team has many team members to a project
     */
-    public function members() {
+    public function team_members() {
         return $this->hasMany('App\Members'); 
     }
 

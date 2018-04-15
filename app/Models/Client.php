@@ -19,7 +19,7 @@ class Client extends Model
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     // protected $guarded = ['id'];
-    protected $fillable = ['name', 'city', 'state', 'country', 'description', 'industry'];
+    protected $fillable = ['name', 'address', 'city', 'state', 'country', 'email', 'phone_number', 'description', 'industry'];
     // protected $hidden = [];
     // protected $dates = [];
 
@@ -37,7 +37,7 @@ class Client extends Model
 
     //
     public function projects() {
-        return $this->belongsToMany('App\Models\Project'); 
+        return $this->hasMany('App\Models\Project'); 
     }
 
     //
@@ -48,6 +48,11 @@ class Client extends Model
     //
     public function organization() {
         return $this->belongsTo('App\Models\Organization'); 
+    }
+
+    //
+    public function members() {
+        return $this->hasMany('App\Member');
     }
 
     /*

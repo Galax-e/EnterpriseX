@@ -23,6 +23,7 @@ class GuestController extends Controller
 
         $user->activation_token = null;
         $user->active = 1;
+        $user->assignRole('user');
         $user->save();
 
         Auth::login($user);

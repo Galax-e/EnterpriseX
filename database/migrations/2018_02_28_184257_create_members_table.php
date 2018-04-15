@@ -16,9 +16,10 @@ class CreateMembersTable extends Migration
         Schema::create('members', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('user_id');
-            $table->unsignedInteger('team_id');
-            $table->unsignedInteger('added_by');
-            $table->enum('part_of', ['organization', 'client']);
+            $table->unsignedInteger('organization_id');
+            $table->unsignedInteger('client_id')->nullable();
+            $table->unsignedInteger('added_by')->nullable();
+            $table->enum('type', ['organization', 'client'])->default('organization');
             $table->timestamps();
         });
     }

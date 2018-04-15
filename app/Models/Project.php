@@ -42,7 +42,7 @@ class Project extends Model
 
     //
     public function client() {
-        return $this->hasOne('App\Models\Client'); 
+        return $this->belongsTo('App\Models\Client'); 
     }
 
     //

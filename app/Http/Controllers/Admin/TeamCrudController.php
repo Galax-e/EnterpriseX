@@ -47,15 +47,18 @@ class TeamCrudController extends CrudController
                                 'name' => 'project_id',
                                 'label' => 'Project Id',
                             ]);
-        $this->crud->addColumn([
-                                'name' => 'updateprogress',
-                                'label' => 'Update Progress',
-                            ]);
+        // $this->crud->addColumn([
+        //                         'name' => 'updateprogress',
+        //                         'label' => 'Update Progress',
+        //                     ]);
         $this->crud->addColumn([
                                 'name' => 'created_by',
                                 'label' => 'Created By',
                             ]);
-
+        $this->crud->addColumn([
+                                'name' => 'type',
+                                'label' => 'Type',
+                            ]);
 
         // $this->crud->addColumn([
         //                         'label' => 'Client',
@@ -76,15 +79,15 @@ class TeamCrudController extends CrudController
               ],
         ], 'update');
 
-        $this->crud->addField([       // Select2Multiple = n-n relationship (with pivot table)
-            'label' => "Update Progress",
-            'type' => 'select',
-            'name' => 'updateprogress', // the method that defines the relationship in your Model
-            'attributes' => [
-                'placeholder' => 'Choose Yes or No',
-                'default' => 'no'
-              ],
-        ], 'update');
+        // $this->crud->addField([       // Select2Multiple = n-n relationship (with pivot table)
+        //     'label' => "Update Progress",
+        //     'type' => 'select',
+        //     'name' => 'updateprogress', // the method that defines the relationship in your Model
+        //     'attributes' => [
+        //         'placeholder' => 'Choose Yes or No',
+        //         'default' => 'no'
+        //       ],
+        // ], 'update');
 
         $this->crud->addField([       // Select2Multiple = n-n relationship (with pivot table)
             'label' => "Created By",
@@ -100,7 +103,7 @@ class TeamCrudController extends CrudController
         ], 'update');
 
         $this->crud->addField([       // Select2Multiple = n-n relationship (with pivot table)
-            'label' => "Project ID",
+            'label' => "Project Id",
             'type' => 'text',
             'name' => 'project_id', // the method that defines the relationship in your Model
             'attributes' => [
@@ -110,6 +113,16 @@ class TeamCrudController extends CrudController
             'attribute' => 'title', // foreign key attribute that is shown to user
             'model' => "App\Models\Project",
             'pivot' => true, // on create&update, do you need to add/delete pivot table entries?
+        ], 'update');
+
+        $this->crud->addField([       // Select2Multiple = n-n relationship (with pivot table)
+            'label' => "Type",
+            'type' => 'select',
+            'name' => 'type', // the method that defines the relationship in your Model
+            'model' => "App\Models\Team", // foreign key model
+            'attributes' => [
+                'placeholder' => 'Set team to either be of type client or organization'
+              ],
         ], 'update');
 
         // $this->crud->addField([       // Select2Multiple = n-n relationship (with pivot table)

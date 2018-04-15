@@ -49,6 +49,13 @@ class User extends Authenticatable
     }
 
     /**
+     * A user can own an organization
+    */
+    public function organization(){
+        return $this->hasOne('App\Models\Organization');
+    }
+
+    /**
      * Get the roles that belong to each user
      */
     public function roles(){

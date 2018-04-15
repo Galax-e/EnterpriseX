@@ -59,7 +59,13 @@
                                                     <table style="width:100%">
                                                     <tr>
                                                         <td>
-                                                            <select name="priority" class="form-control" placeholder="City" required>
+                                                            <select name="internal" class="form-control" placeholder="Whether Internal" required>
+                                                                <option value="yes">Yes</option>
+                                                                <option value="no">No</option>
+                                                            </select>
+                                                        </td>
+                                                        <td>
+                                                            <select name="priority" class="form-control" placeholder="Priority" required>
                                                             <option value="">-- Set priority --</option>
                                                             <option value="High"> High </option>
                                                             <option value="Medium"> Medium </option>
@@ -107,7 +113,7 @@
 
                                 <table class="table table-hover">
                                     <tbody>
-                            <?php $projects = DB::table('projects')->where('created_by', Auth::user()->id)->orderBy('created_at', 'DESC')->get(); ?>
+                            <?php $projects = DB::table('projects')->where('organization_id', Auth::user()->organization()->id)->orderBy('created_at', 'DESC')->get(); ?>
                             @if($projects->count() === 0)
                                 <div class="panel panel-info">
                                     <div class="panel-heading">Status</div>

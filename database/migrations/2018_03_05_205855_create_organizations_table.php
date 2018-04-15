@@ -14,18 +14,17 @@ class CreateOrganizationsTable extends Migration
     {
         Schema::create('organizations', function (Blueprint $table) {
             $table->increments('id');
+            $table->unsignedInteger('user_id'); 
             $table->string('name')->unique();
             $table->string('address');
             $table->string('city');
             $table->string('state');
-            $table->string('country')->nullable();
-            $table->string('zip')->nullable();
-            // $table->enum('level', ['easy', 'hard']);
-            $table->enum('number_of_staff', ['just you', '2-9', '10-99', '100-299', '300']);
-            $table->string('phone_number')->nullable();
+            $table->string('country');
+            $table->enum('number_of_staff', ['1', '2-9', '10-99', '100-299', '300+'])->nullable();
+            $table->string('phone_number');
             $table->string('description')->nullable();
             $table->string('industry')->nullable();
-            $table->string('avatar')->nullable();
+            $table->string('avatar')->default('default-logo.jpg');
             $table->timestamps();
         });
     }

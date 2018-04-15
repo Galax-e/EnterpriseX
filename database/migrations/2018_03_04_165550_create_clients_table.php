@@ -14,15 +14,18 @@ class CreateClientsTable extends Migration
     {
         Schema::create('clients', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name')->unique();
+            $table->unsignedInteger('organization_id'); 
+            $table->string('name');
             $table->string('address');
             $table->string('city');
             $table->string('state');
             $table->string('country');
-            $table->enum('number_of_staff', ['1-9', '10-99', '100-299', '300']);
-            $table->string('description');
-            $table->string('industry');
-            $table->string('avatar')->nullable();
+            $table->string('email');
+            $table->string('phone_number');
+            $table->enum('number_of_staff', ['1-9', '10-99', '100-299', '300'])->nullable();
+            $table->string('description')->nullable();
+            $table->string('industry')->nullable();
+            $table->string('avatar')->default('default-logo.jpg');
             $table->timestamps();
         });
     }

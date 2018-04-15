@@ -30,7 +30,9 @@ class OrganizationRequest extends FormRequest
             'address' => 'required|min:5|max:255',
             'city' => 'required|min:5|max:255',
             'state' => 'required|min:5|max:255',
+            'country' => 'required',
             'phone_number' => 'required|min:5|max:255',
+            'number_of_staff' => 'required'
         ];
     }
 

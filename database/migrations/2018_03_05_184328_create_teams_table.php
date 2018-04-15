@@ -17,14 +17,13 @@ class CreateTeamsTable extends Migration
             $table->increments('id');
             $table->string('name');  
             $table->unsignedInteger('project_id');                      
-            $table->unsignedInteger('created_by');
+            $table->unsignedInteger('created_by')->nullable();
             // $table->string('project');
             // $table->string('description');
             // $table->string('client');
             // $table->string('priority');
-            $table->enum('progress_update', ['yes', 'no'])->default('no');
-            $table->enum('belongs_to', ['organization', 'client'])->default('organization');
-            // $table->string('updateprogress');
+            // $table->enum('progress_update', ['yes', 'no'])->default('no');
+            $table->enum('type', ['organization', 'client'])->default('organization');
             $table->timestamps();
         });
     }

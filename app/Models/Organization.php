@@ -19,7 +19,8 @@ class Organization extends Model
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     // protected $guarded = ['id'];
-    protected $fillable = [];
+    protected $fillable = ['name', 'address', 'city', 'state', 'country', 'phone_number', 'number_of_staff',
+                            'description', 'industry'];
     // protected $hidden = [];
     // protected $dates = [];
 
@@ -36,6 +37,11 @@ class Organization extends Model
     */
 
     //
+    public function clients() {
+        return $this->hasMany('App\Models\Client'); 
+    }
+
+    //
     public function projects() {
         return $this->hasMany('App\Models\Project'); 
     }
@@ -46,9 +52,17 @@ class Organization extends Model
     }
 
     //
-    public function clients() {
-        return $this->hasMany('App\Models\Client'); 
+    public function members() {
+        return $this->hasMany('App\Member'); 
+        //, 'organization_member', 'organization_id', 'member_id')->withTimestamps();
     }
+
+    //
+    public function user() {
+        return $this->belongsTo('App\User')->withDefault(); 
+    }
+
+    
 
     /*
     |--------------------------------------------------------------------------
@@ -67,4 +81,10 @@ class Organization extends Model
     | MUTATORS
     |--------------------------------------------------------------------------
     */
+
+    public function setZipAttribute($value) {
+        if ( !empty($value) ) { // will check for empty string, null values, see php.net about it
+            $this->attributes['zip'] = $value;
+        } 
+    }
 }

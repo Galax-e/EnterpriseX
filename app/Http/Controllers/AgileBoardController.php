@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 
 use App\AgileBoard;
+use App\Models\Organization;
+use App\Models\Client;
 use App\Models\Team;
 use App\Models\Project;
 use App\Member;
@@ -14,6 +16,8 @@ use App\Document;
 use App\Activity;
 use Auth;
 use DB;
+use Propaganistas\LaravelIntl\Facades\Country;
+use Illuminate\Validation\Rule;
 
 class AgileBoardController extends Controller
 {
@@ -24,6 +28,91 @@ class AgileBoardController extends Controller
         $user = Auth::user();
         $todos = DB::table('agile_boards')->where('team_id', $team_id)->orderBy('created_at', 'DESC')->get();
         return view('agile_board.index', compact('todos', 'p_id', 't_id', 'user'));
+    }
+
+    public function create_client(Request $request) {
+
+        $country_obj = country()->all();
+        // "AC,IC,EA,DG,TA"
+        unset($country_obj['AC']);
+        unset($country_obj['IC']);
+        unset($country_obj['EA']);
+        unset($country_obj['DG']);
+        unset($country_obj['TA']);
+
+        $countries_codes = array_keys($country_obj);
+        $country_names = array_values($country_obj);
+
+        $this->validate($request, [
+            'name' => 'required',
+            'address' => 'required',
+            'city' => 'required',
+            'state' => 'required',
+            'country' => Rule::country($country_names),
+            'phone_number' => Rule::phone()->country($countries_codes),
+        ]);
+
+        $client = Client::create($request->except('_token'))->fresh();
+
+        $client->organization_id = Auth::user()->organization()->id;
+        $client->save();
+        dd($client);
+        // $client->country = $request->country
+        Auth::user()->assignRole('client');
+        return redirect()->back()->with('message', 'New client created');
+    }
+
+    public function create_organization(Request $request)
+    {
+
+        $country_obj = country()->all();
+
+        // "AC,IC,EA,DG,TA"
+        unset($country_obj['AC']);
+        unset($country_obj['IC']);
+        unset($country_obj['EA']);
+        unset($country_obj['DG']);
+        unset($country_obj['TA']);
+
+        $countries_codes = array_keys($country_obj);
+        $country_names = array_values($country_obj);
+        //dd($countries_codes);
+        // https://github.com/Propaganistas/Laravel-Phone
+        $this->validate($request, [
+            'name' => 'required',
+            'address' => 'required',
+            'city' => 'required',
+            'state' => 'required',
+            'country' => Rule::country($country_names),
+            'phone_number' => Rule::phone()->country($countries_codes),
+        ]);
+        
+        $organization = Organization::create($request->except('_token'))->fresh();
+       
+        // $zip = $request->input('zip');
+        // $organization->zip = isset($zip) ?  $zip: null; 
+        // $desc= $request->input('description');
+        // $organization->description = isset($desc) ?  $desc: null; 
+        // $industry = $request->input('industry');
+        // $organization->industry = isset($industry) ?  $industry: null; 
+        
+        $organization->user_id = Auth::user()->id;
+        $organization->save();
+        dd($organization);
+        // $organization->country = $request->country
+        Auth::user()->assignRole('owner');
+
+        return redirect()->back()->with('message', 'Your organization created');
+    }
+
+    public function create_team_member(Request $request) {
+
+        $this->validate($request, [
+            'name' => 'required',
+            'address' => 'required',
+            'city' => 'required',
+            'state' => 'required',
+        ]);
     }
 
     public function createTodo(Request $request) {
@@ -110,13 +199,20 @@ class AgileBoardController extends Controller
     public function create_project(Request $request)
     {
         $project = new Project;
-        $project->title = Input::get('name'); 
-        // $project->client_id = Input::get('client');
-        $project->description = Input::get('description');
-        // $project->project = Input::get('project');
-        $project->priority = Input::get('priority');
-        // $project->progress_update = 'no';// Input::get('progress_update');
-        $project->created_by = Auth::user()->id;
+        $project->title = $request->input('name'); 
+        $project->description = $request->input('description');
+        // $project->project = $request->input('project');
+        $project->priority = $request->input('priority');
+        // $project->progress_update = 'no';// $request->input('progress_update');
+        $project->internal = $request->input('internal');
+        $org_id = Auth::user()->organization()->id;
+        $project->organization_id = $org_id;
+        if ($request->has('client')) {
+            $client = DB::table('clients')
+                        ->where('name', $request->input('client'))
+                        ->where('organization_id', $org_id)->get();
+            $project->client_id = $client->id;
+        }
         $project->save();
 
         // \Alert::success('New project created.');
