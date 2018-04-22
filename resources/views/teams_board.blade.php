@@ -34,9 +34,9 @@
                         </div>
                         <div class="ibox-content">
                             <div class="team-members">
-                                <a href="#"><img alt="member" class="img-circle" src="img/a8.jpg"></a>
-                                <a href="#"><img alt="member" class="img-circle" src="img/a4.jpg"></a>
-                                <a href="#"><img alt="member" class="img-circle" src="img/a1.jpg"></a>
+                                <a href="#"><img alt="member" class="img-circle" src="{{ asset('img/a8.jpg')}}"></a>
+                                <a href="#"><img alt="member" class="img-circle" src="{{ asset('img/a4.jpg')}}"></a>
+                                <a href="#"><img alt="member" class="img-circle" src="{{ asset('img/a1.jpg')}}"></a>
                             </div>
                             <h4>Info about {{$team->name}}</h4>
                             <p>

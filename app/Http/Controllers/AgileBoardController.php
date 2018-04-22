@@ -116,8 +116,8 @@ class AgileBoardController extends Controller
         ]);
     }
 
-    public function createTodo(Request $request) {
-
+    public function createTodo(Request $request, $p_id, $t_id) {
+        
         $this->validate($request, [
             'description' => 'required',
             'team_id' => 'required',
@@ -131,11 +131,11 @@ class AgileBoardController extends Controller
         $todo->team_id = $request->input('team_id');
         $todo->save();
 
-
         $html = "$todo->description
                 <div class='agile-detail'>
-                    <a href='#' class='pull-right btn btn-xs btn-white delete_todo' id='delete_todo-".$todo->id."'><i class='trash_todo fa fa-trash'></i></a>
-                    <i class='fa fa-clock-o'></i> ".date('M d, Y', strtotime($todo->created_at))."
+                    <a href='#' class='pull-right btn btn-xs btn-white delete_todo' id='delete_todo-".$todo->id."'><i class='trash_todo fa fa-trash'></i> Delete</a>
+                    <a href='#' data-toggle='modal' data-target='#agileBoardModal' class='pull-right btn btn-xs btn-white todo_info' id='todo_info-".$todo->id."'><i class='trash_todo fa fa-info'></i> Info</a>
+                    <i class='fa fa-clock-o'></i> ".date('M d, Y - h:i:s A', strtotime($todo->created_at))."
                 </div>";
         $data = ["id"=>$todo->id, "html"=>$html];
         return response()->json($data);

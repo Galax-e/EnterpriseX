@@ -42,6 +42,9 @@ Route::group(['middleware' => ['auth.basic']], function () {
     Route::get('/home', 'HomeController@index')->name('home');
     // auth route  ['as' => 'agile_board',        'uses' => 'AgileBoardController@index']
     Route::get('project/{p_id}/team/{t_id}/agile_board', 'AgileBoardController@index');
+    // Route::post('project/{p_id}/team/{t_id}/create_todo', function() {
+    //     var_dump(['message']);
+    // });
     Route::post('project/{p_id}/team/{t_id}/create_todo', 'AgileBoardController@createTodo');
     Route::get('project/{p_id}/team/{t_id}/delete_todo',  'AgileBoardController@deleteTodo');
     Route::get('project/{p_id}/team/{t_id}/update_todo_status',  'AgileBoardController@updateTodoStatus');
@@ -77,15 +80,47 @@ Route::domain('{account}.localhost')->group(function () {
     });
 });
 
-Route::group(['prefix' => config('backpack.base.route_prefix', 'admin'), 'middleware' => ['web', 'auth'], 'namespace' => 'Admin'], function () {
+Route::group(['prefix' => config('backpack.base.route_prefix', 'admin'), 'middleware' => ['web', 'admin', 'auth', 'admin.basic:admin'], 'namespace' => 'Admin'], function () {
     // Backpack\MenuCRUD
+
+    // Route::redirect('/dashboard', '/', 301);
+    // $server = request()->path(); // Request::segment(1); //explode('.', Request::server('HTTP_HOST'));
+    // if(strpos($server, 'admin') !== false){
+    //     Route::get('/', function() {
+    //         return  redirect()->route('admin');
+    //     });
+    // }  
+    
+    // Route::get('/', function() {
+    //     // return  redirect()->route('/dashboard');
+    // });
+   
+
+    // if not otherwise configured, setup the dashboard routes
+    if (config('backpack.base.setup_dashboard_routes')) {
+        Route::get('dashboard', 'AdminController@dashboard')->name('backpack.dashboard');
+        Route::get('/', 'AdminController@redirect')->name('backpack');
+    }
+
+    // if not otherwise configured, setup the "my account" routes
+    if (config('backpack.base.setup_my_account_routes')) {
+        Route::get('edit-account-info', 'Auth\MyAccountController@getAccountInfoForm')->name('backpack.account.info');
+        Route::post('edit-account-info', 'Auth\MyAccountController@postAccountInfoForm');
+        Route::get('change-password', 'Auth\MyAccountController@getChangePasswordForm')->name('backpack.account.password');
+        Route::post('change-password', 'Auth\MyAccountController@postChangePasswordForm');
+    }
+    
     CRUD::resource('menu-item', 'MenuItemCrudController');
     CRUD::resource('client', 'ClientCrudController');
     CRUD::resource('project', 'ProjectCrudController');
     CRUD::resource('team', 'TeamCrudController');
     CRUD::resource('organization', 'OrganizationCrudController');
+    CRUD::resource('setting', 'SettingCrudController');
 });
 
 /** CATCH-ALL ROUTE for Backpack/PageManager - needs to be at the end of your routes.php file  **/
 Route::get('{page}/{subs?}', ['uses' => 'PageController@index'])
     ->where(['page' => '^((?!admin).)*$', 'subs' => '.*']);
+
+
+

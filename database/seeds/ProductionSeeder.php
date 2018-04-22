@@ -41,6 +41,7 @@ class ProductionSeeder extends Seeder
             // 'role' => 'admin'
         ]);
         $user1->assignRole('admin');  
+        $user1->assignRole('owner');
 
         $user2 = User::create([
             'name'   => 'Super User',
