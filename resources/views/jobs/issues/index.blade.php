@@ -1,4 +1,4 @@
-@extends('layouts.dialog')
+@extends('layouts.master')
 
 @section('header')
             <div class="row wrapper border-bottom white-bg page-heading">
@@ -90,7 +90,7 @@
                             <div class="table-responsive">
                             <table class="table table-hover issue-tracker">
                                 <tbody>
-                            <?php $issues = DB::table('agile_boards')->where('created_by', Auth::user()->id)->orderBy('created_at', 'DESC')->get(); ?>
+                            <?php $issues = DB::table('issues')->where('created_by', Auth::user()->id)->orderBy('created_at', 'DESC')->get(); ?>
                             @foreach($issues as $issue)
                                 <tr>
                                     <td>

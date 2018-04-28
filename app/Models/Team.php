@@ -52,16 +52,40 @@ class Team extends Model
     /**
      * A Team has one agile board
      */
-    public function agile_board(){
+    // public function task_boards(){
         
-        return $this->hasOne('App\AgileBoard');
+    //     return $this->hasOne('App\Task');
+    // }
+
+    /**
+     * A Team has one issue board
+     */
+    // public function issue_boards(){
+        
+    //     return $this->hasOne('App\Task');
+    // }
+
+    /**
+     * A Team has many tasks
+     */
+    public function tasks(){
+        
+        return $this->hasMany('App\Task');
+    }
+
+    /**
+     * A Team has many issues
+     */
+    public function issues(){
+        
+        return $this->hasMany('App\Issue');
     }
 
     /**
      * A Team has many team members to a project
     */
     public function team_members() {
-        return $this->hasMany('App\Members'); 
+        return $this->hasMany('App\TeamMember'); 
     }
 
     /**

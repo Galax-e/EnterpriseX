@@ -41,28 +41,33 @@ Route::group(['middleware' => ['auth.basic']], function () {
 
     Route::get('/home', 'HomeController@index')->name('home');
     // auth route  ['as' => 'agile_board',        'uses' => 'AgileBoardController@index']
-    Route::get('project/{p_id}/team/{t_id}/agile_board', 'AgileBoardController@index');
-    // Route::post('project/{p_id}/team/{t_id}/create_todo', function() {
-    //     var_dump(['message']);
-    // });
-    Route::post('project/{p_id}/team/{t_id}/create_todo', 'AgileBoardController@createTodo');
-    Route::get('project/{p_id}/team/{t_id}/delete_todo',  'AgileBoardController@deleteTodo');
-    Route::get('project/{p_id}/team/{t_id}/update_todo_status',  'AgileBoardController@updateTodoStatus');
-    // Issue tracker
-    Route::get('raise_ticket',  'AgileBoardController@issueTracker');
-    Route::get('create_ticket',  'AgileBoardController@createTicket');
-    Route::get('delete_ticket',  'AgileBoardController@deleteTicket');
-    Route::post('create_organization', 'AgileBoardController@create_organization');
-    // Module or Team
-    Route::get('projects',  ['as' => 'projects', 'uses' => 'AgileBoardController@projects']);
-    Route::get('project/{id}/teams',  'AgileBoardController@project_teams');
-    Route::post('create_project',  'AgileBoardController@create_project');
-    Route::get('teams',  'AgileBoardController@teams');
-    Route::get('project/{p_id}/team/{t_id}/team_detail',  'AgileBoardController@team_detail');
-    Route::post('project/{id}/create_team',  'AgileBoardController@create_team');
-    Route::get('new_member',  'AgileBoardController@new_member');
-    Route::post('add_file',  'AgileBoardController@add_file');
-    Route::get('teams_board',  'AgileBoardController@teams_board');
+    
+    // Tasks and Issues
+    Route::get('project/{p_id}/team/{t_id}/team_board', 'TeamController@team_board');
+    Route::get('project/{p_id}/team/{t_id}/issue_board', 'TeamController@issue_board');
+    Route::post('project/{p_id}/team/{t_id}/create_task', 'TaskController@createTask');
+    Route::get('project/{p_id}/team/{t_id}/delete_task',  'TaskController@deleteTask');
+    Route::get('project/{p_id}/team/{t_id}/update_task_status',  'TaskController@updateTaskStatus');
+    
+    Route::get('raise_ticket',  'TaskController@issueTracker');
+    Route::get('create_ticket',  'TaskController@createIssue');
+    Route::get('delete_ticket',  'TaskController@deleteIssue');
+    //Organization
+    Route::post('create_organization', 'OrganizationController@create_organization');
+    // Project 
+    Route::get('projects',  ['as' => 'projects', 'uses' => 'ProjectController@projects']);
+    Route::post('create_project',  'ProjectController@create_project');
+    
+    // Team
+    Route::get('teams',  'TeamController@teams');
+    Route::get('project/{id}/teams',  'TeamController@project_teams');
+    Route::get('project/{p_id}/team/{t_id}/team_detail',  'TeamController@team_detail');
+    Route::post('project/{id}/create_team',  'TeamController@create_team');
+    Route::get('teams_board',  'TeamController@teams_board');
+    // user
+    Route::get('new_member',  'UserController@new_member');
+    // file
+    Route::post('add_file',  'FileController@add_file');
 });
 
 // to be used in the future, so that each organization can access their page using

@@ -592,7 +592,7 @@
             };
 
 
-            /* var ctx4 = document.getElementById("doughnutChart").getContext("2d");
+            var ctx4 = document.getElementById("doughnutChart").getContext("2d");
             new Chart(ctx4, {type: 'doughnut', data: doughnutData, options:doughnutOptions});
 
             var doughnutData = {
@@ -601,10 +601,10 @@
                     data: [70,27,85],
                     backgroundColor: ["#a3e1d4","#dedede","#9CC3DA"]
                 }]
-            }; */
+            };
 
 
-            /*var doughnutOptions = {
+            var doughnutOptions = {
                 responsive: false,
                 legend: {
                     display: false
@@ -613,7 +613,7 @@
 
             var ctx4 = document.getElementById("doughnutChart2").getContext("2d");
             new Chart(ctx4, {type: 'doughnut', data: doughnutData, options:doughnutOptions});
-            */
+            
 
         });
     </script>

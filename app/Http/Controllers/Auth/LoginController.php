@@ -46,4 +46,14 @@ class LoginController extends Controller
             'active' => 1,
         ];
     }
+
+    protected function redirectTo() {
+
+        if (\Auth::user()->hasRole('admin')) {
+            return '/admin/dashboard';
+        }
+        else{
+            return '/home';
+        }
+    }
 }

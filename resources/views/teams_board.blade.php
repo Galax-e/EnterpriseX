@@ -1,4 +1,4 @@
-@extends('layouts.dialog')
+@extends('layouts.master')
 
 @section('header')
             <div class="row wrapper border-bottom white-bg page-heading">

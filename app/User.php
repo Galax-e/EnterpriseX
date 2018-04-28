@@ -132,4 +132,8 @@ class User extends Authenticatable
         }
         return collect($user_roles);
     }
+
+    public function is_executive() {
+        return $this->hasRole('owner') || $this->hasRole('client');
+    }
 }

@@ -1,4 +1,4 @@
-@extends('layouts.dialog')
+@extends('layouts.master')
 
 @section('header')
             <div class="row wrapper border-bottom white-bg page-heading">
@@ -154,7 +154,7 @@
                                                     {{--  <a href="#" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> Edit </a>  --}}
                                                     <form method="GET" action="project/{{$project->id}}/teams" >
                                                         {{--  <input type="hidden" name="id" value="{{$project->id}}">  --}}
-                                                        {{ csrf_field() }}
+                                                        {{--  {{ csrf_field() }}  --}}
                                                         <button class="btn btn-white btn-sm" title="View team progress"><i class="fa fa-users"></i> View Teams </button>
                                                     </form>
                                                 </td>

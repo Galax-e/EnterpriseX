@@ -1,4 +1,4 @@
-@extends('layouts.dialog')
+@extends('layouts.master')
 
 @section('content')
 <div class="row  border-bottom white-bg dashboard-header">

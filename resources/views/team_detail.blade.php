@@ -1,4 +1,4 @@
-@extends('layouts.dialog')
+@extends('layouts.master')
 
 @section('header')
             <div class="row wrapper border-bottom white-bg page-heading">
@@ -282,65 +282,87 @@
                     </ul>
                     
                     <div class="text-center m-t-md">
-                        <a href="{{url('project/'.$p_id.'/team/'.$t_id.'/agile_board')}}" class="btn btn-xs btn-primary pull-left">Agile Board</a>
-                        <a data-toggle="modal" data-target="#myModa16" class="btn btn-xs btn-primary">Add files</a>
-                           <div class="modal inmodal fade" id="myModa16" tabindex="-1" role="dialog"  aria-hidden="true">
-                                <div class="modal-dialog modal-lg">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                                            <i class="fa fa-file modal-icon"></i>
-                                            <h4 class="modal-title">Add file</h4>
-                                            <small class="font-bold">Enterprise-X is the leading support Software.</small>
-                                        </div>
-                                        <div class="modal-body">
-                                            <form id="image_upload_form" method="post" enctype="multipart/form-data" action='add_file' autocomplete="off">
-                                                {!! csrf_field() !!}
-                                                <input type="hidden" name="team_id" value="{{$team->id}}">
-                                                         <div class="form-group has-feedback">
-                                                            <input type="text" name="file_name" class="form-control" placeholder="File title" value="" required autofocus/>
-                                                           
-                                                        </div> 
+                    <?php 
+                        $user = Auth::user();
+                        if ($user->hasRole('owner')) {
+                            $board = 'team_board';
+                        }else if ($user->hasRole('client')) {
+                            $board = 'issue_board';
+                        }else{
+                            if (!$user->hasRole('admin')){
+                                $member = Auth::user()->member; 
+                                $team = \App\Models\Team::find($member->id);
+                                $board = $team->type === 'organization'? 'team_board':'issue_board';
+                            }
+                        }
+                        
+                    ?>
+                        <a data-toggle="modal" data-target="#myModa16" class="btn btn-xs btn-primary pull-left">Add files</a>
+                        <div class="modal inmodal fade" id="myModa16" tabindex="-1" role="dialog"  aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                        <i class="fa fa-file modal-icon"></i>
+                                        <h4 class="modal-title">Add file</h4>
+                                        <small class="font-bold">Enterprise-X is the leading support Software.</small>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form id="image_upload_form" method="post" enctype="multipart/form-data" action='add_file' autocomplete="off">
+                                            {!! csrf_field() !!}
+                                            <input type="hidden" name="team_id" value="{{$team->id}}">
                                                         <div class="form-group has-feedback">
-                                                            <input type="file" name="upload_images[]" id="image_file" class="form-control" multiple >
-                                                            
-                                                        </div>
-                                        </div>
-                                                <div class="modal-footer">
-                                                <input type="submit" value="Submit" class="btn btn-primary">
-                                            </form>
-                                             <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>                                            
-                                        </div>
+                                                        <input type="text" name="file_name" class="form-control" placeholder="File title" value="" required autofocus/>
+                                                        
+                                                    </div> 
+                                                    <div class="form-group has-feedback">
+                                                        <input type="file" name="upload_images[]" id="image_file" class="form-control" multiple >
+                                                        
+                                                    </div>
+                                    </div>
+                                            <div class="modal-footer">
+                                            <input type="submit" value="Submit" class="btn btn-primary">
+                                        </form>
+                                            <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>                                            
                                     </div>
                                 </div>
                             </div>
+                        </div>
                         <a data-toggle="modal" data-target="#myModal5" class="btn btn-xs btn-primary">Add member(s)</a>
-                         <div class="modal inmodal fade" id="myModal5" tabindex="-1" role="dialog"  aria-hidden="true">
-                                <div class="modal-dialog modal-lg">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                                            <i class="fa fa-users modal-icon"></i>
-                                            <h4 class="modal-title">Add new member(s)</h4>
-                                            <small class="font-bold">Enterprise-X is the leading support Software.</small>
-                                        </div>
-                                        <div class="modal-body">
-                                            <form method="GET" action="new_member" >
-                                                <div class="form-group has-feedback">
-                                                    <input type="hidden" name="team_id" value="{{$team->id}}"/>
-                                                    <input type="text" name="email" class="form-control" placeholder="Email" value="" required autofocus/>
-                                                    <span class="glyphicon glyphicon-user form-control-feedback"></span>
-                                                </div>
-                                       </div>
-                                         <div class="modal-footer">
-                                        <input type="submit" value="Submit" class="btn btn-primary">
-                                            </form>
-                                             <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>                                            
-                                        </div>
+                        <div class="modal inmodal fade" id="myModal5" tabindex="-1" role="dialog"  aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                        <i class="fa fa-users modal-icon"></i>
+                                        <h4 class="modal-title">Add new member(s)</h4>
+                                        <small class="font-bold">Enterprise-X is the leading support Software.</small>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form method="GET" action="new_member" >
+                                            <div class="form-group has-feedback">
+                                                <input type="hidden" name="team_id" value="{{$team->id}}"/>
+                                                <input type="text" name="email" class="form-control" placeholder="Email" value="" required autofocus/>
+                                                <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                                            </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                    <input type="submit" value="Submit" class="btn btn-primary">
+                                        </form>
+                                            <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>                                            
                                     </div>
                                 </div>
                             </div>
-
+                        </div>
+                        <br/>
+                        <span class="row">
+                        @if( !$user->hasRole('admin'))
+                            <a href="{{url('project/'.$p_id.'/team/'.$t_id.'/'.$board)}}" class="btn btn-xs btn-primary pull-left">Agile Board</a>
+                        @else
+                            <a style="margin-right: 2px;" href="{{url('project/'.$p_id.'/team/'.$t_id.'/team_board')}}" class="btn btn-xs btn-primary pull-left">Task Board</a>
+                            <a href="{{url('project/'.$p_id.'/team/'.$t_id.'/issue_board')}}" class="btn btn-xs btn-primary pull-left">Issue Board</a>
+                        @endif
+                        </span>
                     </div>
                 </div>
             </div>
