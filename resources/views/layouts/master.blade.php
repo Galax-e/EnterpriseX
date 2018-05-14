@@ -15,7 +15,8 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,500,600|Material+Icons" rel="stylesheet" type="text/css">
     
     <!-- other styles -->
-    <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
+    {{--  <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">  --}}
+     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('font-awesome/css/font-awesome.css') }}" rel="stylesheet">
     <link href="{{ asset('css/animate.css') }}" rel="stylesheet">
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
@@ -30,6 +31,13 @@
     <link rel="stylesheet" href="{{ asset('vendor/backpack/overlays/backpack.bold.css') }}">
 
     @yield('after_styles')  -->
+
+    <style>
+        body{
+            font-family: Roboto, proxima-nova "Source Sans Pro", sans-serif, Overpass, "Segoe UI", "Droid Sans", "open sans", "Helvetica Neue", Helvetica, Arial;
+            font-size: 12px;
+        }
+    </style>
 
     <!-- Mainly scripts -->
     <script src="{{ asset('js/jquery-3.1.1.min.js') }}"></script>
@@ -105,11 +113,11 @@
                 <ul class="dropdown-menu animated fadeInRight m-t-xs">
                     <li><a href="profile.html">Profile</a></li>
                     @hasrole('member')
-                        @if(Auth::user()->member->type === 'organization')
+                        {{--  @if(Auth::user()->member->type === 'organization')
                             <li><a href="#">Task board</a></li>
                         @else
                             <li><a href="#">Issue board</a></li>
-                        @endif
+                        @endif  --}}
                     @endhasrole
                     @hasrole('owner')
                         <li><a href="#">Projects</a></li>
@@ -132,15 +140,17 @@
             <ul class="nav nav-second-level collapse">
                 <li><a href="{{url('home')}}"><i class="fa fa-home"></i> <span class="nav-label">Home</span></a></li>
                 @hasrole('member')
+                    {{--
                     @if(Auth::user()->member->type === 'organization')
                         <li><a href="#"><i class="fa fa-plus"></i> <span class="nav-label">Create Task</span></a></li>
                         <li><a href="#"><i class="fa fa-list-alt"></i> <span class="nav-label">Task Board</span></a></li>
                     @else
                         <li><a href="#"><i class="fa fa-plus"></i> <span class="nav-label">Create Issue</span></a></li>
                         <li><a href="#"><i class="fa fa-th"></i> <span class="nav-label">Issue Board</span></a></li>
-                    @endif
-                <li><a href="#"><i class="fa fa-users"></i> <span class="nav-label">Assigned Teams</span></a></li>
-                 <li><a href="#"><i class="fa fa-suitcase"></i> <span class="nav-label">Assigned Projects</span></a></li>
+                    @endif  
+                    --}}
+                    <li><a href="#"><i class="fa fa-users"></i> <span class="nav-label">Teams</span></a></li>
+                    <li><a href="{{url('members_projects')}}"><i class="fa fa-suitcase"></i> <span class="nav-label">Projects</span></a></li>
                 @endhasrole
                 @hasrole('owner')
                     <li><a href="#"><i class="fa fa-plus"></i> <span class="nav-label">Create Client</span></a></li>
@@ -152,6 +162,7 @@
                 @endhasrole
             </ul>
         </li>
+        <li><a href="{{url('organizations')}}"><i class="fa fa-briefcase"></i> <span class="nav-label">Organizations</span></a></li>
         {{--  <li>
             <a href="{{route('projects')}}"><i class="fa fa-list-alt"></i> <span class="nav-label">Projects</span></a>
         </li>  --}}
@@ -225,6 +236,23 @@
             </form>
         </div>
             <ul class="nav navbar-top-links navbar-right">
+                <!-- -->
+                <?php $user = Auth::user(); 
+                    #$user_member = $user->member;
+                    #$organization = \App\Models\Organization::with('members')->get();
+                ?>
+                <li>
+                    @if (config('app.deployment_type') === 'web')
+                        <span>
+                            {{--  Query if user is owner or not. If not, show button to create organization  --}}
+                            @if(! $user->hasRole('owner') && ! $user->hasRole('admin'))
+                                <a data-toggle="modal" data-target="#modalOrg" class="btn btn-primary" href="#">
+                                <label style="font-size: 15px">Create Organization</label>
+                                </a>
+                            @endif
+                        </span>
+                    @endif
+                </li>
                 <li>
                     <span class="m-r-sm text-muted welcome-message">Welcome to EnterpriseX</span>
                 </li>
@@ -368,6 +396,8 @@
         <section class="content">
 
           @yield('content')
+
+          @include('partials.modals')
 
         </section>
         <!-- /.content -->

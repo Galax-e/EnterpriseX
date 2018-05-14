@@ -42,7 +42,8 @@
                                             <small class="font-bold">Enterprise-X is the leading support Software.</small>
                                         </div>
                                         <div class="modal-body">
-                                            <form method="GET" action="create_ticket" >
+                                            <form method="POST" action="create_ticket" >
+                                                {{csrf_field()}}
                                                 <div class="form-group has-feedback">
                                                     <input type="text" name="description" class="form-control" placeholder="Full description of issue or task" value="" required autofocus/>
                                                     <span class="glyphicon glyphicon-user form-control-feedback"></span>
@@ -69,18 +70,20 @@
                                 </div>
                                 <div class="m-t-md">
 
-                                    <div class="pull-right">
-                                        <button type="button" class="btn btn-sm btn-white"> <i class="fa fa-comments"></i> </button>
-                                        <button type="button" class="btn btn-sm btn-white"> <i class="fa fa-user"></i> </button>
-                                        <button type="button" class="btn btn-sm btn-white"> <i class="fa fa-list"></i> </button>
-                                        <button type="button" class="btn btn-sm btn-white"> <i class="fa fa-pencil"></i> </button>
-                                        <button type="button" class="btn btn-sm btn-white"> <i class="fa fa-print"></i> </button>
-                                        <button type="button" class="btn btn-sm btn-white"> <i class="fa fa-cogs"></i> </button>
-                                    </div>
+                                    <div class="row">
+                                        <div class="pull-right">
+                                            <button type="button" class="btn btn-sm btn-white"> <i class="fa fa-comments"></i> </button>
+                                            <button type="button" class="btn btn-sm btn-white"> <i class="fa fa-user"></i> </button>
+                                            <button type="button" class="btn btn-sm btn-white"> <i class="fa fa-list"></i> </button>
+                                            <button type="button" class="btn btn-sm btn-white"> <i class="fa fa-pencil"></i> </button>
+                                            <button type="button" class="btn btn-sm btn-white"> <i class="fa fa-print"></i> </button>
+                                            <button type="button" class="btn btn-sm btn-white"> <i class="fa fa-cogs"></i> </button>
+                                        </div>
                                     
-                                    <div class="col-md-3">
-                                        <div class="panel panel-info">
-                                            <div class="panel-heading"><strong>Found {{$count}} issues.</strong></div>
+                                        <div class="col-md-3">
+                                            <div class="panel panel-primary">
+                                                <div class="panel-heading"><strong>Found {{$count}} issues.</strong></div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -94,21 +97,19 @@
                             @foreach($issues as $issue)
                                 <tr>
                                     <td>
-                                        @if($issue->status == "0" || $issue->status == "1")
+                                        @if($issue->status == "added" || $issue->status == "in-progress")
                                            <span class="label label-primary">Added</span>
-                                        @elseif($issue->type == "issue" && $issue->status == "2")
-                                            <span class="label label-warning">Fixed</span>
-                                        @elseif( $issue->status == "2")
-                                            <span class="label label-primary">Done</span>
+                                        @elseif($issue->status == "in-progress")
+                                            <span class="label label-warning">In Progress</span>
+                                        @elseif( $issue->status == "fixed")
+                                            <span class="label label-primary">Fixed</span>
                                         @endif
                                     </td>
                                     <td class="issue-info">
                                         <a href="#">
-                                        @if($issue->type == "issue")
+                                        {{--  @if($issue->type == "issue")  --}}
                                             ISSUE-800000000000{{$issue->id}}
-                                        @else
-                                            TASK-800000000000{{$issue->id}}
-                                        @endif
+                                        {{--  @endif  --}}
                                         </a>
 
                                         <small>
@@ -116,10 +117,13 @@
                                         </small>
                                     </td>
                                     <td>
-                                    <?php $users = DB::table('users')->where('id', $issue->created_by)->get(); ?>
-                                    @foreach($users as $user)
-                                        {{$user->name}}
-                                    @endforeach
+                                    <?php $user = DB::table('users')->where('id', $issue->created_by)->first(); 
+                                        // use a team membe id
+                                        $issue = \App\Issue::find($issue->created_by);
+                                        
+                                    ?>
+                                        {{$user->name}} {{$issue->team_member->member_id}}
+                                        {{$user->member->id}}
                                     </td>
                                     <td>
                                         {{ date('M d, Y h:i:s A', strtotime($issue->created_at)) }}

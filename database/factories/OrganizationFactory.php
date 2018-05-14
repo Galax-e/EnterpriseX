@@ -21,6 +21,7 @@ $factory->define(App\Models\Client::class, function (Faker $faker) {
     return [
         //
         'name' => $faker->company,
+        'user_id' => $faker->unique()->numberBetween(3, 150),
         'organization_id' => $faker->numberBetween(1, 8),
         'address' => $faker->streetAddress,
         'city' => $faker->city,

@@ -43,24 +43,29 @@ Route::group(['middleware' => ['auth.basic']], function () {
     // auth route  ['as' => 'agile_board',        'uses' => 'AgileBoardController@index']
     
     // Tasks and Issues
-    Route::get('project/{p_id}/team/{t_id}/team_board', 'TeamController@team_board');
-    Route::get('project/{p_id}/team/{t_id}/issue_board', 'TeamController@issue_board');
+    Route::get('project/{p_id}/team/{t_id}/task_board', 'TaskController@task_board');
+    Route::get('project/{p_id}/team/{t_id}/issue_board', 'TaskController@issue_board');
     Route::post('project/{p_id}/team/{t_id}/create_task', 'TaskController@createTask');
     Route::get('project/{p_id}/team/{t_id}/delete_task',  'TaskController@deleteTask');
     Route::get('project/{p_id}/team/{t_id}/update_task_status',  'TaskController@updateTaskStatus');
     
     Route::get('raise_ticket',  'TaskController@issueTracker');
-    Route::get('create_ticket',  'TaskController@createIssue');
+    Route::post('project/{p_id}/team/{t_id}/create_ticket',  'TaskController@createIssue');
     Route::get('delete_ticket',  'TaskController@deleteIssue');
     //Organization
+    Route::get('organizations', 'OrganizationController@index');
+    Route::get('organizations/{org}', 'OrganizationController@organization');
+    Route::get('clients', 'OrganizationController@clients');
     Route::post('create_organization', 'OrganizationController@create_organization');
     // Project 
-    Route::get('projects',  ['as' => 'projects', 'uses' => 'ProjectController@projects']);
+    Route::get('projects/{org}',  ['as' => 'projects', 'uses' => 'ProjectController@projects']);
+    Route::get('projects',  ['as' => 'projects', 'uses' => 'ProjectController@index']);
     Route::post('create_project',  'ProjectController@create_project');
+    Route::get('members_projects/{org}', ['as' => 'member_projects', 'uses' => 'ProjectController@members_projects']);
     
     // Team
     Route::get('teams',  'TeamController@teams');
-    Route::get('project/{id}/teams',  'TeamController@project_teams');
+    Route::get('project/{p_id}/teams',  'TeamController@project_teams');
     Route::get('project/{p_id}/team/{t_id}/team_detail',  'TeamController@team_detail');
     Route::post('project/{id}/create_team',  'TeamController@create_team');
     Route::get('teams_board',  'TeamController@teams_board');

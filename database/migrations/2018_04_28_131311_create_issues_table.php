@@ -17,11 +17,11 @@ class CreateIssuesTable extends Migration
             $table->increments('id');
             $table->string('description');
             $table->unsignedInteger('team_id');
-            $table->unsignedInteger('task_id')->nullable();
+            $table->unsignedInteger('task_id');
             $table->unsignedInteger('created_by');
             $table->unsignedInteger('updated_by')->nullable();            
-            $table->enum('status', ['added', 'in-progress', 'fixed'])->default('added'); // 0 for todo, 1 for in-progress, 2 for completed
-            $table->string('category')->nullable(); // where the issue is to be resolved
+            $table->enum('status', ['added', 'inprogress', 'fixed'])->default('added'); // 0 for todo, 1 for in-progress, 2 for completed
+            $table->string('category')->default('project_support'); // where the issue is to be resolved
             $table->timestamps();
         });
     }

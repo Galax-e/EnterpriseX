@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\Models\Organization;
+use App\Models\Project;
+use App\TeamMember;
+
 class ProjectController extends Controller
 {
     //
@@ -12,9 +16,27 @@ class ProjectController extends Controller
         
     }
 
-    public function projects(Request $request)
+    public function projects(Request $request, Organization $org)
     {
-        return view('project_team.projects');
+        
+        $projects = auth()->user()->user_org_projects($org);
+
+        return view('project_team.projects', compact('projects', 'org'));
+    }
+
+    public function members_projects(Request $request, Organization $org)
+    {
+
+        $projects = $org->projects()->paginate(10);
+
+        // dd($projects);
+
+        // if (Auth::user()->isAdmin()) {
+        //     $projects = App\Models\Project::paginate(10);
+        // }else{
+        //     $projects = DB::table('projects')->where('organization_id', Auth::user()->organization->id)->orderBy('created_at', 'DESC')->paginate(10);
+        // }
+        return view('project_team.member.projects', compact('projects', 'org'));
     }
 
     public function create_project(Request $request)
@@ -30,8 +52,8 @@ class ProjectController extends Controller
         $project->organization_id = $org_id;
         if ($request->has('client')) {
             $client = DB::table('clients')
-                        ->where('name', $request->input('client'))
-                        ->where('organization_id', $org_id)->get();
+                ->where('name', $request->input('client'))
+                ->where('organization_id', $org_id)->get();
             $project->client_id = $client->id;
         }
         $project->save();

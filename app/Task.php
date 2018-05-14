@@ -8,7 +8,6 @@ class Task extends Model
 {
     //
     protected $fillable = ['description'];
-    protected $touches = ['issue'];
 
     /**
      * An task belongs to a team
@@ -19,6 +18,10 @@ class Task extends Model
 
     public function issue() {
         return $this->hasOne('App\Issue');
+    }
+
+    public function team_member() {
+        return $this->belongsTo('App\Models\Team'); 
     }
 
 }

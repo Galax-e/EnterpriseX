@@ -18,8 +18,10 @@
 
 @section('content')
         <div class="row">
-           <?php $teams = DB::table('teams')->where('id', $team_id)->get(); ?>
-            @foreach($teams as $team)
+           <?php #$teams = DB::table('teams')->where('id', $t_id)->get();
+            #dd($team);
+            ?>
+            {{--  @foreach($teams as $team)  --}}
             <div class="col-lg-9">
                 <div class="wrapper wrapper-content animated fadeInUp">
                     <div class="ibox">
@@ -41,15 +43,15 @@
 
                                         <dt>Created by:</dt> 
                                         <dd>
-                                            <?php $users = DB::table('users')->where('id', $team->created_by)->get(); ?>
-                                            @foreach($users as $user)
-                                                {{$user->name}}
-                                            @endforeach
+                                            <?php $user = DB::table('teams')->whereNotNull('created_by', $team->created_by)->first(); ?>
+                                            {{--  @foreach($users as $user)   --}}
+                                                {{optional($user)->name}}
+                                            {{--  @endforeach  --}}
                                         </dd>
                                         <dt>Messages:</dt> <dd>  162</dd>
-                                        <dt>Client:</dt> <dd><a href="#" class="text-navy"> {{$project->client or "Name"}}</a> </dd>
+                                        <dt>Client:</dt> <dd><a href="#" class="text-navy"> {{$project->client->name or "Name"}}</a> </dd>
                                         <dt>Members:</dt> 
-                                        <dd> 	{{$count}} </dd>
+                                        <dd>{{$count}}</dd>
                                     </dl>
                                 </div>
                                 <div class="col-lg-7" id="cluster_info">
@@ -238,7 +240,7 @@
                     </div>
                 </div>
             </div>
-            @endforeach
+            {{--  @endforeach  --}}
             <div class="col-lg-3">
                 <div class="wrapper wrapper-content project-manager">
                     <h4>Project description</h4>
@@ -284,20 +286,20 @@
                     <div class="text-center m-t-md">
                     <?php 
                         $user = Auth::user();
-                        if ($user->hasRole('owner')) {
-                            $board = 'team_board';
-                        }else if ($user->hasRole('client')) {
+                        if ($user->hasRole('owner') || $user->hasRole('manager')) {
+                            $board = 'task_board';
+                        }if ($user->hasRole('client') || $user->hasRole('client-manager')) {
                             $board = 'issue_board';
-                        }else{
-                            if (!$user->hasRole('admin')){
-                                $member = Auth::user()->member; 
-                                $team = \App\Models\Team::find($member->id);
-                                $board = $team->type === 'organization'? 'team_board':'issue_board';
-                            }
                         }
+                        #$member = Auth::user()->member; 
+                        #$team = \App\Models\Team::find($member->id);
+                        #$board = $team->type === 'organization'? 'team_board':'issue_board';
                         
                     ?>
-                        <a data-toggle="modal" data-target="#myModa16" class="btn btn-xs btn-primary pull-left">Add files</a>
+                        
+                        <a href="{{url('project/'.$p_id.'/team/'.$t_id.'/'.$board)}}" class="btn btn-xs btn-primary pull-left">Board</a>
+                        <a data-toggle="modal" data-target="#myModa16" class="btn btn-xs btn-primary">Add files</a>
+                        <a data-toggle="modal" data-target="#myModal5" class="btn btn-xs btn-primary">Add member(s)</a>
                         <div class="modal inmodal fade" id="myModa16" tabindex="-1" role="dialog"  aria-hidden="true">
                             <div class="modal-dialog modal-lg">
                                 <div class="modal-content">
@@ -328,7 +330,6 @@
                                 </div>
                             </div>
                         </div>
-                        <a data-toggle="modal" data-target="#myModal5" class="btn btn-xs btn-primary">Add member(s)</a>
                         <div class="modal inmodal fade" id="myModal5" tabindex="-1" role="dialog"  aria-hidden="true">
                             <div class="modal-dialog modal-lg">
                                 <div class="modal-content">
@@ -355,14 +356,6 @@
                             </div>
                         </div>
                         <br/>
-                        <span class="row">
-                        @if( !$user->hasRole('admin'))
-                            <a href="{{url('project/'.$p_id.'/team/'.$t_id.'/'.$board)}}" class="btn btn-xs btn-primary pull-left">Agile Board</a>
-                        @else
-                            <a style="margin-right: 2px;" href="{{url('project/'.$p_id.'/team/'.$t_id.'/team_board')}}" class="btn btn-xs btn-primary pull-left">Task Board</a>
-                            <a href="{{url('project/'.$p_id.'/team/'.$t_id.'/issue_board')}}" class="btn btn-xs btn-primary pull-left">Issue Board</a>
-                        @endif
-                        </span>
                     </div>
                 </div>
             </div>

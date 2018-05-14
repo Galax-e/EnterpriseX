@@ -21,7 +21,7 @@
                     </span>
                 @endif
             </div>
-            <button type="submit" class="btn btn-primary block full-width m-b">Login</button>
+            <button type="submit" class="btn btn-lg btn-primary block full-width m-b">Login</button>
             <a href="{{ url('/password/reset') }}"><small>Forgot password?</small></a>
             <p class="text-muted text-center"><small>Do not have an account?</small></p>
             <a class="btn btn-lg btn-primary btn-block" href="{{ url('register') }}">Create an account</a>

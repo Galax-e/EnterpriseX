@@ -25,6 +25,7 @@ class HomeController extends Controller
     {
         $user = Auth::user();
         $title = 'Home';
-        return view('home', compact('user', 'title'));
+        $user_orgs = Auth::user()->user_organizations();
+        return view('home', compact('user', 'title', 'user_orgs'));
     }
 }

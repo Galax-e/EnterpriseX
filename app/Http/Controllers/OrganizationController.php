@@ -3,13 +3,32 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use App\Models\Organization;
+use Auth;
+use DB;
 class OrganizationController extends Controller
 {
     //
 
     public function index() {
 
+        // all organizations where user is owner or member
+        $user_orgs = Auth::user()->user_organizations();
+        return view('organizations.index', compact('user_orgs'));
+    }
+
+    public function organization(Organization $org) {
+        
+        return view('organizations.organization', compact('org'));
+    }
+
+    public function clients() {
+
+        // all clients that belong to user organizations
+        // use the view to filter who can access the client model
+        // to reduce the logic here.
+        $user_org_clients = Auth::user()->organization->clients;
+        return view('organizations.clients.index', compact($user_org_clients));
     }
 
     public function create_organization(Request $request)

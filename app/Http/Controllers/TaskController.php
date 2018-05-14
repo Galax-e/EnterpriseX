@@ -12,6 +12,7 @@ use App\Models\Client;
 use App\Models\Team;
 use App\Models\Project;
 use App\Member;
+use App\Issue;
 use App\TeamMember;
 use App\Document;
 use App\Activity;
@@ -83,18 +84,22 @@ class TaskController extends Controller
         return view('jobs.issues.index', compact('count'));
     }
 
-    public function createIssue(Request $request, $t_id){
+    public function createIssue(Request $request, $p_id, $t_id){
+
+        $user = Auth::user();
         $issue = new Issue;
         $issue->description = $request->input('description'); // get task description ...
-        $issue->created_by = Auth::user()->id;
+        $issue->created_by = $user->id;
         $issue->team_id = $t_id;
 
         // create a corresponding task for the issue.
         $task = new Task;
         $task->description = $request->input('description'); // get task description ...
         $task->created_by = $user->id;
-        $task->team_id = $request->input('team_id');
+        $task->team_id = $t_id; // $request->input('team_id');
+        $task->from_issue = 1;
         $task->save();
+
         // attach task to issue
         $issue->task_id = $task->id;
         $issue->save();
@@ -105,5 +110,46 @@ class TaskController extends Controller
         $id = $request->input('id');
         DB::table('issues')->where('id', $id)->delete();  
         return redirect()->back();
-    }       
+    } 
+
+    public function task_board(Request $request, $p_id, $t_id) {
+        $team_id = $t_id; //$request->query('id');
+        $project_id = $p_id;
+        $user = Auth::user();
+        // $team = Team::find($t_id);        
+        $team_member = TeamMember::where('team_id', $team_id)
+                        ->where('member_id', optional($user->member)->id);
+
+        $tasks = DB::table('tasks')->where('team_id', $team_id)->orderBy('created_at', 'DESC')->get();
+        
+        if ($user->hasRole('owner')) {                
+            return view('jobs.tasks.index', compact('tasks', 'project_id', 'team_id', 'user'));
+        }else{
+            if ($team_member) {
+                return view('jobs.tasks.index', compact('tasks', 'project_id', 'team_id', 'user'));
+            }
+            return redirect()->back(); // user is not a member of that team
+        }  
+    }
+
+    public function issue_board (Request $request, $p_id, $t_id) {
+
+        $team_id = $t_id; //$request->query('id');
+        $project_id = $p_id;
+        $user = Auth::user();
+        // $team = Team::find($t_id);        
+        $team_member = TeamMember::where('team_id', $team_id)
+                        ->where('member_id', optional($user->member)->id);
+        
+        $issues = DB::table('issues')->where('team_id', $team_id)->orderBy('created_at', 'DESC')->get();
+        $count = Issue::where('created_by','=',Auth::user()->id)->count();
+        if ($user->is_executive()) {                
+            return view('jobs.issues.index', compact('issues', 'project_id', 'team_id', 'count', 'user'));
+        }else{
+            if ($team_member) {
+                return view('jobs.issues.index', compact('issues', 'project_id', 'team_id', 'count', 'user'));
+            }
+            return redirect()->back(); // user is not a member of that team
+        }           
+    }
 }

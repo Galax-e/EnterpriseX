@@ -50,82 +50,6 @@
 </div>
 <div class="col-md-6">
     
-    @if (config('app.deployment_type') === 'web')
-        <span class="row">
-            {{--  Query if user is owner or not. If not, show button to create organization  --}}
-            @if(! $user->hasRole('owner') && ! $user->hasRole('admin'))
-                <a data-toggle="modal" data-target="#modalOrg" class="btn btn-primary" href="#">Create Organization</a>
-            @endif
-        </span>
-    @endif
-    <div class="modal inmodal fade" id="modalOrg" tabindex="-1" role="dialog"  aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                    <i class="fa fa-briefcase modal-icon"></i>
-                    <h4 class="modal-title">Create your Organization</h4>
-                    <small class="font-bold">Enterprise-X is the leading productivity Software.</small>
-                </div>
-                <div class="modal-body">
-                    <form method="POST" action="create_organization" >
-                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                        <div class="form-group has-feedback">
-                            <input type="text" name="name" class="form-control" placeholder="choose entity name" required autofocus/>
-                            <span class="glyphicon glyphicon-briefcase form-control-feedback"></span>
-                        </div>
-                        <!-- configure getting client name from list of clients // a dropdown of clients -->
-                        <div class="form-group has-feedback">
-                            <input type="text" name="address" class="form-control" placeholder="address" required/>
-                        </div>
-                        <div class="form-group has-feedback">
-                            <input type="text" name="city" class="form-control" placeholder="city" required/>
-                        </div>
-                        <div class="form-group has-feedback">
-                            <input type="text" name="state" class="form-control" placeholder="state" required/>
-                        </div>
-                        <div class="form-group has-feedback">
-                            <input type="text" name="country" class="form-control" placeholder="country" />
-                        </div>
-                        {{--  <div class="form-group has-feedback">
-                            <input type="text" name="zip" class="form-control" pattern="[0-9]{5}" title="Five digit zip code" placeholder="zip code" />
-                        </div>  --}}
-                        <div class="form-group has-feedback">
-                            <table style="width:100%">
-                                <tr>
-                                    <td>
-                                        <select name="number_of_staff" class="form-control" placeholder="Number of staffs">
-                                            <option value="">-- Number of staffs--</option>
-                                            <option value="a"> 1 </option>
-                                            <option value="b"> 2-9 </option>
-                                            <option value="c"> 10-99 </option>
-                                            <option value="d"> 100-299 </option>
-                                            <option value="e"> >300 </option>
-                                        </select>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-                        <div class="form-group has-feedback">
-                            <input type="tel" name="phone_number" class="form-control" placeholder="Phone Number" required />
-                        </div>
-                        <div class="form-group has-feedback">
-                            <input type="text" name="description" class="form-control" placeholder="Project description" />
-                        </div>
-                        <div class="form-group has-feedback">
-                            <input type="text" name="industry" class="form-control" placeholder="Industry" />
-                            {{--  <span class="fa fa-industry form-control-feedback"></span>  --}}
-                        </div>
-                        
-                </div>
-                    <div class="modal-footer">
-                <input type="submit" value="Submit" class="btn btn-primary">
-                    </form>
-                        <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>                                            
-                </div>
-            </div>
-        </div>
-    </div>
     <div class="flot-chart dashboard-chart">
         <div class="flot-chart-content" id="flot-dashboard-chart"></div>
     </div>
@@ -180,7 +104,7 @@
         <div class="col-lg-4">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <h5>New data for the report</h5> <span class="label label-primary">IN+</span>
+                    <h5>Your organization(s)</h5> <span class="label label-primary">Ent-x</span>
                     <div class="ibox-tools">
                         <a class="collapse-link">
                             <i class="fa fa-chevron-up"></i>
@@ -199,25 +123,58 @@
                         </a>
                     </div>
                 </div>
+                @if( auth()->user()->has_org())
                 <div class="ibox-content">
-                    <div>
-
-                        <div class="pull-right text-right">
-
-                            <span class="bar_dashboard">5,3,9,6,5,9,7,3,5,2,4,7,3,2,7,9,6,4,5,7,3,2,1,0,9,5,6,8,3,2,1</span>
-                            <br/>
-                            <small class="font-bold">$ 20 054.43</small>
+                    <div class="full-height-scroll">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Contact</th>
+                                        <th>Role</th>
+                                        <th>Link</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($user_orgs as $key => $user_org)
+                                    <tr>
+                                        <td><a data-toggle="tab" href="#company-{{$loop->index + 1}}" class="client-link">{{$user_org->name}}</a></td>
+                                        <td>{{explode(' ', $user_org->user->name)[0]}}</td>
+                                        <td>
+                                            <span class="label label-primary">
+                                                {{$key}}
+                                            </span>
+                                        </td>
+                                        <td class="client-status">                                            
+                                            <a href="{{url('projects/'.$user_org->id)}}">
+                                                <span class="label label-info" style="margin-left: 3px">
+                                                    <i class="fa fa-external-link fa-fw"></i>
+                                                </span>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    @endforeach                                
+                                </tbody>
+                            </table>
                         </div>
-                        <h4>NYS report new data!
-                            <br/>
-                            <small class="m-r"><a href="graph_flot.html"> Check the stock price! </a> </small>
-                        </h4>
-                        </div>
-                    </div>
+                    </div>    
                 </div>
+                @else
+                    <div class="ibox-content">
+                        <p>
+                            <pre>You have no organization</pre>
+                            <label>                                
+                                Create your organization or check job board for job openings
+                            </label>                            
+                        </p>
+                    </div>                    
+                @endif
+            </div>
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <h5>Read below comments</h5>
+                    <h5>Jobb board</h5>
+                    <!-- Get jobs from adverts and twitter -->
                     <div class="ibox-tools">
                         <a class="collapse-link">
                             <i class="fa fa-chevron-up"></i>

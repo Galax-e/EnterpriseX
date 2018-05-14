@@ -19,9 +19,11 @@ class CreateTasksTable extends Migration
             $table->unsignedInteger('team_id');
             $table->boolean('from_issue')->default(0);
             $table->unsignedInteger('created_by');
-            $table->unsignedInteger('updated_by')->nullable();            
+            $table->unsignedInteger('updated_by')->nullable();   
+            $table->unsignedInteger('reponsible')->nullable();         
             $table->enum('status', ['todo', 'inprogress', 'done'])->default('todo'); // 0 for todo, 1 for in-progress, 2 for completed
-            $table->string('category')->nullable(); // where the issue is to be resolved
+            $table->enum('priority', ['urgent', 'high', 'normal', 'low'])->default('normal');
+            $table->string('category')->nullable(); // where the task is to be resolved
             $table->timestamps();
         });
     }
