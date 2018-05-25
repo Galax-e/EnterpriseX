@@ -25,8 +25,8 @@
         <div class="wrapper wrapper-content  animated fadeInRight">
             <div class="row">
                 <div class="col-lg-4">
-                    <div class="ibox">
-                        <div class="ibox-content">
+                    <div class="ibox" >
+                        <div class="ibox-content" style="border-color: green; border-top-width: 3px">
                             <h3>To-do</h3>
                             <p class="small"><i class="fa fa-hand-o-up"></i> Drag task between list</p>
 
@@ -36,7 +36,7 @@
                                 <input type="hidden" id="project_id" name="project_id" value="{{ $project_id }}">
                                 
                                 <span class="input-group-btn">
-                                    <button type="button" class="btn btn-sm btn-white" id="add_task"> <i class="fa fa-plus"></i> Add task</button>
+                                    <button type="button" class="btn btn-sm btn-primary" id="add_task"> <i class="fa fa-plus"></i> Add task</button>
                                 </span>
                             </div>
 
@@ -53,7 +53,18 @@
                                                     <a href="#" class="pull-right btn btn-xs btn-white delete_task" id="delete_task-{{$task->id}}"><i class="trash_task fa fa-trash"></i> Delete</a>
                                                 @endif
                                                 <a href="#" data-toggle="modal" data-target="#taskBoardModal" class="pull-right btn btn-xs btn-white task_info" id="task_info-{{$task->id}}"><i class="trash_task fa fa-info"></i> Info</a>
-                                                <i class="fa fa-clock-o"></i> {{ date('M d, Y - h:i:s A', strtotime($task->created_at)) }}
+                                                {{--  <div class="">  --}}                                                
+                                                <select class="pull-right btn btn-xs btn-primary" style="width: 30%;">
+                                                    <option value="{{Auth::user()->id}}">{{Auth::user()->name}}</option>
+                                                    @if( $task->created_by === Auth::user()->id )
+                                                        @foreach($users as $team_member)
+                                                            <option value="{{$team_member->id}}">{{$team_member->name}}</option>    
+                                                        @endforeach 
+                                                    @endif                                                   
+                                                </select>
+                                                <i class="fa fa-user pull-right"></i>
+                                                {{--  </div>  --}}
+                                                <i class="fa fa-clock-o"></i> {{ date('M d, Y - h:iA', strtotime($task->created_at)) }}
                                             </div>
                                         </li>
                                     @endif
@@ -64,7 +75,7 @@
                 </div>
                 <div class="col-lg-4">
                     <div class="ibox">
-                        <div class="ibox-content">
+                        <div class="ibox-content" style="border-color: blue; border-top-width: 3px">
                             <h3>In Progress</h3>
                             <p class="small"><i class="fa fa-hand-o-up"></i> Drag task between list</p>
                             <ul class="sortable-list connectList agile-list" id="inprogress">
@@ -92,7 +103,7 @@
                 </div>
                 <div class="col-lg-4">
                     <div class="ibox">
-                        <div class="ibox-content">
+                        <div class="ibox-content" style="border-color: red; border-top-width: 3px">
                             <h3>Completed</h3>
                             <p class="small"><i class="fa fa-hand-o-up"></i> Drag task between list</p>
                             <ul class="sortable-list connectList agile-list" id="completed">

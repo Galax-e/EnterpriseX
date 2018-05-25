@@ -28,7 +28,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="ibox">
-                    <div class="ibox-title">
+                    <div class="ibox-title" style="border-color: rgb(218, 177, 42); border-top-width: 3px">
                         <h5>Project teams</h5>
                         <div class="ibox-tools">
                             <a data-toggle="modal" data-target="#myModal5" class="btn btn-primary btn-xs">Create new team</a>
@@ -58,16 +58,16 @@
             @foreach($teams as $team)
                 <div class="col-lg-4">
                     <div class="ibox">
-                        <div class="ibox-title">
+                        <div class="ibox-title" style="border-color: rgb(94, 205, 219); border-top-width: 3px">
                             {{--  <span class="label label-primary pull-right">NEW</span>  h:i:s A  --}}
                             <h5>{{$team->name}}</h5>
-                            <span class="label label-primary pull-right">Created:  {{ date('M d, Y', strtotime($team->created_at)) }}</span>
+                            <span class="label label-primary pull-right" style="font-size: 13px">Created:  {{ date('M d, Y', strtotime($team->created_at)) }}</span>
                         </div>
                         <div class="ibox-content">
                             <div class="team-members">
                                 <?php $team_members = DB::table('team_members')->where('team_id', $team->id)->get(); ?>
                                 @foreach($team_members as $member)
-                                        <a href="#"><img alt="member" class="img-circle" src="{{asset('img/a'.($loop->index+1).'.jpg')}}"></a>
+                                    <a href="#"><img alt="member" class="img-circle" src="{{asset('img/a'.($loop->index+1).'.jpg')}}"></a>
                                 @endforeach
                             </div>
                             <h4>Info about Design Team</h4>
@@ -91,20 +91,30 @@
                                     <div class="font-bold">RANKING</div>
                                     4th
                                 </div>
-                                <div class="col-sm-3">
+                                <div class="col-sm-3 text-right">
                                     <?php 
                                         $user = Auth::user();
                                         if ($user->hasRole('owner') || $user->hasRole('manager')) {
                                             $board = 'task_board';
-                                        }if ($user->hasRole('client') || $user->hasRole('client-manager')) {
+                                            $board_name = 'Task board';
+                                        }else if ($user->hasRole('client') || $user->hasRole('client-manager')) {
                                             $board = 'issue_board';
+                                            $board_name = 'Issue board';
+                                        }else {
+                                            if ($user->type === 'organization'){
+                                                $board = 'task_board';
+                                                $board_name = 'Task board';
+                                            }else{
+                                                $board = 'issue_board';
+                                                $board_name = 'Issue board';
+                                            }
                                         }
                                         #$member = Auth::user()->member; 
                                         #$team = \App\Models\Team::find($member->id);
                                         #$board = $team->type === 'organization'? 'team_board':'issue_board';
                                         
                                     ?>                                        
-                                    <a href="{{url('project/'.$id.'/team/'.$team->id.'/'.$board)}}" class="btn btn-xs btn-primary pull-left">Board</a>
+                                    <a href="{{url('project/'.$id.'/team/'.$team->id.'/'.$board)}}" class="btn btn-sm btn-info pull-left">{{$board_name}}</a>
                                 </div>
                                 <div class="col-sm-3 text-right">
                                     @if( optional(auth()->user()->organization)->id === $project_org->id || auth()->user()->is_client($project_org))
@@ -113,7 +123,7 @@
                                             <button class="btn btn-white btn-sm" title="View team details"><i class="fa fa-folder"></i> Team Detail </button>
                                         </form>
                                     @endif
-                                </div>
+                                </div>                                
                             </div>
                         </div>
                     </div>

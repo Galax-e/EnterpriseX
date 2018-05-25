@@ -112,21 +112,31 @@ class TaskController extends Controller
         return redirect()->back();
     } 
 
-    public function task_board(Request $request, $p_id, $t_id) {
-        $team_id = $t_id; //$request->query('id');
-        $project_id = $p_id;
+    public function task_board(Request $request, Project $p_id, Team $t_id) {
+        $team_id = $t_id->id; //$request->query('id');
+        $project_id = $p_id->id;
         $user = Auth::user();
-        // $team = Team::find($t_id);        
+        // $team = Team::find($t_id);
+
+        $org = $p_id->organization;
+        $member_id = $user->user_org_member_id($org);
         $team_member = TeamMember::where('team_id', $team_id)
-                        ->where('member_id', optional($user->member)->id);
+                        ->where('member_id', $member_id);
 
         $tasks = DB::table('tasks')->where('team_id', $team_id)->orderBy('created_at', 'DESC')->get();
         
+        $team_members = \App\TeamMember::where('team_id', $team_id)->get();
+        $users = [];
+        foreach($team_members as $team_member) {
+            $member = \App\Member::find($team_member->member_id);
+            $users[] = $member->user;
+        }
+
         if ($user->hasRole('owner')) {                
-            return view('jobs.tasks.index', compact('tasks', 'project_id', 'team_id', 'user'));
+            return view('jobs.tasks.index', compact('tasks', 'project_id', 'team_id', 'user', 'users'));
         }else{
             if ($team_member) {
-                return view('jobs.tasks.index', compact('tasks', 'project_id', 'team_id', 'user'));
+                return view('jobs.tasks.index', compact('tasks', 'project_id', 'team_id', 'user', 'users'));
             }
             return redirect()->back(); // user is not a member of that team
         }  

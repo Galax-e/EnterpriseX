@@ -27,7 +27,8 @@
                         </div>
                     @endif
                     <div class="ibox">
-                        <div class="ibox-title">
+                    {{--  rgb(49, 218, 181)  --}}
+                        <div class="ibox-title" style="border-color: rgb(94, 205, 219); border-top-width: 3px">
                         <?php $user = Auth::user(); 
                               $user_member = $user->member;
                               $organization = \App\Models\Organization::with('members')->get();

@@ -151,6 +151,7 @@ class User extends Authenticatable
         return $this->is_executive() || $this->hasRole('member');
     }
 
+    // return all organization where user is owner and/or a member
     public function user_organizations() {
 
         $orgs = \App\Models\Organization::with('members')->get();
@@ -181,17 +182,26 @@ class User extends Authenticatable
         return $user_org;
     }
 
+    // get user member id in an organization
+    public function user_org_member_id($org) {
+
+        $member_id = null;
+        foreach ($org->members as $member) {
+            if ($member->user_id === auth()->user()->id) {
+                $member_id = $member->user_id;
+            }
+        }
+        return $member_id;
+    }
+
+    // return all projects where user is a team member
     public function user_org_projects($org) {
         if ($org->id !== optional(auth()->user()->organization)->id ) {
-            // user is not the owner of the oorganization, thus fetch the projects 
+            // user is not the owner of the organization, thus fetch the projects 
             // where user is a member.
             $projects = $org->projects;
-            $member_id;
-            foreach ($org->members as $member) {
-                if ($member->user_id === auth()->user()->id) {
-                    $member_id = $member->user_id;
-                }
-            }
+            $member_id = $this->user_org_member_id($org);
+            
             $temp = [];
             foreach($projects as $project) {
                 foreach ($project->teams as $team) {

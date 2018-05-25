@@ -34,8 +34,19 @@
 
     <style>
         body{
-            font-family: Roboto, proxima-nova "Source Sans Pro", sans-serif, Overpass, "Segoe UI", "Droid Sans", "open sans", "Helvetica Neue", Helvetica, Arial;
-            font-size: 12px;
+            font-family: 'Google Sans', sans-serif;
+            font-family: 'Roboto', sans-serif;
+            font-family: 'Segoe UI', sans-serif;
+            font-family: 'Montserrat', sans-serif;
+            font-family: 'Lato', sans-serif;
+            font-family: 'Source Sans Pro', sans-serif;
+            font-family: 'FrescoSansPro-Normal';
+            font-family: 'Helvetica';
+            font-family: 'Hind', sans-serif;
+            font-family:  proxima-nova "Source Sans Pro", sans-serif, Overpass, "Droid Sans", "open sans", "Helvetica Neue", Helvetica, Arial;
+            
+            font-size: 1rem/1.5 !important;
+            /*font-size: 14px !important; */
         }
     </style>
 
