@@ -46,26 +46,39 @@
                                     @if($task->status === 'todo')
                                         {{-- Add Auth::roles()->user; --}}
                                         <li class="warning-element sortable-<?php if(!$task->updated_by OR $task->updated_by === Auth::user()->id) {echo 'yes';} else {echo 'no';} ?>" id="task-{{$task->id}}">
-                                            {{ $task->description }}
-                                            <div class="agile-detail">
+                                            <p>
+                                                <label>{{ $task->description }}</label>
+                                                <span class="pull-right">
+                                                    <i class="fa fa-clock-o clock_icon" id="date_clock-{{$task->id}}" title="click to view date task was created"></i> 
+                                                    <small id="task_date-{{$task->id}}" hidden>{{ date('M d, Y - h:iA', strtotime($task->created_at)) }}</small>
+                                                </span>
+                                            </p>
+                                               
+                                            <div class="agile-detail row" style="padding: 0 10px 0 10px">
                                                 {{-- if user is the creator of task. For now use auth::user()--}}
                                                 @if( $task->created_by === Auth::user()->id )
-                                                    <a href="#" class="pull-right btn btn-xs btn-white delete_task" id="delete_task-{{$task->id}}"><i class="trash_task fa fa-trash"></i> Delete</a>
+                                                    <a href="#" class="pull-right btn btn-sm btn-white delete_task" id="delete_task-{{$task->id}}"><i class="trash_task fa fa-trash"></i> Delete</a>
                                                 @endif
-                                                <a href="#" data-toggle="modal" data-target="#taskBoardModal" class="pull-right btn btn-xs btn-white task_info" id="task_info-{{$task->id}}"><i class="trash_task fa fa-info"></i> Info</a>
+                                                <a href="#" data-toggle="modal" data-target="#taskBoardModal" class="pull-right btn btn-sm btn-white task_info" id="task_info-{{$task->id}}"><i class="trash_task fa fa-info"></i> Info</a>
                                                 {{--  <div class="">  --}}                                                
-                                                <select class="pull-right btn btn-xs btn-primary" style="width: 30%;">
-                                                    <option value="{{Auth::user()->id}}">{{Auth::user()->name}}</option>
-                                                    @if( $task->created_by === Auth::user()->id )
+                                                <select class="js-example-basic-single" name="task_responsible" style="width: 55%;">
+                                                    <option id="{{Auth::user()->name}}" value="{{Auth::user()->id}}">{{Auth::user()->name}}</option>
+                                                    @if( $task->created_by === Auth::user()->id OR Auth::user()->hasRole('manager'))
                                                         @foreach($users as $team_member)
-                                                            <option value="{{$team_member->id}}">{{$team_member->name}}</option>    
+                                                            <option id="{{$team_member->name}}" value="{{$team_member->id}}">{{$team_member->name}}</option>    
                                                         @endforeach 
                                                     @endif                                                   
-                                                </select>
-                                                <i class="fa fa-user pull-right"></i>
+                                                </select>        
+                                                @if($task->responsible)
+                                                    <?php $user_responsible = \App\User::find($task->responsible);
+                                                        $fNameInitial = explode(" ", $user_responsible->name)[0][0];
+                                                        $lNameInitial = explode(" ", $user_responsible->name)[1][0];
+                                                    ?>
+                                                    <span><img title="responsible: {{$user_responsible->name}}" src="https://placehold.it/37x37/3a7a77/ffffff/&text={{$fNameInitial}}.{{$lNameInitial}}" class="img-circle" alt="User Image"></span>
+                                                
+                                                @endif
                                                 {{--  </div>  --}}
-                                                <i class="fa fa-clock-o"></i> {{ date('M d, Y - h:iA', strtotime($task->created_at)) }}
-                                            </div>
+                                            </div>                                            
                                         </li>
                                     @endif
                                 @endforeach
@@ -252,6 +265,37 @@
                 
                 $(document).on('click', '.warning-element', function() {
                     // console.log(this);
+                })
+
+                // In your Javascript (external .js resource or <script> tag)                
+                $('.js-example-basic-single').select2({
+                    placeholder: 'Choose responsible',
+                    //theme: "classic",
+                    templateResult: formatState,
+                    // templateSelection: formatState
+                });
+
+                function formatState (state) {
+                    if (!state.id) {
+                        return state.text;
+                    }
+                    var splitName = state.text.split(' ');
+                    var fNameInitial = splitName[0][0];
+                    var lNameInitial = splitName[1][0]
+                    // var baseUrl = "/user/pages/images/flags"; e25656/ffffff
+                    var $state = $(
+
+                        `<span><img src="https://placehold.it/37x37/3a7a77/ffffff/&text=${fNameInitial + lNameInitial}" class="img-circle" alt="User Image"><span style="margin-left: 10px">${state.element.text}</span></span>`
+                        //'<span><img src="' + baseUrl + '/' + state.element.value.toLowerCase() + '.png" class="img-flag" /> ' + state.text + '</span>'
+                    );
+                    return $state;
+                };              
+
+                // toggle date visibility
+                $('.clock_icon').on('click', function() {
+                    var id = $(this).attr('id');
+                    id = id.split('-')[1]
+                    $("#task_date-"+ id).toggle();
                 })
 
             });

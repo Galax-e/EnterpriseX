@@ -26,11 +26,14 @@
     <!-- Toastr style -->
     <link href="{{ asset('css/plugins/toastr/toastr.min.css') }}" rel="stylesheet">
 
+    <!-- Select2 style -->
+    <link href="{{  asset('bower_components/select2/dist/css/select2.min.css') }}" rel="stylesheet">
+
     <!-- BackPack Base CSS
     <link rel="stylesheet" href="{{ asset('vendor/backpack/backpack.base.css') }}?v=2">
     <link rel="stylesheet" href="{{ asset('vendor/backpack/overlays/backpack.bold.css') }}">
-
-    @yield('after_styles')  -->
+    -->
+    @yield('after_styles')
 
     <style>
         body{
@@ -89,6 +92,9 @@
 
     <!-- Toastr -->
     <script src="{{ asset('js/plugins/toastr/toastr.min.js') }}"></script>
+
+    <!-- Select2 -->
+    <script src="{{ asset('bower_components/select2/dist/js/select2.min.js') }}"></script>
 
 </head>
 

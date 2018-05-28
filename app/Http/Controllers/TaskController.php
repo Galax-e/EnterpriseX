@@ -39,12 +39,34 @@ class TaskController extends Controller
         $task->team_id = $request->input('team_id');
         $task->save();
 
-        $html = "$task->description
-                <div class='agile-detail'>
-                    <a href='#' class='pull-right btn btn-xs btn-white delete_task' id='delete_task-".$task->id."'><i class='trash_task fa fa-trash'></i> Delete</a>
-                    <a href='#' data-toggle='modal' data-target='#taskBoardModal' class='pull-right btn btn-xs btn-white task_info' id='task_info-".$task->id."'><i class='trash_task fa fa-info'></i> Info</a>
-                    <i class='fa fa-clock-o'></i> ".date('M d, Y - h:i:s A', strtotime($task->created_at))."
+        $team_members = \App\TeamMember::where('team_id', $t_id)->get();
+        $users = [];
+        foreach($team_members as $team_member) {
+            $member = \App\Member::find($team_member->member_id);
+            $users[] = $member->user;
+        }
+
+        $created_user = \App\User::find($task->created_by);
+        $fNameInitial = explode(" ", $created_user->name)[0][0];
+        $lNameInitial = explode(" ", $created_user->name)[1][0];                                                      
+
+        $html = "<p>
+                    <label>$task->description</label>
+                    <span class='pull-right'>
+                        <i class='fa fa-clock-o clock_icon' id='date_clock-$task->id' title='click to view date task was created'></i> 
+                        <small id='task_date-$task->id'>".date('M d, Y - h:iA', strtotime($task->created_at))."</small>
+                    </span>
+                </p>
+                <div class='agile-detail row' style='padding: 0 10px 0 10px'>";
+                    if($task->created_by === Auth::user()->id) {
+                        $html .= "<a href='#' class='pull-right btn btn-sm btn-white delete_task' id='delete_task-$task->id'><i class='trash_task fa fa-trash'></i> Delete</a>";
+                    }
+                    $html .= "<a href='#' data-toggle='modal' data-target='#taskBoardModal' class='pull-right btn btn-sm btn-white task_info' id='task_info-$task->id'><i class='trash_task fa fa-info'></i> Info</a>                 
+                    <span><small>Created by</small>
+                        <img title='$created_user->name' src='https://placehold.it/37x37/1ab394/ffffff/&text=$fNameInitial $lNameInitial' class='img-circle' alt='User Image'></span>
+                    </span>
                 </div>";
+
         $data = ["id"=>$task->id, "html"=>$html];
         return response()->json($data);
     }
@@ -67,7 +89,6 @@ class TaskController extends Controller
         $status = $request->input('status');
 
         $task_status = ["todo"=>'todo', "inprogress"=>'inprogress', "completed"=>'done'];
-
         $status = $task_status[$status];
 
         DB::table('tasks')->where('id', $task_id)->update(['status' => $status, 'updated_by' => Auth::user()->id]);
@@ -113,6 +134,7 @@ class TaskController extends Controller
     } 
 
     public function task_board(Request $request, Project $p_id, Team $t_id) {
+
         $team_id = $t_id->id; //$request->query('id');
         $project_id = $p_id->id;
         $user = Auth::user();

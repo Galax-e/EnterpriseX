@@ -96,6 +96,11 @@ class User extends Authenticatable
         return explode(' ', $this->name)[0];
     }
 
+    public function getAvatarUrlAttribute()
+    {        
+        return $this->avatar;
+    }
+
     /**
      * @return bool
      */

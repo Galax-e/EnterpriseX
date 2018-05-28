@@ -1,0 +1,29 @@
+{
+  "name": "EnterpriseX",
+  "description": "enterprise solution that offers improved productivity to large organizations",
+  "main": "resources/assets/js/app.js",
+  "authors": [
+    "Chukwuma Nwaugha <c.nwaugha@gmail.com>"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "Project",
+    "organization",
+    "tasks management",
+    "issue management",
+    "internal email",
+    "Team chat app",
+    "org. productivity"
+  ],
+  "homepage": "https://gitlab.com/hbruwgroup/enterprisex",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "select2": "^4.0.5"
+  }
+}
